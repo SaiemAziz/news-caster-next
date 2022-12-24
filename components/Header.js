@@ -37,7 +37,7 @@ const Header = () => {
                     <div className={`absolute translate-y-4  ${drop3 ? 'left-0' : 'scale-0 -left-44'} duration-300 ease-in-out flex flex-col shadow-xl z-50 bg-base-100`}>
                         <Link className="px-5 py-2 flex gap-1 items-center" href={'/'}><GoPrimitiveDot className="text-red-500"/>Home</Link>
                         <button className="px-5 py-2" onClick={() => setDrop2(!drop2)}>Categories</button>
-                        <div className={`absolute left-28 translate-y-14 ${drop2 ? '' : '-translate-x-14 -translate-y-14 scale-0'} ease-in-out duration-300 shadow-xl`}>
+                        <div className={`absolute left-28 ${drop2 ? 'translate-y-14' : '-translate-x-14 -translate-y-14 scale-0'} ease-in-out duration-300 shadow-xl`}>
                             <ul className="flex flex-col bg-base-100">
                                 <Link className="px-5 py-2" href={'/'}>All News</Link>
                                 <Link className="px-5 py-2" href={'/'}>Sports</Link>
