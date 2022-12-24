@@ -1,0 +1,24 @@
+import * as bannerImage from '../assets/images/bannerImage.json'
+import Lottie from 'lottie-react'
+const Banner = () => {
+
+
+
+    return (<div className='max-w-6xl mx-auto grid md:grid-cols-2 my-20 gap-14'>
+        <div className='bg-white'>
+            <div className='-m-5 -mt-20'>
+                <Lottie animationData={bannerImage} />
+            </div>
+        </div>
+
+        <div className='flex flex-col justify-center gap-5'>
+            <h1 className='text-3xl text-center font-bold'>“Fake news is cheap to produce. <br /> Genuine journalism is expensive”</h1>
+            <h1 className='text-3xl text-right'>-- Toomas Hendrik Ilves </h1>
+            <p className='text-2xl text-justify'><span className='font-semibold'>News Caster</span> is a platform for journalists to showcase their works, learn from others, and and uncover vital new information in the public interest. </p>
+        </div>
+    </div>
+
+    );
+};
+
+export default Banner;
