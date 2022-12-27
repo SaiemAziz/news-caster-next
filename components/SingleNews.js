@@ -21,7 +21,7 @@ const SingleNews = ({ n }) => {
             <div>
                 <img className="w-full" src={n.image} alt="" />
                 <h1 className="font-bold text-xl px-5 my-3">{n.title}</h1>
-                <h1 className="px-5 text-justify">{n.details.slice(0, 100)}...<Link href={`/details/${n.id}`} className='text-info cursor-pointer font-extrabold text-xs italic'>See More</Link></h1>
+                <h1 className="px-5 text-justify">{n.details.slice(0, 100)}... <Link href={`/details/${n.id}`} className='text-blue-500 cursor-pointer font-extrabold text-xs italic'>See More</Link></h1>
             </div>
             <div className='mt-10'>
                 <div className="px-5 pb-5 flex justify-between border-b-2">
