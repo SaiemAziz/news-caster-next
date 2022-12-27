@@ -16,7 +16,7 @@ const login = () => {
 
 
     return (
-        <div className='max-w-7xl mx-auto grid gap-10 md:grid-cols-2 '>
+        <div className='md:max-w-7xl w-full mx-auto grid gap-10 md:grid-cols-2 '>
             <div className='flex flex-col items-center justify-center gap-5 p-10'>
                 <Lottie animationData={loginImage} />
                 <h1 className='lg:text-5xl text-3xl text-center italic -mt-10 text-blue-500'>Welcome to NewsCaster</h1>
@@ -27,11 +27,11 @@ const login = () => {
                 <form onSubmit={handlerForm} className='flex flex-col gap-3 w-full max-w-xs'>
                     <div class="relative w-full max-w-xs font-semibold">
                         <input type="text" id="floating_email" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border-l-4 border-[#097ef6] outline-0 focus:ring-0 focus:border-[#097ef6] peer" placeholder=" " name='email'/>
-                        <label for="floating_email" class="absolute  text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-[#097ef6]  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Email</label>
+                        <label for="floating_email" class="absolute  text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] px-2 peer-focus:px-2 peer-focus:text-[#097ef6]  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Email</label>
                     </div>
                     <div class="relative w-full max-w-xs font-semibold">
                         <input type={show ? 'text' : 'password'} id="floating_password" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border-l-4 border-[#097ef6] outline-0 focus:ring-0 focus:border-[#097ef6] peer" placeholder=" " name='password'/>
-                        <label for="floating_password" class="absolute  text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-[#097ef6]  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Password</label>
+                        <label for="floating_password" class="absolute  text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] px-2 peer-focus:px-2 peer-focus:text-[#097ef6]  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Password</label>
                     </div>
                     <div className='flex gap-3 ml-auto'>
                         <p className='text-[#097ef6] font-semibold text-xs'>Show Password</p>
