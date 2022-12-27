@@ -6,16 +6,24 @@ import SingleNews from '../components/SingleNews'
 import Banner from '../components/Banner'
 import { useEffect, useState } from 'react'
 import Footer from '../components/Footer'
+import BannerTravel from '../components/BannerTravel'
+import Test from '../components/Test'
+import Loading from '../components/Loading'
 
 
 
 export default function Home() {
   let [news, setNews] = useState([])
-  useEffect(()=>{
-    fetch('/news.json')
-    .then(res => res.json())
-    .then(data => setNews(data.slice(0,4)))
-  },[])
+  let [load, setLoad] = useState(false)
+  useEffect(() => {
+    setLoad(true)
+    fetch('/api/hello')
+      .then(res => res.json())
+      .then(data => {
+        setNews(data.news.slice(0, 4))
+        setLoad(false)
+      })
+  }, [])
 
   return (
     <>
@@ -41,21 +49,26 @@ export default function Home() {
         <div className='my-10 max-w-6xl mx-auto grid grid-cols-3 gap-16'>
           <div className='col-span-2'>
             <h1 className='text-xl font-bold p-5 bg-white mb-5'><span className='border-b-2 border-[#C31815] pb-1'>Late</span>st Stories</h1>
-            <div className='grid grid-cols-2 gap-5'>
-              {
-                news?.map(n => <SingleNews
-                key={n?.id}
-                n={n}
-                ></SingleNews>)
-              }
-            </div>
+            {
+              load ? <div className={`max-w-xl mx-auto my-11`}>
+                <Loading />
+              </div> :
+                <div className='grid grid-cols-2 gap-5'>
+                  {
+                    news?.map(n => <SingleNews
+                      key={n?.id}
+                      n={n}
+                    ></SingleNews>)
+                  }
+                </div>
+            }
           </div>
           <div>
             adadadad
           </div>
         </div>
 
-        <Footer/>
+        <Footer />
       </main>
     </>
   )

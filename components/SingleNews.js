@@ -1,6 +1,9 @@
 import { useState } from 'react';
 import { AiTwotoneLike } from 'react-icons/ai'
 import { BiComment } from 'react-icons/bi'
+import Link from "next/link";
+
+
 const SingleNews = ({ n }) => {
     let [liked, setLiked] = useState(false)
     let [likeCount, setLikeCount] = useState(20)
@@ -14,11 +17,11 @@ const SingleNews = ({ n }) => {
     }
 
     return (
-        <div className="bg-white flex flex-col justify-between shadow-xl">
+        <div className="bg-white flex flex-col justify-between shadow-lg">
             <div>
                 <img className="w-full" src={n.image} alt="" />
                 <h1 className="font-bold text-xl px-5 my-3">{n.title}</h1>
-                <h1 className="px-5 text-justify">{n.details.slice(0, 100)}...</h1>
+                <h1 className="px-5 text-justify">{n.details.slice(0, 100)}...<Link href={`/details/${n.id}`} className='text-info cursor-pointer font-extrabold text-xs italic'>See More</Link></h1>
             </div>
             <div className='mt-10'>
                 <div className="px-5 pb-5 flex justify-between border-b-2">
