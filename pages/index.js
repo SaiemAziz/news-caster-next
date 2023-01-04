@@ -9,6 +9,7 @@ import Footer from '../components/Footer'
 import BannerTravel from '../components/BannerTravel'
 import Test from '../components/Test'
 import Loading from '../components/Loading'
+import Link from 'next/link'
 
 
 
@@ -35,14 +36,16 @@ export default function Home() {
       </Head>
       <main className=''>
 
-        {/* banner div  */}
-        <Banner />
+        <div className='bg-[#0E1E32] py-10'>
+          {/* banner div  */}
+          <Banner />
 
-        {/* purple div  */}
-        <div className='max-w-6xl mx-auto bg-[#E0CECE] text-[#632727] flex gap-14 text-3xl justify-center p-5'>
-          <h1 className='italic underline'>Sports</h1>
-          <h1>Bangladesh wins series with India!
-          </h1>
+          {/* purple div  */}
+          <div className='max-w-6xl mx-auto bg-[#E0CECE] text-[#632727] flex gap-14 text-3xl justify-center p-5'>
+            <h1 className='italic underline'>Sports</h1>
+            <h1>Bangladesh wins series with India!
+            </h1>
+          </div>
         </div>
 
         {/* cards  */}
@@ -62,9 +65,12 @@ export default function Home() {
                   }
                 </div>
             }
+            <div className='w-fit mx-auto'>
+              <Link href='/categories' className='btn btn-accent btn-outline btn-lg my-10'>View More</Link>
+            </div>
           </div>
           <div>
-            adadadad
+
           </div>
         </div>
       </main>
