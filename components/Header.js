@@ -37,8 +37,8 @@ const Header = () => {
                     </label>
                     <div className={`absolute translate-y-4  ${drop3 ? 'left-0' : 'scale-0 -left-44'} duration-300 ease-in-out flex flex-col shadow-xl z-50 bg-base-100`}>
                         <Link className="px-5 py-2 flex gap-1 items-center" href={'/'}><GoPrimitiveDot className="text-red-500" />Home</Link>
-                        <button className="px-5 py-2" onClick={() => setDrop2(!drop2)}>Categories</button>
-                        <div className={`absolute left-28 translate-y-14 ${drop2 ? '' : '-translate-x-14 -translate-y-14 scale-0'} ease-in-out duration-300 shadow-xl`}>
+                        <Link href='/categories' className="px-5 py-2" >Categories</Link>
+                        {/* <div className={`absolute left-28 translate-y-14 ${drop2 ? '' : '-translate-x-14 -translate-y-14 scale-0'} ease-in-out duration-300 shadow-xl`}>
                             <ul className="flex flex-col bg-base-100">
                                 <Link className="px-5 py-2" href={'/'}>All News</Link>
                                 <Link className="px-5 py-2" href={'/'}>Sports</Link>
@@ -46,7 +46,7 @@ const Header = () => {
                                 <Link className="px-5 py-2" href={'/'}>Technologies</Link>
                                 <Link className="px-5 py-2" href={'/'}>Entertainment</Link>
                             </ul>
-                        </div>
+                        </div> */}
                     </div>
                 </div>
 
@@ -58,8 +58,8 @@ const Header = () => {
                 <div className="flex justify-between flex-1 mx-5">
                     <div className="lg:flex hidden gap-10 relative">
                         <Link className="my-auto flex gap-1 items-center" href={'/'}><GoPrimitiveDot className="text-red-500" />Home</Link>
-                        <button className="my-auto" onClick={() => setDrop1(!drop1)}>Categories</button>
-                        <div className={`absolute left-16 ${drop1 ? 'top-16' : 'scale-0 -top-14'} ease-out bg-base-100 shadow-2xl duration-300`}>
+                        <Link href='/categories' className="my-auto">Categories</Link>
+                        {/* <div className={`absolute left-16 ${drop1 ? 'top-16' : 'scale-0 -top-14'} ease-out bg-base-100 shadow-2xl duration-300`}>
                             <ul className="flex flex-col">
                                 <Link className="px-5 py-2" href={'/'}>All News</Link>
                                 <Link className="px-5 py-2" href={'/'}>Sports</Link>
@@ -67,7 +67,7 @@ const Header = () => {
                                 <Link className="px-5 py-2" href={'/'}>Technologies</Link>
                                 <Link className="px-5 py-2" href={'/'}>Entertainment</Link>
                             </ul>
-                        </div>
+                        </div> */}
                     </div>
                     {/* <div class="relative ">
                         <input type="text" id="floating_outlined" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent rounded-lg border-2 border-gray-300 outline-0 focus:ring-0 focus:border-blue-600 peer" placeholder=" " />

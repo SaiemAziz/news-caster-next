@@ -18,10 +18,10 @@ export default function Home() {
   let [load, setLoad] = useState(false)
   useEffect(() => {
     setLoad(true)
-    fetch('/api/hello')
+    fetch('https://raw.githubusercontent.com/SaiemAziz/news-caster-next/main/assets/others/news.json')
       .then(res => res.json())
       .then(data => {
-        setNews(data.news.slice(0, 4))
+        setNews(data.slice(0, 4))
         setLoad(false)
       })
   }, [])

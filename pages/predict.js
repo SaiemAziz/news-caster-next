@@ -4,23 +4,30 @@ const predict = () => {
     let [news, setNews] = useState([])
 
     useEffect(()=>{
-        fetch('news.json')
+        fetch('https://raw.githubusercontent.com/SaiemAziz/news-caster-next/main/assets/others/news.json')
         .then(res => res.json())
         .then(data => setNews(data))
     },[])
 
     let handlePredict = async (text) => {
+        // console.log(tf);
+        // text = text.split(' ')
         const model = await tf.loadLayersModel('https://raw.githubusercontent.com/SaiemAziz/news-caster-next/main/models/model.json')
-        // const pred = await model.predict(text).arraySync()[0];
+        // const pred = model.predict(text).arraySync()[0];
         // console.log(pred)
-        console.log(model);
+        // console.log(text);
     }
 
     return (
         <div>
-            <button className='btn btn-secondary' onClick={()=>handlePredict(news[0]?.details)}>
+        {
+            news.map(n => <div>
+            <h1>{n.title}</h1>
+            <button className='btn btn-secondary' onClick={()=>handlePredict(n.details)}>
                 test
             </button>
+            </div>)
+        }
         </div>
     );
 };
