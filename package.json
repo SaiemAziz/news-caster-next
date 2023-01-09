@@ -16,7 +16,9 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.7.1",
-    "swiper": "^8.4.5"
+    "react-tensorflow": "^2.2.0",
+    "swiper": "^8.4.5",
+    "@tensorflow/tfjs": "^4.1.0"
   },
   "devDependencies": {
     "autoprefixer": "^10.4.13",
