@@ -11,6 +11,7 @@ const categories = () => {
   let [button, setButton] = useState('All')
   useEffect(() => {
     setLoad(true)
+    setNews([])
     fetch(`/api/categories?category=${button.toLowerCase()}`)
       .then(res => res.json())
       .then(data => {
