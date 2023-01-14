@@ -1,1 +1,1 @@
-npm install -D tailwindcss postcss autoprefixer
+# Live Link : https://news-caster-next.vercel.app/
