@@ -7,7 +7,7 @@ import Link from "next/link";
 const SingleNews = ({ n }) => {
     let [liked, setLiked] = useState(false)
     let [likeCount, setLikeCount] = useState(20)
-
+    let [slide, setSlide] = useState(false)
     let handlerLike = () => {
         if (liked)
             setLikeCount(num => num - 1)
@@ -17,9 +17,16 @@ const SingleNews = ({ n }) => {
     }
 
     return (
-        <div className="bg-white flex flex-col justify-between shadow-lg">
+        <div className="bg-white flex flex-col justify-between shadow-lg" 
+        onMouseEnter={() => setSlide(true)} onMouseLeave={() => setSlide(false)}
+        >
             <div>
+                <div className='relative overflow-hidden'>
                 <img className="w-full" src={n.image} alt="" />
+                    <div className={`absolute top-0 z-30 w-full h-full flex justify-center items-center bg-black bg-opacity-50  duration-500 ease-out ${slide? '' : "translate-y-full"}`}>
+                        <p className='text-7xl text-success font-bold w-fit rounded-full p-10'>96%</p>
+                    </div>
+                </div>
                 <h1 className="font-bold text-xl px-5 my-3">{n.title}</h1>
                 <h1 className="px-5 text-justify">{n.details.slice(0, 100)}... <Link href={`/details/${n._id}`} className='text-blue-500 cursor-pointer font-bold text-sm'>See More</Link></h1>
             </div>

@@ -5,13 +5,13 @@ const Banner = () => {
 
 
     return (<div className='max-w-6xl mx-auto grid md:grid-cols-2 mb-20 gap-14 text-white'>
-        <div className=''>
+        <div className='flex justify-center items-center'>
             <div className='-m-5 -mt-20'>
                 <Lottie animationData={bannerImage} />
             </div>
         </div>
 
-        <div className='flex flex-col justify-center gap-5'>
+        <div className='flex flex-col justify-center gap-5 p-5'>
             <h1 className='text-3xl text-center font-bold text-info'>“Fake news is cheap to produce. <br /> Genuine journalism is expensive”</h1>
             <h1 className='text-xl text-right'>-- Toomas Hendrik Ilves </h1>
             <p className='text-2xl text-justify text-gray-400'><span className='font-semibold'>News Caster</span> is a platform for journalists to showcase their works, learn from others, and and uncover vital new information in the public interest. </p>
