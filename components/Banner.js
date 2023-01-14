@@ -6,7 +6,7 @@ const Banner = () => {
 
     return (<div className='max-w-6xl mx-auto grid md:grid-cols-2 mb-20 gap-14 text-white'>
         <div className='flex justify-center items-center'>
-            <div className='-m-5 -mt-20'>
+            <div className='-p-5 -mt-20'>
                 <Lottie animationData={bannerImage} />
             </div>
         </div>
