@@ -1,13 +1,17 @@
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import logo from '../assets/images/logo.png'
 import { GoPrimitiveDot } from 'react-icons/go'
 import { RxPerson } from 'react-icons/rx'
+
 const Header = () => {
     let [drop1, setDrop1] = useState(false)
     let [drop2, setDrop2] = useState(false)
     let [drop3, setDrop3] = useState(false)
+
+
+
     let menu = <>
         <li><Link href={'/'}>Home</Link></li>
         <li tabIndex={0}>
@@ -23,19 +27,18 @@ const Header = () => {
         <li><Link href={'/'}>Item 3</Link></li>
     </>
 
-
     return (
         <div className="sticky z-50 top-0 bg-base-100 shadow-lg">
-            <div className="flex max-w-6xl mx-auto p-3 items-center">
+            <div className="flex max-w-6xl mx-auto p-3 items-center" >
 
                 {/* mobile or tablet */}
-                <div className="lg:hidden" onBlur={() => setDrop3(false)}>
+                <div className="lg:hidden" >
                     <label className="cursor-pointer swap swap-rotate mr-3" >
-                        <input type="checkbox" onChange={() => setDrop3(!drop3)} checked={drop3}/>
+                        <input type="checkbox" onClick={() => setDrop3(!drop3)}/>
                         <svg className="swap-off fill-current" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 512 512"><path d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z" /></svg>
                         <svg className="swap-on fill-current" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 512 512"><polygon points="400 145.49 366.51 112 256 222.51 145.49 112 112 145.49 222.51 256 112 366.51 145.49 400 256 289.49 366.51 400 400 366.51 289.49 256 400 145.49" /></svg>
                     </label>
-                    <div className={`absolute translate-y-4  ${drop3 ? 'left-0' : 'scale-0 -left-44'} duration-300 ease-in-out flex flex-col shadow-xl z-50 bg-base-100`}>
+                    <div className={`absolute translate-y-4  ${drop3 ? 'left-0' : 'scale-0 -left-44'} duration-300 ease-in-out flex flex-col shadow-xl z-50 bg-base-100`}  onBlur={() => setDrop3(false)}>
                         <Link className="px-5 py-2 flex gap-1 items-center" href={'/'}><GoPrimitiveDot className="text-red-500" />Home</Link>
                         <Link href='/categories' className="px-5 py-2" >Categories</Link>
                         {/* <div className={`absolute left-28 translate-y-14 ${drop2 ? '' : '-translate-x-14 -translate-y-14 scale-0'} ease-in-out duration-300 shadow-xl`}>
@@ -51,7 +54,7 @@ const Header = () => {
                 </div>
 
                 <Link href='/' className="my-auto">
-                    <Image src={logo} width='50' />
+                    <Image src={logo} width='50' alt=""/>
                 </Link>
 
                 {/* desktop */}

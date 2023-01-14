@@ -46,14 +46,14 @@ export default function Home() {
         </div>
 
         {/* cards  */}
-        <div className='my-10 max-w-6xl mx-auto grid grid-cols-3 gap-16'>
-          <div className='col-span-2'>
+        <div className='my-10 max-w-6xl mx-auto grid lg:grid-cols-3 sm:grid-cols-2 gap-16'>
+          <div className='lg:col-span-2'>
             <h1 className='text-xl font-bold p-5 bg-white mb-5'><span className='border-b-2 border-[#C31815] pb-1'>Late</span>st Stories</h1>
             {
               load ? <div className={`max-w-xl mx-auto my-11`}>
                 <Loading />
               </div> :
-                <div className='grid grid-cols-2 gap-5'>
+                <div className='grid lg:grid-cols-2 gap-5'>
                   {
                     news?.map(n => <SingleNews
                       key={n?.id}

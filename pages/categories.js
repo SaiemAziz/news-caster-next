@@ -42,7 +42,7 @@ const categories = () => {
           <div className='max-w-7xl mx-auto grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-5'>
             {
               news?.map(n => <SingleNews
-                key={n?.id}
+                key={n?._id}
                 n={n}
               ></SingleNews>)
             }
