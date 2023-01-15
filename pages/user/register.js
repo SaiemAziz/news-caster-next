@@ -7,6 +7,7 @@ import * as loadingImage from '../../assets/images/liquid-4-dot-loader.json'
 const register = () => {
     
     let imgbbUrl = process.env.NEXT_PUBLIC_IMGBB_URL
+    let cloudinaryUrl = process.env.CLOUDINARY_URL
     let [show, setShow] = useState(false)
     let [load, setLoad] = useState(false)
     let [err, setErr] = useState('')

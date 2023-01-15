@@ -11,6 +11,7 @@ import Test from '../components/Test'
 import Loading from '../components/Loading'
 import Link from 'next/link'
 import BelowBannerSlider from '../components/BelowBannerSlider'
+import YoutubeSection from '../components/YoutubeSection'
 
 
 
@@ -40,7 +41,6 @@ export default function Home() {
         <div className='bg-[#0E1E32] pt-10'>
           {/* banner div  */}
           <Banner />
-
           {/* purple div  */}
           <BelowBannerSlider />
         </div>
@@ -56,7 +56,7 @@ export default function Home() {
                 <div className='grid lg:grid-cols-2 gap-5'>
                   {
                     news?.map(n => <SingleNews
-                      key={n?.id}
+                      key={n?._id}
                       n={n}
                     ></SingleNews>)
                   }
@@ -67,7 +67,7 @@ export default function Home() {
             </div>
           </div>
           <div>
-
+            <YoutubeSection />
           </div>
         </div>
       </main>
