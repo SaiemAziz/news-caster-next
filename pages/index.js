@@ -15,18 +15,9 @@ import YoutubeSection from '../components/YoutubeSection'
 
 
 
-export default function Home() {
-  let [news, setNews] = useState([])
+export default function Home({news}) {
   let [load, setLoad] = useState(false)
-  useEffect(() => {
-    setLoad(true)
-    fetch('/api/all-news')
-      .then(res => res.json())
-      .then(data => {
-        setNews(data.data.slice(0, 4))
-        setLoad(false)
-      })
-  }, [])
+  
 
   return (
     <>
@@ -49,10 +40,7 @@ export default function Home() {
         <div className='my-10 max-w-6xl mx-auto grid lg:grid-cols-3 sm:grid-cols-2 gap-16'>
           <div className='lg:col-span-2'>
             <h1 className='text-xl font-bold p-5 bg-white mb-5'><span className='border-b-2 border-[#C31815] pb-1'>Late</span>st Stories</h1>
-            {
-              load ? <div className={`max-w-xl mx-auto my-11`}>
-                <Loading />
-              </div> :
+            
                 <div className='grid lg:grid-cols-2 gap-5'>
                   {
                     news?.map(n => <SingleNews
@@ -61,9 +49,9 @@ export default function Home() {
                     ></SingleNews>)
                   }
                 </div>
-            }
+
             <div className='w-fit mx-auto'>
-              <Link href='/categories' className='btn btn-accent btn-outline btn-lg my-10'>View More</Link>
+              <Link href='/categories' className='btn btn-error btn-outline btn-lg my-10'>View More</Link>
             </div>
           </div>
           <div>
@@ -73,4 +61,17 @@ export default function Home() {
       </main>
     </>
   )
+}
+
+export async function getStaticProps () {
+
+  let res = await fetch('http://localhost:3000/api/all-news')
+  let data = await res.json()
+  
+  return{
+    props: {
+      news : data.data
+    },
+    revalidate: 1,
+  }
 }

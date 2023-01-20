@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react'
 import Loading from '../components/Loading'
 import CategoryButtons from '../components/CategoryButtons'
 import Head from 'next/head'
+import AllNews from '../components/AllNews'
 
 const categories = () => {
   let [news, setNews] = useState([])
@@ -39,14 +40,16 @@ const categories = () => {
         load ? <div className={`max-w-xl mx-auto my-11`}>
           <Loading />
         </div> :
-          <div className='max-w-7xl mx-auto grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-5'>
-            {
-              news?.map(n => <SingleNews
-                key={n?._id}
-                n={n}
-              ></SingleNews>)
-            }
-          </div>
+          button === "All" ?
+            <AllNews news={news} /> :
+            <div className='max-w-7xl mx-auto grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-5'>
+              {
+                news?.map(n => <SingleNews
+                  key={n?._id}
+                  n={n}
+                ></SingleNews>)
+              }
+            </div>
       }
     </div>
   )

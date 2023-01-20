@@ -27,8 +27,9 @@ const Header = () => {
         <li><Link href={'/'}>Item 3</Link></li>
     </>
 
-    return (
+    return (<>
         <div className="sticky z-50 top-0 bg-base-100 shadow-lg">
+        
             <div className="flex max-w-6xl mx-auto p-3 items-center" >
 
                 {/* mobile or tablet */}
@@ -83,7 +84,9 @@ const Header = () => {
                     </div>
                 </div>
             </div>
+            
         </div>
+    </>
     );
 };
 
