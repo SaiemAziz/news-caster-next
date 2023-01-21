@@ -1,37 +1,36 @@
 import { useContext, useEffect, useState } from 'react';
 import { AiTwotoneLike } from 'react-icons/ai'
 import { BiComment } from 'react-icons/bi'
-import Loading from './Loading'
+import LoadingCircle from './LoadingCircle'
 import Link from "next/link";
 import * as tf from '@tensorflow/tfjs';
 import { ModelContext } from '../pages/_app';
+import handleTokenizeClick from './functions/handleTokenizeClick';
 
 const SingleNews = ({ n }) => {
     let { model, wordIndex } = useContext(ModelContext)
-    let {real} = n?.prediction
-    let {fake} = n?.prediction
+    // let {real} = n?.prediction
+    // let {fake} = n?.prediction
     let [liked, setLiked] = useState(false)
     let [loading, setLoading] = useState(false)
     let [likeCount, setLikeCount] = useState(20)
     // // let [wordIndex, setWordIndex] = useState({});
     let [slide, setSlide] = useState(false)
-    // let [real, setReal] = useState(null)
-    // let [fake, setFake] = useState(null)
+    let [real, setReal] = useState(null)
+    let [fake, setFake] = useState(null)
     // let MAX_SEQUENCE_LENGTH = 500
     // let { details } = n
 
     // // Load the word index
-    // // useEffect(() => {
-    // //     (async () => {
-    // //         setLoading(true)
-    // //         // const response = await fetch('word_index.json');
-    // //         // const data = await response.json()
-    // //         // setWordIndex(data);
-    // //         // const myModel = await tf.loadLayersModel('https://raw.githubusercontent.com/ReazTausif97/saiemmodel/main/Model8/model.json')
-    // //         if(model)
-    // //             handleTokenizeClick()
-    // //     })();
-    // // }, [model]);
+    useEffect(() => {
+        (async () => {
+            setLoading(true)
+            let prediction = await handleTokenizeClick(n?.details) 
+            setReal(prediction.real)
+            setFake(prediction.fake)
+            setLoading(false)
+        })();
+    }, []);
 
     // useEffect(() => {
     //     setLoading(true)
@@ -85,8 +84,6 @@ const SingleNews = ({ n }) => {
     // }
 
 
-
-console.log(n)
     let handlerLike = () => {
         if (liked)
             setLikeCount(num => num - 1)
@@ -101,7 +98,7 @@ console.log(n)
         return (
             <div>
                 <p>{fake}</p>
-                <Loading />
+                <LoadingCircle />
             </div>
         )
 
@@ -115,8 +112,8 @@ console.log(n)
                     <div className={`absolute top-0 z-30 w-full h-full flex flex-col justify-center items-center bg-black bg-opacity-50 duration-500 ease-out ${slide ? '' : "translate-y-full"}`}>
                         {
                             <div className='backdrop-blur-sm'>
-                                <p className='text-3xl p-5 rounded-full font-bold text-success'>Real: {real.toFixed(2)}%</p>
-                                <p className='text-3xl p-5 rounded-full font-bold text-error'>Fake: {fake.toFixed(2)}%</p>
+                                <p className='text-3xl p-5 rounded-full font-bold text-success'>Real: {real?.toFixed(2)}%</p>
+                                <p className='text-3xl p-5 rounded-full font-bold text-error'>Fake: {fake?.toFixed(2)}%</p>
                             </div>
                         }
                     </div>

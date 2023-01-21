@@ -1,4 +1,4 @@
-import * as tf from '@tensorflow/tfjs-node';
+import * as tf from '@tensorflow/tfjs';
 const puncRemove = (t) => {
     t = t.split('');
     let newt = t.filter(x => {
@@ -28,7 +28,7 @@ const removeZero = (arr) => {
 
 
 const handleTokenizeClick = async (details) => {
-    console.log(details)
+    
     details = puncRemove(details)
     let mytokenizedText = details.toLowerCase().split(' ');
     let res = await fetch("https://raw.githubusercontent.com/SaiemAziz/news-caster-next/main/models/model/word_index.json")
@@ -43,6 +43,7 @@ const handleTokenizeClick = async (details) => {
     let pred = model.predict(reshapedPaddedSequence);
     let fake = (pred.dataSync()[0] * 100)
     let real = (pred.dataSync()[1] * 100)
+    // console.log(fake, real)
     return { fake, real }
     // const result = pred.dataSync()[0] > pred.dataSync()[1] ? "FAKE" : "REAL"
     // const result2 = Math.max(...pred.dataSync())

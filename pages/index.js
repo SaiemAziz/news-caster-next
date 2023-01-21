@@ -12,10 +12,12 @@ import Loading from '../components/Loading'
 import Link from 'next/link'
 import BelowBannerSlider from '../components/BelowBannerSlider'
 import YoutubeSection from '../components/YoutubeSection'
+import handleTokenizeClick from '../components/functions/handleTokenizeClick'
 
 
 
-export default function Home() {
+export default  function Home() {
+  
   let [load, setLoad] = useState(false)
   let [news, setNews] = useState(null)
   useEffect(() => {
