@@ -37,7 +37,7 @@ const categories = () => {
       {/* <h1 className='text-xl font-bold p-5 bg-white mx-10 -mt-7 mb-5'><span className='border-b-2 border-[#C31815] pb-1'>All</span> News</h1> */}
 
       {
-        load ? <div className={`max-w-xl mx-auto my-11`}>
+        load ? <div className={`max-w-5xl mx-auto my-11`}>
           <Loading />
         </div> :
           button === "All" ?

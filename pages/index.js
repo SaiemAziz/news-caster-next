@@ -24,7 +24,7 @@ export default function Home() {
     fetch(`/api/all-news`)
       .then(res => res.json())
       .then(data => {
-        setNews(data.data)
+        setNews(data.data.slice(0, 4))
         setLoad(false)
       })
   }, [])
