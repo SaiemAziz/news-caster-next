@@ -7,7 +7,7 @@ import * as tf from '@tensorflow/tfjs';
 import { ModelContext } from '../pages/_app';
 
 const SingleNews = ({ n }) => {
-    let {model, wordIndex} = useContext(ModelContext)
+    let { model, wordIndex } = useContext(ModelContext)
 
     let [liked, setLiked] = useState(false)
     let [loading, setLoading] = useState(false)
@@ -32,12 +32,12 @@ const SingleNews = ({ n }) => {
     //     })();
     // }, [model]);
 
-    useEffect(()=>{
+    useEffect(() => {
         setLoading(true)
         console.log(model);
-        if(model)  
+        if (model)
             handleTokenizeClick()
-    },[model])
+    }, [model])
 
     const puncRemove = (t) => {
         t = t.split('');
@@ -100,7 +100,7 @@ const SingleNews = ({ n }) => {
     if (loading)
         return (
             <div>
-            <p>{fake}</p>
+                <p>{fake}</p>
                 <Loading />
             </div>
         )
@@ -112,12 +112,12 @@ const SingleNews = ({ n }) => {
             <div>
                 <div className='relative overflow-hidden'>
                     <img className="w-full" src={n.image} alt="" />
-                    <div className={`absolute top-0 z-30 w-full h-full flex flex-col gap-5 justify-center items-center bg-black bg-opacity-50 duration-500 ease-out ${slide ? '' : "translate-y-full"}`}>
+                    <div className={`absolute top-0 z-30 w-full h-full flex flex-col justify-center items-center bg-black bg-opacity-50 duration-500 ease-out ${slide ? '' : "translate-y-full"}`}>
                         {
-                            fake && <p className='text-3xl font-bold text-error'>Fake: {fake.toFixed(2)}%</p>
-                        }
-                        {
-                            real && <p className='text-3xl font-bold text-success'>Real: {real.toFixed(2)}%</p>
+                            fake && real && <div className='backdrop-blur-sm'>
+                                <p className='text-3xl p-5 rounded-full font-bold text-success'>Real: {real.toFixed(2)}%</p>
+                                <p className='text-3xl p-5 rounded-full font-bold text-error'>Fake: {fake.toFixed(2)}%</p>
+                            </div>
                         }
                     </div>
                 </div>

@@ -4,8 +4,8 @@ import Lottie from 'lottie-react'
 
 const Loading = () => {
     return (
-        <div className='w-full opacity-50'>
-            <Lottie animationData={loader} />
+        <div className='w-full p-20'>
+            {/* <Lottie animationData={loader} /> */}
             <Lottie animationData={animate} />
         </div>
     );
