@@ -1,4 +1,10 @@
 import * as tf from '@tensorflow/tfjs';
+import { useState } from 'react';
+let wordIndex , model,  loadingModel = true
+let loadModelBrowser = async () => {
+    
+    loadingModel = false
+}
 const puncRemove = (t) => {
     t = t.split('');
     let newt = t.filter(x => {
@@ -27,26 +33,28 @@ const removeZero = (arr) => {
 }
 
 
-const handleTokenizeClick = async (details) => {
+const handleTokenizeClick = async (details, model, wordIndex) => {
     
     details = puncRemove(details)
     let mytokenizedText = details.toLowerCase().split(' ');
-    let res = await fetch("https://raw.githubusercontent.com/SaiemAziz/news-caster-next/main/models/model/word_index.json")
-    let wordIndex = await res.json()
+    
+    
     let mywordIndices = await mytokenizedText.map(word => wordIndex[word]);
 
     let mypaddedSequences = [...removeZero(mywordIndices)]
     let slicedPaddedSequence = mypaddedSequences.slice(0, 500)
     let mypaddedSequence = tf.tensor1d(slicedPaddedSequence, 'int32')
     let reshapedPaddedSequence = mypaddedSequence.reshape([1, 500])
-    let model = await tf.loadLayersModel("https://raw.githubusercontent.com/SaiemAziz/news-caster-next/main/models/model/model.json")
     let pred = model.predict(reshapedPaddedSequence);
     let fake = (pred.dataSync()[0] * 100)
     let real = (pred.dataSync()[1] * 100)
     // console.log(fake, real)
+    
     return { fake, real }
+
     // const result = pred.dataSync()[0] > pred.dataSync()[1] ? "FAKE" : "REAL"
     // const result2 = Math.max(...pred.dataSync())
     // console.log(index + " Prediction " + result + ", Percent " + parseFloat(result2 * 100).toFixed(2))
 }
 export default handleTokenizeClick
+export {loadModelBrowser, loadingModel}

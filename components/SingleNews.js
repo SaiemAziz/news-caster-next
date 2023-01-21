@@ -12,7 +12,7 @@ const SingleNews = ({ n }) => {
     // let {real} = n?.prediction
     // let {fake} = n?.prediction
     let [liked, setLiked] = useState(false)
-    let [loading, setLoading] = useState(false)
+    let [loading, setLoading] = useState(true)
     let [likeCount, setLikeCount] = useState(20)
     // // let [wordIndex, setWordIndex] = useState({});
     let [slide, setSlide] = useState(false)
@@ -24,8 +24,7 @@ const SingleNews = ({ n }) => {
     // // Load the word index
     useEffect(() => {
         (async () => {
-            setLoading(true)
-            let prediction = await handleTokenizeClick(n?.details) 
+            let prediction = await handleTokenizeClick(n?.details, model, wordIndex) 
             setReal(prediction.real)
             setFake(prediction.fake)
             setLoading(false)
@@ -96,8 +95,8 @@ const SingleNews = ({ n }) => {
     // JSX Syntax
     if (loading)
         return (
-            <div>
-                <p>{fake}</p>
+            <div className='opacity-40'>
+                <p className='text-center text-3xl font-bold text-accent'>Predicting</p>
                 <LoadingCircle />
             </div>
         )

@@ -8,10 +8,9 @@ import AllNews from '../components/AllNews'
 
 const categories = () => {
   let [news, setNews] = useState([])
-  let [load, setLoad] = useState(false)
+  let [load, setLoad] = useState(true)
   let [button, setButton] = useState('All')
   useEffect(() => {
-    setLoad(true)
     setNews([])
     fetch(`/api/categories?category=${button.toLowerCase()}`)
       .then(res => res.json())
@@ -32,7 +31,7 @@ const categories = () => {
         <h1 className='text-4xl font-bold text-center text-info'>{button} News: {news.length}</h1>
       </div>
       <div className='max-w-7xl mx-auto -mt-10'>
-        <CategoryButtons setButton={setButton} button={button} />
+        <CategoryButtons setButton={setButton} button={button} setLoad={setLoad}/>
       </div>
       {/* <h1 className='text-xl font-bold p-5 bg-white mx-10 -mt-7 mb-5'><span className='border-b-2 border-[#C31815] pb-1'>All</span> News</h1> */}
 
