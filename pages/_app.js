@@ -9,21 +9,21 @@ import Loading from '../components/Loading'
 
 export default function App({ Component, pageProps }) {
   let [model, setModel] = useState(null)
-  let [load, setLoad] = useState(true)
+  let [load, setLoad] = useState(false)
   let [wordIndex, setWordIndex] = useState(null);
 
 
 
-  useEffect(() => {
-    (async () => {
-      const response = await fetch('word_index.json');
-      const data = await response.json()
-      setWordIndex(data);
-      const myModel = await tf.loadLayersModel('https://raw.githubusercontent.com/ReazTausif97/saiemmodel/main/Model8/model.json')
-      setModel(myModel);
-      setLoad(false)
-    })();
-  }, []);
+  // useEffect(() => {
+  //   (async () => {
+  //     const response = await fetch('word_index.json');
+  //     const data = await response.json()
+  //     setWordIndex(data);
+  //     const myModel = await tf.loadLayersModel('https://raw.githubusercontent.com/ReazTausif97/saiemmodel/main/Model8/model.json')
+  //     setModel(myModel);
+  //     setLoad(false)
+  //   })();
+  // }, []);
 
   if (load)
     return <div  data-theme='light'>
