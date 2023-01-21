@@ -1,5 +1,6 @@
 import clientPromise from "../../lib/mongodb";
 import * as tf from '@tensorflow/tfjs-node';
+import { ObjectId } from "mongodb"
 const puncRemove = (t) => {
     t = t.split('');
     let newt = t.filter(x => {
@@ -45,7 +46,8 @@ const handleTokenizeClick = async (details) => {
 
     let fake = (pred.dataSync()[0] * 100)
     let real = (pred.dataSync()[1] * 100)
-    return { fake, real }
+    let prediction = {fake, real}
+    return prediction
     // const result = pred.dataSync()[0] > pred.dataSync()[1] ? "FAKE" : "REAL"
     // const result2 = Math.max(...pred.dataSync())
     // console.log(index + " Prediction " + result + ", Percent " + parseFloat(result2 * 100).toFixed(2))
@@ -57,21 +59,23 @@ export default async function handler(req, res) {
     let newsCollection = await db.collection("news");
     switch (req.method) {
         case "GET":
-                let allNews = await newsCollection.find({}).toArray()
-                res.json({ status: 200, data: await allNews });
-            break;
-        case "POST":
-            
-                // let allNews = await db.collection("news").find({}).toArray();
+            let allNews = await newsCollection.deleteMany({})
+            // allNews = await allNews.map(async (news) => {
+            //     let { details } = news
                 
-                let myNews = req.body
-                let {details} = myNews
-                let prediction = await handleTokenizeClick(details)
-                myNews = {...myNews, prediction}
-                console.log(prediction);
-                let result = await newsCollection.insertOne(myNews)
-                res.json({ status: 200, result });
+            //     let prediction = await handleTokenizeClick(details)
+            //     console.log(prediction);
+            //     let updateDoc = {
+            //         prediction: prediction,
+            //         reporterEmail: "sayemazizchy@gmail.com"
+            //     }
+            //     let result = await newsCollection.updateOne({ _id: ObjectId(news._id) }, updateDoc, { upsert: true })
+            //     console.log(result)
+            // })
+        
+            res.json({ status: 200, data: allNews });
             break;
+
         default:
             res.json({ status: 401, message: "Forbidden Access" });
     }
