@@ -15,9 +15,19 @@ import YoutubeSection from '../components/YoutubeSection'
 
 
 
-export default function Home({news}) {
+export default function Home() {
   let [load, setLoad] = useState(false)
-  
+  let [news, setNews] = useState(null)
+  useEffect(() => {
+    setLoad(true)
+    setNews([])
+    fetch(`/api/all-news`)
+      .then(res => res.json())
+      .then(data => {
+        setNews(data.data)
+        setLoad(false)
+      })
+  }, [])
 
   return (
     <>
@@ -63,15 +73,15 @@ export default function Home({news}) {
   )
 }
 
-export async function getStaticProps () {
+// export async function getStaticProps () {
 
-  let res = await fetch('http://localhost:3000/api/all-news')
-  let data = await res.json()
+//   let res = await fetch('http://localhost:3000/api/all-news')
+//   let data = await res.json()
   
-  return{
-    props: {
-      news : data.data
-    },
-    revalidate: 1,
-  }
-}
+//   return{
+//     props: {
+//       news : data.data
+//     },
+//     revalidate: 1,
+//   }
+// }
