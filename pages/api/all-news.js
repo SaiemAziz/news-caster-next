@@ -61,9 +61,6 @@ export default async function handler(req, res) {
                 res.json({ status: 200, data: await allNews });
             break;
         case "POST":
-            
-                // let allNews = await db.collection("news").find({}).toArray();
-                
                 let myNews = req.body
                 let {details} = myNews
                 let prediction = await handleTokenizeClick(details)
