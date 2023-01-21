@@ -32,7 +32,7 @@ const handleTokenizeClick = async (details) => {
 
     details = puncRemove(details)
     let mytokenizedText = details.toLowerCase().split(' ');
-    let res = await fetch('https://raw.githubusercontent.com/SaiemAziz/news-caster-next/main/public/word_index.json')
+    let res = await fetch("https://raw.githubusercontent.com/SaiemAziz/news-caster-next/main/models/model/word_index.json")
     let wordIndex = await res.json()
     let mywordIndices = await mytokenizedText.map(word => wordIndex[word]);
 
@@ -40,9 +40,8 @@ const handleTokenizeClick = async (details) => {
     let slicedPaddedSequence = mypaddedSequences.slice(0, 500)
     let mypaddedSequence = tf.tensor1d(slicedPaddedSequence, 'int32')
     let reshapedPaddedSequence = mypaddedSequence.reshape([1, 500])
-    let model = await tf.loadLayersModel('https://raw.githubusercontent.com/ReazTausif97/saiemmodel/main/Model8/model.json')
+    let model = await tf.loadLayersModel("https://raw.githubusercontent.com/SaiemAziz/news-caster-next/main/models/model/model.json")
     let pred = model.predict(reshapedPaddedSequence);
-
     let fake = (pred.dataSync()[0] * 100)
     let real = (pred.dataSync()[1] * 100)
     return { fake, real }
@@ -57,6 +56,7 @@ export default async function handler(req, res) {
     let newsCollection = await db.collection("news");
     switch (req.method) {
         case "GET":
+                handleTokenizeClick('adada')
                 let allNews = await newsCollection.find({}).toArray()
                 res.json({ status: 200, data: await allNews });
             break;
