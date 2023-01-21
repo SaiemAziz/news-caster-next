@@ -18,9 +18,9 @@ export default function App({ Component, pageProps }) {
 
   useEffect(() => {
     (async () => {
-      let res = await fetch("https://raw.githubusercontent.com/SaiemAziz/news-caster-next/main/models/model/word_index.json")
+      let res = await fetch("models/model/word_index.json")
       let data = await res.json()
-      let myModel = await tf.loadLayersModel("https://raw.githubusercontent.com/SaiemAziz/news-caster-next/main/models/model/model.json")
+      let myModel = await tf.loadLayersModel("models/model/model.json")
       setWordIndex(data);
       setModel(myModel);
       setLoad(false)

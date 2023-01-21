@@ -84,6 +84,7 @@ const SingleNews = ({ n }) => {
 
 
     let handlerLike = () => {
+        console.log("clicked")
         if (liked)
             setLikeCount(num => num - 1)
         else
@@ -128,7 +129,7 @@ const SingleNews = ({ n }) => {
                 <div className="flex justify-evenly gap-5 py-5 ">
                     <div className="flex items-center gap-2">
                         <button className="btn btn-ghost hover:bg-transparent btn-xs p-0 md:hover:scale-125 duration-150">
-                            <AiTwotoneLike className={`text-2xl ${liked ? 'text-blue-500' : 'text-gray-400'}`} onClick={handlerLike} />
+                            <AiTwotoneLike className={`text-2xl ${liked ? 'text-blue-500' : 'text-gray-400'}`} onClick={handlerLike}/>
                         </button>
                         <p className={`text-xs font-semibold ${liked ? 'text-black' : 'text-gray-400'}`}>{likeCount}</p>
                     </div>
