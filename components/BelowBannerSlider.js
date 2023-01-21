@@ -3,7 +3,9 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay } from "swiper";
 import "swiper/css";
 const BelowBannerSlider = () => {
-    return (<div className='max-w-6xl mx-auto bg-[#E0CECE] text-[#632727]'>
+    return (
+    <div className='bg-[#E0CECE] text-[#632727]'>
+      <div className='max-w-6xl mx-auto '>
         <Swiper
           centeredSlides={true}
           autoplay={{
@@ -43,6 +45,7 @@ const BelowBannerSlider = () => {
         </Swiper>
         
       </div>
+    </div>
     );
 };
 

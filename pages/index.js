@@ -51,7 +51,8 @@ export default function Home() {
           <div className='lg:col-span-2'>
             <h1 className='text-xl font-bold p-5 bg-white mb-5'><span className='border-b-2 border-[#C31815] pb-1'>Late</span>st Stories</h1>
             
-                <div className='grid lg:grid-cols-2 gap-5'>
+                {
+                  load ? <Loading /> : <div className='grid lg:grid-cols-2 gap-5'>
                   {
                     news?.map(n => <SingleNews
                       key={n?._id}
@@ -59,6 +60,7 @@ export default function Home() {
                     ></SingleNews>)
                   }
                 </div>
+                }
 
             <div className='w-fit mx-auto'>
               <Link href='/categories' className='btn btn-error btn-outline btn-lg my-10'>View More</Link>

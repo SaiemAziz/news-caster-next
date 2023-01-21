@@ -34,6 +34,7 @@ const SingleNews = ({ n }) => {
 
     useEffect(()=>{
         setLoading(true)
+        console.log(model);
         if(model)  
             handleTokenizeClick()
     },[model])
@@ -93,6 +94,8 @@ const SingleNews = ({ n }) => {
             setLikeCount(num => num + 1)
         setLiked(!liked)
     }
+
+
     // JSX Syntax
     if (loading)
         return (
