@@ -4,7 +4,7 @@ import Lottie from 'lottie-react'
 
 const Loading = () => {
     return (
-        <div className='w-full p-20'>
+        <div className='w-full lg:p-20'>
             {/* <Lottie animationData={loader} /> */}
             <Lottie animationData={animate} />
         </div>

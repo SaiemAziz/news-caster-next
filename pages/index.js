@@ -4,7 +4,7 @@ import { Inter } from '@next/font/google'
 import styles from '../styles/Home.module.css'
 import SingleNews from '../components/SingleNews'
 import Banner from '../components/Banner'
-import { useEffect, useState } from 'react'
+import { useEffect, useLayoutEffect, useState } from 'react'
 import Footer from '../components/Footer'
 import BannerTravel from '../components/BannerTravel'
 import Test from '../components/Test'
@@ -20,7 +20,7 @@ export default  function Home() {
   
   let [load, setLoad] = useState(false)
   let [news, setNews] = useState(null)
-  useEffect(() => {
+  useLayoutEffect(() => {
     setLoad(true)
     setNews([])
     fetch(`/api/all-news`)
