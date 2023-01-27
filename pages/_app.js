@@ -6,7 +6,8 @@ export const ModelContext = createContext('')
 import * as tf from '@tensorflow/tfjs';
 import Loading from '../components/Loading'
 import { loadModelBrowser } from '../components/functions/handleTokenizeClick'
-
+import { SessionProvider } from 'next-auth/react'
+import Auth from '../components/Auth'
 
 export default function App({ Component, pageProps }) {
   loadModelBrowser()
@@ -15,12 +16,11 @@ export default function App({ Component, pageProps }) {
   let [wordIndex, setWordIndex] = useState(null);
 
 
-
   useLayoutEffect(() => {
     (async () => {
-      let res = await fetch("models/model/word_index.json")
+      let res = await fetch("/models/model/word_index.json")
       let data = await res.json()
-      let myModel = await tf.loadLayersModel("models/model/model.json")
+      let myModel = await tf.loadLayersModel("/models/model/model.json")
       setWordIndex(data);
       setModel(myModel);
       setLoad(false)
@@ -37,15 +37,17 @@ export default function App({ Component, pageProps }) {
       </div>
     </div>
 
-  return <ModelContext.Provider value={{ model, wordIndex }}>
-    <div className='min-h-screen flex flex-col justify-between bg-[#E5E5E5]' data-theme='light'>
-      {/* <progress className="progress progress-primary w-full m-0 p-0 bg-white"></progress> */}
+  return <Auth>
+    <ModelContext.Provider value={{ model, wordIndex }}>
+      <div className='min-h-screen flex flex-col justify-between bg-[#E5E5E5]' data-theme='light'>
+        {/* <progress className="progress progress-primary w-full m-0 p-0 bg-white"></progress> */}
 
-      <Header />
-      <Component {...pageProps} />
-      <Footer />
+        <Header />
+        <Component {...pageProps} />
+        <Footer />
 
-    </div>
-  </ModelContext.Provider>
+      </div>
+    </ModelContext.Provider>
+  </Auth>
 }
 

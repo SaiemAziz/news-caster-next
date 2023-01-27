@@ -4,13 +4,27 @@ import React, { useState } from 'react';
 import * as loginImage from '../../assets/images/GLOBE-ANIME.json'
 import * as loadingImage from '../../assets/images/liquid-4-dot-loader.json'
 
-const register = () => {
-    
+const register = ({ userNames }) => {
+
     let imgbbUrl = process.env.NEXT_PUBLIC_IMGBB_URL
     let cloudinaryUrl = process.env.CLOUDINARY_URL
     let [show, setShow] = useState(false)
     let [load, setLoad] = useState(false)
     let [err, setErr] = useState('')
+    let [available, setAvailable] = useState(null)
+
+    let handleCheckUserName = (e) => {
+        let userName = e.target.value
+
+        if (e.target.value === '')
+            return setAvailable(null)
+
+        if (userNames.indexOf(userName.toLowerCase()) >= 0)
+            return setAvailable('false')
+        else
+            return setAvailable('true')
+    }
+
 
     let handlerForm = async e => {
         e.preventDefault();
@@ -54,15 +68,24 @@ const register = () => {
 
                 <form onSubmit={handlerForm} className='flex flex-col gap-3 w-full max-w-xs'>
                     <div className="relative w-full max-w-xs font-semibold">
-                        <input required type="text" id="floating_name" className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border-l-4 border-[#097ef6] outline-0 focus:ring-0 focus:border-[#097ef6] peer" placeholder=" " name='displayName' />
-                        <label htmlFor="floating_name" className="absolute  text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-[#097ef6]  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Full Name</label>
+                        <input required type="text" id="floating_full_name" className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border-l-4 border-[#097ef6] outline-0 focus:ring-0 focus:border-[#097ef6] peer" placeholder=" " name='displayName' />
+                        <label htmlFor="floating_full_name" className="absolute  text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-[#097ef6]  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Full Name</label>
                     </div>
+                    <div className="relative w-full max-w-xs font-semibold">
+                        <input required type="text" id="floating_user_name" className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border-l-4 border-[#097ef6] outline-0 focus:ring-0 focus:border-[#097ef6] peer" placeholder=" " name='displayName'
+                            onChange={handleCheckUserName}
+                            onBlur={() => available === 'true' && setAvailable(null)}
+                        />
+                        <label htmlFor="floating_user_name" className="absolute  text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-[#097ef6]  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">User Name</label>
+                    </div>
+                    {available === 'false' && <p className='text-center font-bold text-sm text-error'>User name not available</p>}
+                    {available === 'true' && <p className='text-center font-bold text-sm text-info'>User name available</p>}
                     <div className="relative w-full max-w-xs font-semibold">
                         <input required type="text" id="floating_email" className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border-l-4 border-[#097ef6] outline-0 focus:ring-0 focus:border-[#097ef6] peer" placeholder=" " name='email' />
                         <label htmlFor="floating_email" className="absolute  text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-[#097ef6]  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Email</label>
                     </div>
                     <div className="relative w-full max-w-xs font-semibold">
-                        <input required type="file" id='floating_image' name='image' accept="image/png, image/gif, image/jpeg"  className="text-sm text-grey-900
+                        <input required type="file" id='floating_image' name='image' accept="image/png, image/gif, image/jpeg" className="text-sm text-grey-900
             file:mr-5 file:py-2 file:px-5
             file:rounded-full file:border-0
             file:text-md file:font-semibold  file:text-white
@@ -88,11 +111,11 @@ const register = () => {
                         err && <p className='text-center font-bold text-sm text-error'>{err}</p>
                     }
                     {
-                        load ? 
-                        <div className='mx-auto max-w-[100px] mt-2'>
-                            <Lottie animationData={loadingImage} />
-                        </div>
-                        : <input type='submit' className='btn border-0 btn-info text-center text-white rounded-full w-full py-2 mt-10 bg-[#097ef6]' value='Register' />
+                        load ?
+                            <div className='mx-auto max-w-[100px] mt-2'>
+                                <Lottie animationData={loadingImage} />
+                            </div>
+                            : <input type='submit' className='btn border-0 btn-info text-center text-white rounded-full w-full py-2 mt-10 bg-[#097ef6]' value='Register' />
                     }
                     <Link href='/user/login' className='btn border-0 btn-link text-info text-center w-full mt-0'>Already a Member?</Link>
                 </form>
@@ -102,3 +125,16 @@ const register = () => {
 };
 
 export default register;
+
+export async function getStaticProps() {
+    let res = await fetch('http://localhost:3000/api/all-users')
+    let data = await res.json()
+    let allUsers = data.data;
+    let userNames = allUsers.map(user => user.userName.toLowerCase())
+
+    return {
+        props: {
+            userNames
+        }
+    }
+}

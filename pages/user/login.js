@@ -1,9 +1,16 @@
 import Lottie from 'lottie-react';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import * as loginImage from '../../assets/images/GLOBE-ANIME.json'
+import { FcGoogle } from 'react-icons/fc'
+import { AuthContext } from '../../components/Auth';
+import { useRouter } from 'next/router';
 
 const login = () => {
+    let router = useRouter()
+    let userInfo = useContext(AuthContext)
+    console.log(userInfo);
+    let { user, setUser, setLoadUser, loginUserGoogle } = userInfo
     let [show, setShow] = useState(false)
     let [err, setErr] = useState('')
 
@@ -12,8 +19,17 @@ const login = () => {
         let password = e.target.password.value
 
     }
-
-
+    let handlerGoogle = () => {
+        loginUserGoogle()
+            .then(res => {
+                let currentUser = res.user
+                setUser(currentUser)
+                setLoadUser(false)
+                router.push('/categories')
+            }).catch(err => {
+                console.log(err.code.replace('auth/', '').replaceAll('-', ' ').toUpperCase());
+            })
+    }
 
     return (
         <div className='md:max-w-7xl w-full mx-auto grid gap-10 md:grid-cols-2 '>
@@ -26,16 +42,16 @@ const login = () => {
 
                 <form onSubmit={handlerForm} className='flex flex-col gap-3 w-full max-w-xs'>
                     <div class="relative w-full max-w-xs font-semibold">
-                        <input type="text" id="floating_email" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border-l-4 border-[#097ef6] outline-0 focus:ring-0 focus:border-[#097ef6] peer" placeholder=" " name='email'/>
+                        <input type="text" id="floating_email" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border-l-4 border-[#097ef6] outline-0 focus:ring-0 focus:border-[#097ef6] peer" placeholder=" " name='email' />
                         <label for="floating_email" class="absolute  text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] px-2 peer-focus:px-2 peer-focus:text-[#097ef6]  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Email</label>
                     </div>
                     <div class="relative w-full max-w-xs font-semibold">
-                        <input type={show ? 'text' : 'password'} id="floating_password" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border-l-4 border-[#097ef6] outline-0 focus:ring-0 focus:border-[#097ef6] peer" placeholder=" " name='password'/>
+                        <input type={show ? 'text' : 'password'} id="floating_password" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border-l-4 border-[#097ef6] outline-0 focus:ring-0 focus:border-[#097ef6] peer" placeholder=" " name='password' />
                         <label for="floating_password" class="absolute  text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] px-2 peer-focus:px-2 peer-focus:text-[#097ef6]  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Password</label>
                     </div>
                     <div className='flex gap-3 ml-auto'>
                         <p className='text-[#097ef6] font-semibold text-xs'>Show Password</p>
-                        <input type="checkbox" onChange={()=>setShow(!show)} className="checkbox checkbox-xs checkbox-info" /> 
+                        <input type="checkbox" onChange={() => setShow(!show)} className="checkbox checkbox-xs checkbox-info" />
                     </div>
                     {
                         err && <p className='text-center font-bold text-sm text-error'>{err}</p>
@@ -43,9 +59,11 @@ const login = () => {
                     <button className='btn border-0 btn-info text-center text-white rounded-full w-full py-2 mt-10 bg-[#097ef6]'>Login</button>
                     <Link href='/user/register' className='btn border-0 btn-link text-info text-center w-full mt-0'>New Member?</Link>
                 </form>
+                <button className='btn text-center btn-outline items-center rounded-full mx-auto py-2 flex gap-5' onClick={handlerGoogle}><FcGoogle size={30} /> Google</button>
             </div>
         </div>
     );
 };
 
 export default login;
+

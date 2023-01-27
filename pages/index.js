@@ -17,7 +17,6 @@ import handleTokenizeClick from '../components/functions/handleTokenizeClick'
 
 
 export default  function Home() {
-  
   let [load, setLoad] = useState(false)
   let [news, setNews] = useState(null)
   useLayoutEffect(() => {
