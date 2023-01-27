@@ -1,6 +1,6 @@
-import { useContext, useEffect, useState } from 'react';
+import { useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { AiTwotoneLike } from 'react-icons/ai'
-import { BiComment } from 'react-icons/bi'
+import { BiComment, BiDislike } from 'react-icons/bi'
 import LoadingCircle from './LoadingCircle'
 import Link from "next/link";
 import * as tf from '@tensorflow/tfjs';
@@ -9,11 +9,15 @@ import handleTokenizeClick from './functions/handleTokenizeClick';
 
 const SingleNews = ({ n }) => {
     let { model, wordIndex } = useContext(ModelContext)
+    let userEmail = "sahimsalem@gmail.com"
     // let {real} = n?.prediction
     // let {fake} = n?.prediction
-    let [liked, setLiked] = useState(false)
+    let [react, setReact] = useState("none")
+    let [changeReact, setChangeReact] = useState(false)
+
     let [loading, setLoading] = useState(true)
-    let [likeCount, setLikeCount] = useState(20)
+    let [likeCount, setLikeCount] = useState(0)
+    let [disLikeCount, setDisLikeCount] = useState(0)
     // // let [wordIndex, setWordIndex] = useState({});
     let [slide, setSlide] = useState(false)
     let [real, setReal] = useState(null)
@@ -22,16 +26,116 @@ const SingleNews = ({ n }) => {
     // let { details } = n
 
     // // Load the word index
-    useEffect(() => {
+    useLayoutEffect(() => {
         (async () => {
-            let prediction = await handleTokenizeClick(n?.details, model, wordIndex) 
+            let prediction = await handleTokenizeClick(n?.details, model, wordIndex)
             setReal(prediction.real)
             setFake(prediction.fake)
             setLoading(false)
         })();
     }, []);
 
-    // useEffect(() => {
+    useLayoutEffect(() => {
+        fetch(`/api/reaction-check?newsid=${n._id}&email=${userEmail}`)
+            .then(res => res.json())
+            .then(data => {
+                if (data.data === 'liked') {
+                    setReact('liked')
+                }
+                else if (data.data === 'disliked') {
+                    setReact('disliked')
+                }
+                console.log(data.likeCount, " ", data.disLikeCount);
+                setLikeCount(data.likeCount)
+                setDisLikeCount(data.disLikeCount)
+            })
+    }, [changeReact])
+
+
+
+    let handlerReact = (currentReact) => {
+        if (react === currentReact) {
+            setReact("none")
+            fetch(`/api/reaction-check?newsid=${n._id}&email=${userEmail}`, {
+                method: "DELETE"
+            })
+                .then(res => res.json())
+                .then(data => setChangeReact(!changeReact))
+        }
+        else {
+            setReact(currentReact)
+            fetch(`/api/reaction-check?newsid=${n._id}&email=${userEmail}&react=${currentReact}`, {
+                method: "PUT"
+            })
+                .then(res => res.json())
+                .then(data => setChangeReact(!changeReact))
+        }
+    }
+
+
+    // JSX Syntax
+    if (loading)
+        return (
+            <div className='opacity-40'>
+                <p className='text-center text-3xl font-bold text-accent'>Predicting</p>
+                <LoadingCircle />
+            </div>
+        )
+
+    return (
+        <div className="bg-white flex flex-col justify-between shadow-lg"
+            onMouseEnter={() => setSlide(true)} onMouseLeave={() => setSlide(false)}
+        >
+            <div>
+                <div className='relative overflow-hidden'>
+                    <img className="w-full" src={n?.image} alt="" />
+                    <div className={`absolute top-0 z-30 w-full h-full flex flex-col justify-center items-center bg-black bg-opacity-50 duration-500 ease-out ${slide ? '' : "translate-y-full"}`}>
+                        {
+                            <div className='backdrop-blur-sm'>
+                                <p className='text-3xl p-5 rounded-full font-bold text-success'>Real: {real?.toFixed(2)}%</p>
+                                <p className='text-3xl p-5 rounded-full font-bold text-error'>Fake: {fake?.toFixed(2)}%</p>
+                            </div>
+                        }
+                    </div>
+                </div>
+                <h1 className="font-bold text-xl px-5 my-3">{n?.title}</h1>
+                <h1 className="px-5 text-justify">{n?.details.slice(0, 100)}... <Link href={`/details/${n?._id}`} className='text-blue-500 cursor-pointer font-bold text-sm'>See More</Link></h1>
+            </div>
+            <div className='mt-10'>
+                <div className="px-5 pb-5 flex justify-between border-b-2">
+                    <p className="">2 hours ago</p>
+                    <p className="text-gray-400">By Lucy Hiddleston</p>
+                </div>
+                <div className="flex justify-between gap-5 p-5 ">
+                    <div className='flex gap-5'>
+                        <div className="flex items-center gap-2">
+                            <button className="btn btn-ghost hover:bg-transparent btn-xs p-0 md:hover:scale-125 duration-150">
+                                <AiTwotoneLike className={`text-2xl ${react === 'liked' ? 'text-blue-500' : 'text-gray-400'}`} onClick={() => handlerReact('liked')} />
+                            </button>
+                            <p className={`text-xs font-semibold ${react === 'liked' ? 'text-black' : 'text-gray-400'}`}>{likeCount}</p>
+                        </div>
+                        <div className="flex items-center gap-2">
+                            <button className="btn btn-ghost hover:bg-transparent btn-xs p-0 md:hover:scale-125 duration-150">
+                                <BiDislike className={`text-2xl ${react === 'disliked' ? 'text-red-500' : 'text-gray-400'}`} onClick={() => handlerReact('disliked')} />
+                            </button>
+                            <p className={`text-xs font-semibold ${react === 'disliked' ? 'text-black' : 'text-gray-400'}`}>{disLikeCount}</p>
+                        </div>
+                    </div>
+                    <Link href={`/details/${n?._id}`} className="flex items-center gap-2">
+                        <BiComment className='text-2xl text-black hover:text-info' />
+                        {/* <p className={`text-xs font-semibold`}>comments</p> */}
+                    </Link>
+                </div>
+            </div>
+        </div>
+    );
+};
+
+export default SingleNews;
+
+
+
+// useEffect(() => {
     //     setLoading(true)
     //     if (model)
     //         handleTokenizeClick()
@@ -81,66 +185,3 @@ const SingleNews = ({ n }) => {
     //     // const result2 = Math.max(...pred.dataSync())
     //     // console.log(index + " Prediction " + result + ", Percent " + parseFloat(result2 * 100).toFixed(2))
     // }
-
-
-    let handlerLike = () => {
-        console.log("clicked")
-        if (liked)
-            setLikeCount(num => num - 1)
-        else
-            setLikeCount(num => num + 1)
-        setLiked(!liked)
-    }
-
-
-    // JSX Syntax
-    if (loading)
-        return (
-            <div className='opacity-40'>
-                <p className='text-center text-3xl font-bold text-accent'>Predicting</p>
-                <LoadingCircle />
-            </div>
-        )
-
-    return (
-        <div className="bg-white flex flex-col justify-between shadow-lg"
-            onMouseEnter={() => setSlide(true)} onMouseLeave={() => setSlide(false)}
-        >
-            <div>
-                <div className='relative overflow-hidden'>
-                    <img className="w-full" src={n?.image} alt="" />
-                    <div className={`absolute top-0 z-30 w-full h-full flex flex-col justify-center items-center bg-black bg-opacity-50 duration-500 ease-out ${slide ? '' : "translate-y-full"}`}>
-                        {
-                            <div className='backdrop-blur-sm'>
-                                <p className='text-3xl p-5 rounded-full font-bold text-success'>Real: {real?.toFixed(2)}%</p>
-                                <p className='text-3xl p-5 rounded-full font-bold text-error'>Fake: {fake?.toFixed(2)}%</p>
-                            </div>
-                        }
-                    </div>
-                </div>
-                <h1 className="font-bold text-xl px-5 my-3">{n?.title}</h1>
-                <h1 className="px-5 text-justify">{n?.details.slice(0, 100)}... <Link href={`/details/${n?._id}`} className='text-blue-500 cursor-pointer font-bold text-sm'>See More</Link></h1>
-            </div>
-            <div className='mt-10'>
-                <div className="px-5 pb-5 flex justify-between border-b-2">
-                    <p className="">2 hours ago</p>
-                    <p className="text-gray-400">By Lucy Hiddleston</p>
-                </div>
-                <div className="flex justify-evenly gap-5 py-5 ">
-                    <div className="flex items-center gap-2">
-                        <button className="btn btn-ghost hover:bg-transparent btn-xs p-0 md:hover:scale-125 duration-150">
-                            <AiTwotoneLike className={`text-2xl ${liked ? 'text-blue-500' : 'text-gray-400'}`} onClick={handlerLike}/>
-                        </button>
-                        <p className={`text-xs font-semibold ${liked ? 'text-black' : 'text-gray-400'}`}>{likeCount}</p>
-                    </div>
-                    <Link href={`/details/${n?._id}`} className="flex items-center gap-2">
-                        <BiComment className='text-2xl text-black hover:text-info' />
-                        {/* <p className={`text-xs font-semibold`}>comments</p> */}
-                    </Link>
-                </div>
-            </div>
-        </div>
-    );
-};
-
-export default SingleNews;

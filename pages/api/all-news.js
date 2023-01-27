@@ -7,13 +7,13 @@ export default async function handler(req, res) {
     let newsCollection = await db.collection("news");
     switch (req.method) {
         case "GET":
-                let allNews = await newsCollection.find({}).toArray()
-                res.json({ status: 200, data: await allNews });
+            let allNews = await newsCollection.find({}).toArray()
+            res.json({ status: 200, data: await allNews });
             break;
         case "POST":
-                let myNews = req.body
-                let result = await newsCollection.insertOne(myNews)
-                res.json({ status: 200, result });
+            let myNews = req.body
+            let result = await newsCollection.insertOne(myNews)
+            res.json({ status: 200, result });
             break;
         default:
             res.json({ status: 401, message: "Forbidden Access" });
