@@ -54,8 +54,8 @@ const SingleNews = ({ n }) => {
 
 
     let handlerReact = (currentReact) => {
+        setChangeReact(true)
         if (react === currentReact) {
-            setReact("none")
             fetch(`/api/reaction-check?newsid=${n._id}&email=${userEmail}`, {
                 method: "DELETE"
             })
@@ -65,6 +65,8 @@ const SingleNews = ({ n }) => {
                         setLikeCount(x => x - 1)
                     if (currentReact === 'disliked')
                         setDisLikeCount(x => x - 1)
+                    setChangeReact(false)
+                    setReact("none")
                 })
         }
         else {
@@ -89,6 +91,7 @@ const SingleNews = ({ n }) => {
                         }
                     }
                     setReact(currentReact)
+                    setChangeReact(false)
                 })
         }
     }
@@ -127,7 +130,10 @@ const SingleNews = ({ n }) => {
                     <p className="">2 hours ago</p>
                     <p className="text-gray-400">By Lucy Hiddleston</p>
                 </div>
-                <div className="flex justify-between gap-5 p-5 ">
+                <div className="flex justify-between gap-5 p-5 relative">
+                    {changeReact &&
+                        <progress className="progress progress-primary w-full -ml-5 p-0 bg-white absolute top-0"></progress>
+                    }
                     <div className='flex gap-5'>
                         <div className="flex items-center gap-2">
                             <button className="btn btn-ghost hover:bg-transparent btn-xs p-0 md:hover:scale-125 duration-150">
