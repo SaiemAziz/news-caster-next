@@ -12,7 +12,7 @@ import { RiArrowDropDownLine } from 'react-icons/ri'
 
 
 const register = () => {
-    let { registerUser, loadUser, setLoadUser, setUser } = useContext(AuthContext)
+    let { registerUser, loadUser, setLoadUser, setUser, user } = useContext(AuthContext)
     let router = useRouter()
     let imgbbUrl = process.env.NEXT_PUBLIC_IMGBB_URL
     let [show, setShow] = useState(false)
@@ -21,6 +21,12 @@ const register = () => {
     let [userNames, setUserNames] = useState()
     let [available, setAvailable] = useState(null)
     let [birthDate, setBirthDate] = useState(null);
+    useLayoutEffect(() => {
+        if (user?.uid) {
+            toast.error('You already have logged in')
+            router.push('/')
+        }
+    }, [])
     useLayoutEffect(() => {
         (async function () {
             let res = await fetch('/api/all-users')
@@ -77,7 +83,8 @@ const register = () => {
             .then(res => {
                 setUser(res.user)
                 setLoadUser(false)
-                toast.success('Registration successful')
+                setLoad(false)
+                toast?.success('Registration successful')
                 e.target.reset()
                 setBirthDate(null)
                 addUserToMongoDb({
@@ -93,9 +100,9 @@ const register = () => {
                 router.push('/categories')
             })
             .catch(err => {
-                console.log(err.code)
                 setLoadUser(false)
-                toast.error(err.code.replace('auth/', '').replaceAll('-', ' ').toUpperCase())
+                setLoad(false)
+                toast?.error(err.code.replace('auth/', '').replaceAll('-', ' ').toUpperCase())
             })
 
     }

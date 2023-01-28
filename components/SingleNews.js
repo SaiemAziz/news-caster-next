@@ -138,7 +138,7 @@ const SingleNews = ({ n }) => {
                     {changeReact &&
                         <progress className="progress progress-primary w-full -ml-5 p-0 bg-white absolute top-0"></progress>
                     }
-                    <div className='flex gap-5 tooltip tooltip-top tooltip-accent tooltip-right' data-tip="!!! Please Login to react">
+                    <div className={`flex gap-5 ${user?.uid ? '' : 'tooltip'} tooltip-top tooltip-accent tooltip-right`} data-tip="!!! Please Login to react">
                         <div className="flex items-center gap-2">
                             <button className="btn btn-ghost hover:bg-transparent btn-xs p-0 md:hover:scale-125 duration-150 disabled:bg-transparent"
                                 disabled={user?.uid ? false : true}

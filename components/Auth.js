@@ -51,7 +51,7 @@ const Auth = ({ children }) => {
     // log out user
     let logOutUser = () => {
         setLoadUser(true)
-        return signOut()
+        return signOut(auth)
     }
 
     let userInfo = {

@@ -1,31 +1,54 @@
 import Lottie from 'lottie-react';
 import Link from 'next/link';
-import React, { useContext, useState } from 'react';
+import React, { useContext, useLayoutEffect, useState } from 'react';
 import * as loginImage from '../../assets/images/GLOBE-ANIME.json'
 import { FcGoogle } from 'react-icons/fc'
 import { AuthContext } from '../../components/Auth';
 import { useRouter } from 'next/router';
+import { toast } from 'react-toastify';
+import * as loadingImage from '../../assets/images/liquid-4-dot-loader.json'
 
 const login = () => {
     let router = useRouter()
     let userInfo = useContext(AuthContext)
-
-    let { user, setUser, setLoadUser, loginUserGoogle } = userInfo
+    let [load, setLoad] = useState(false)
+    let { user, setUser, setLoadUser, loginUserGoogle, loginUser } = userInfo
     let [show, setShow] = useState(false)
     let [err, setErr] = useState('')
 
+    useLayoutEffect(() => {
+        if (user?.uid) {
+            toast.error('You already have logged in')
+            router.push('/')
+        }
+    }, [])
+
     let handlerForm = e => {
         e.preventDefault();
+        setLoad(true)
         let password = e.target.password.value
-
+        let email = e.target.email.value
+        loginUser(email, password)
+            .then(res => {
+                setUser(res.user)
+                setLoadUser(false)
+                toast?.success('Login successful')
+                e.target.reset()
+                router.push('/categories')
+                setLoad(false)
+            })
+            .catch(err => {
+                setLoadUser(false)
+                toast?.error(err.code.replace('auth/', '').replaceAll('-', ' ').toUpperCase())
+            })
     }
     let handlerGoogle = () => {
         loginUserGoogle()
             .then(res => {
                 let currentUser = res.user
+                router.push('/categories')
                 setUser(currentUser)
                 setLoadUser(false)
-                router.push('/categories')
             }).catch(err => {
                 console.log(err.code.replace('auth/', '').replaceAll('-', ' ').toUpperCase());
             })
@@ -41,13 +64,13 @@ const login = () => {
                 <h1 className='text-2xl font-bold text-[#097ef6] mb-10'>Login Account</h1>
 
                 <form onSubmit={handlerForm} className='flex flex-col gap-3 w-full max-w-xs'>
-                    <div class="relative w-full max-w-xs font-semibold">
-                        <input type="text" id="floating_email" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border-l-4 border-[#097ef6] outline-0 focus:ring-0 focus:border-[#097ef6] peer" placeholder=" " name='email' />
-                        <label for="floating_email" class="absolute  text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] px-2 peer-focus:px-2 peer-focus:text-[#097ef6]  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Email</label>
+                    <div className="relative w-full max-w-xs font-semibold">
+                        <input type="text" id="floating_email" className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border-l-4 border-[#097ef6] outline-0 focus:ring-0 focus:border-[#097ef6] peer" placeholder=" " name='email' />
+                        <label htmlFor="floating_email" className="absolute  text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] px-2 peer-focus:px-2 peer-focus:text-[#097ef6]  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Email</label>
                     </div>
-                    <div class="relative w-full max-w-xs font-semibold">
-                        <input type={show ? 'text' : 'password'} id="floating_password" class="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border-l-4 border-[#097ef6] outline-0 focus:ring-0 focus:border-[#097ef6] peer" placeholder=" " name='password' />
-                        <label for="floating_password" class="absolute  text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] px-2 peer-focus:px-2 peer-focus:text-[#097ef6]  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Password</label>
+                    <div className="relative w-full max-w-xs font-semibold">
+                        <input type={show ? 'text' : 'password'} id="floating_password" className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border-l-4 border-[#097ef6] outline-0 focus:ring-0 focus:border-[#097ef6] peer" placeholder=" " name='password' />
+                        <label htmlFor="floating_password" className="absolute  text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] px-2 peer-focus:px-2 peer-focus:text-[#097ef6]  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Password</label>
                     </div>
                     <div className='flex gap-3 ml-auto'>
                         <p className='text-[#097ef6] font-semibold text-xs'>Show Password</p>
@@ -56,10 +79,16 @@ const login = () => {
                     {
                         err && <p className='text-center font-bold text-sm text-error'>{err}</p>
                     }
-                    <button className='btn border-0 btn-info text-center text-white rounded-full w-full py-2 mt-10 bg-[#097ef6]'>Login</button>
+                    {
+                        load ?
+                            <div className='mx-auto max-w-[100px] mt-2'>
+                                <Lottie animationData={loadingImage} />
+                            </div>
+                            : <input type='submit' className='btn border-0 btn-info text-center text-white rounded-full w-full py-2 mt-10 bg-[#097ef6]' value='Login' />
+                    }
                     <Link href='/user/register' className='btn border-0 btn-link text-info text-center w-full mt-0'>New Member?</Link>
                 </form>
-                <button className='btn text-center btn-outline items-center rounded-full mx-auto py-2 flex gap-5' onClick={handlerGoogle}><FcGoogle size={30} /> Google</button>
+                {/* <button className='btn text-center btn-outline items-center rounded-full mx-auto py-2 flex gap-5' onClick={handlerGoogle}><FcGoogle size={30} /> Google</button> */}
             </div>
         </div>
     );
