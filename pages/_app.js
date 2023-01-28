@@ -50,24 +50,24 @@ export default function App({ Component, pageProps }) {
           <Header />
           <Component {...pageProps} />
           <Footer />
+          {/* toast show  */}
+          <ToastContainer
+            position="bottom-right"
+            autoClose={5000}
+            hideProgressBar={false}
+            newestOnTop={false}
+            closeOnClick
+            rtl={false}
+            pauseOnFocusLoss
+            draggable
+            pauseOnHover
+            theme="light"
+          />
 
         </div>
       </ModelContext.Provider>
     </Auth>
 
-    {/* toast show  */}
-    <ToastContainer
-      position="bottom-right"
-      autoClose={5000}
-      hideProgressBar={false}
-      newestOnTop={false}
-      closeOnClick
-      rtl={false}
-      pauseOnFocusLoss
-      draggable
-      pauseOnHover
-      theme="light"
-    />
   </>
 }
 
