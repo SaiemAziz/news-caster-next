@@ -1,25 +1,41 @@
 import Lottie from 'lottie-react';
 import Link from 'next/link';
-import React, { useState } from 'react';
+import { useRouter } from 'next/router';
+import React, { useContext, useLayoutEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import * as loginImage from '../../assets/images/GLOBE-ANIME.json'
 import * as loadingImage from '../../assets/images/liquid-4-dot-loader.json'
+import { AuthContext } from '../../components/Auth';
 
-const register = ({ userNames }) => {
-
+const register = () => {
+    let { registerUser, loadUser, setLoadUser, setUser } = useContext(AuthContext)
+    let router = useRouter()
     let imgbbUrl = process.env.NEXT_PUBLIC_IMGBB_URL
-    let cloudinaryUrl = process.env.CLOUDINARY_URL
     let [show, setShow] = useState(false)
     let [load, setLoad] = useState(false)
     let [err, setErr] = useState('')
+    let [userNames, setUserNames] = useState()
     let [available, setAvailable] = useState(null)
+
+    useLayoutEffect(() => {
+        (async function () {
+            let res = await fetch('/api/all-users')
+            let data = await res.json()
+            let allUsers = data.data;
+            let fetchedUserNames = allUsers.map(user => user.userName.toLowerCase())
+            setUserNames(fetchedUserNames)
+        })()
+    }, [])
 
     let handleCheckUserName = (e) => {
         let userName = e.target.value
-
+        setErr('')
         if (e.target.value === '')
             return setAvailable(null)
-
-        if (userNames.indexOf(userName.toLowerCase()) >= 0)
+        else if (e.target.value.includes(' ')) {
+            e.target.value = e.target.value.replace(' ', '')
+            setErr('Username cannot have spaces')
+        } else if (userNames.indexOf(userName.toLowerCase()) >= 0)
             return setAvailable('false')
         else
             return setAvailable('true')
@@ -33,46 +49,75 @@ const register = ({ userNames }) => {
         let password = e.target.password.value
         let confirm = e.target.confirm.value
         let displayName = e.target.displayName.value
+        let userName = e.target.userName.value
         let email = e.target.email.value
         let image = e.target.image.files[0]
         if (password !== confirm) {
             setErr('Password and Confirm does not match')
             return setLoad(false)
         }
-        // let formData = new FormData()
-        // formData.append('image', image)
 
-        // const config = {
-        //     method: 'POST',
-        //     body: formData
-        // }
+        let formData = new FormData()
+        formData.append('image', image)
 
-        // let res = await fetch(imgbbUrl, config)
-        // let data = await res.json()
+        const config = {
+            method: 'POST',
+            body: formData
+        }
 
-        // console.log(data.data.display_url);
-        // setLoad(false)
-        // e.target.reset()
+        let res = await fetch(imgbbUrl, config)
+        let data = await res.json()
+        let displayURL = data.data.display_url
+
+        registerUser(email, password)
+            .then(res => {
+                setUser(res.user)
+                setLoadUser(false)
+                toast.success('Registration successful')
+                e.target.reset()
+                addUserToMongoDb({
+                    userName,
+                    fullName: displayName,
+                    email,
+                    role: "reporter",
+                    password,
+                    birthdate: '01-01-1995',
+                    verified: false,
+                    displayURL
+                })
+                router.push('/categories')
+            })
+            .catch(err => {
+                console.log(err.code)
+                setLoadUser(false)
+                toast.error(err.code.replace('auth/', '').replaceAll('-', ' ').toUpperCase())
+            })
+
     }
 
-
+    let addUserToMongoDb = async (userInfo) => {
+        let res = await fetch('/api/all-users', {
+            method: "PUT",
+            headers: {
+                "content-type": "application/json"
+            },
+            body: JSON.stringify(userInfo)
+        })
+        let data = await res.json()
+    }
 
     return (
         <div className='md:max-w-7xl w-full mx-auto grid gap-10 md:grid-cols-2 '>
             <div className='flex flex-col items-center justify-center gap-5 pt-10'>
                 <Lottie animationData={loginImage} />
-                <h1 className='text-5xl italic -mt-10 text-blue-500'>Welcome to NewsCaster</h1>
+                <h1 className='lg:text-5xl text-3xl text-center italic -mt-10 text-blue-500'>Welcome to NewsCaster</h1>
             </div>
             <div className='bg-white p-10 flex flex-col justify-center items-center gap-5'>
                 <h1 className='text-2xl font-bold text-[#097ef6] mb-10'>Register Account</h1>
 
                 <form onSubmit={handlerForm} className='flex flex-col gap-3 w-full max-w-xs'>
                     <div className="relative w-full max-w-xs font-semibold">
-                        <input required type="text" id="floating_full_name" className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border-l-4 border-[#097ef6] outline-0 focus:ring-0 focus:border-[#097ef6] peer" placeholder=" " name='displayName' />
-                        <label htmlFor="floating_full_name" className="absolute  text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-[#097ef6]  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Full Name</label>
-                    </div>
-                    <div className="relative w-full max-w-xs font-semibold">
-                        <input required type="text" id="floating_user_name" className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border-l-4 border-[#097ef6] outline-0 focus:ring-0 focus:border-[#097ef6] peer" placeholder=" " name='displayName'
+                        <input required type="text" id="floating_user_name" className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border-l-4 border-[#097ef6] outline-0 focus:ring-0 focus:border-[#097ef6] peer" placeholder=" " name='userName'
                             onChange={handleCheckUserName}
                             onBlur={() => available === 'true' && setAvailable(null)}
                         />
@@ -81,8 +126,12 @@ const register = ({ userNames }) => {
                     {available === 'false' && <p className='text-center font-bold text-sm text-error'>User name not available</p>}
                     {available === 'true' && <p className='text-center font-bold text-sm text-info'>User name available</p>}
                     <div className="relative w-full max-w-xs font-semibold">
-                        <input required type="text" id="floating_email" className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border-l-4 border-[#097ef6] outline-0 focus:ring-0 focus:border-[#097ef6] peer" placeholder=" " name='email' />
+                        <input required type="email" id="floating_email" className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border-l-4 border-[#097ef6] outline-0 focus:ring-0 focus:border-[#097ef6] peer" placeholder=" " name='email' />
                         <label htmlFor="floating_email" className="absolute  text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-[#097ef6]  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Email</label>
+                    </div>
+                    <div className="relative w-full max-w-xs font-semibold">
+                        <input required type="text" id="floating_full_name" className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border-l-4 border-[#097ef6] outline-0 focus:ring-0 focus:border-[#097ef6] peer" placeholder=" " name='displayName' />
+                        <label htmlFor="floating_full_name" className="absolute  text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-[#097ef6]  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Full Name</label>
                     </div>
                     <div className="relative w-full max-w-xs font-semibold">
                         <input required type="file" id='floating_image' name='image' accept="image/png, image/gif, image/jpeg" className="text-sm text-grey-900
@@ -126,15 +175,15 @@ const register = ({ userNames }) => {
 
 export default register;
 
-export async function getStaticProps() {
-    let res = await fetch('http://localhost:3000/api/all-users')
-    let data = await res.json()
-    let allUsers = data.data;
-    let userNames = allUsers.map(user => user.userName.toLowerCase())
+// export async function getStaticProps() {
+//     let res = await fetch('http://localhost:3000/api/all-users')
+//     let data = await res.json()
+//     let allUsers = data.data;
+//     let userNames = allUsers.map(user => user.userName.toLowerCase())
 
-    return {
-        props: {
-            userNames
-        }
-    }
-}
+//     return {
+//         props: {
+//             userNames
+//         }
+//     }
+// }

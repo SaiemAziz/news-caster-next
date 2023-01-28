@@ -8,6 +8,9 @@ import Loading from '../components/Loading'
 import { loadModelBrowser } from '../components/functions/handleTokenizeClick'
 import { SessionProvider } from 'next-auth/react'
 import Auth from '../components/Auth'
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 export default function App({ Component, pageProps }) {
   loadModelBrowser()
@@ -37,17 +40,34 @@ export default function App({ Component, pageProps }) {
       </div>
     </div>
 
-  return <Auth>
-    <ModelContext.Provider value={{ model, wordIndex }}>
-      <div className='min-h-screen flex flex-col justify-between bg-[#E5E5E5]' data-theme='light'>
-        {/* <progress className="progress progress-primary w-full m-0 p-0 bg-white"></progress> */}
+  return <>
 
-        <Header />
-        <Component {...pageProps} />
-        <Footer />
+    <Auth>
+      <ModelContext.Provider value={{ model, wordIndex }}>
+        <div className='min-h-screen flex flex-col justify-between bg-[#E5E5E5]' data-theme='light'>
+          {/* <progress className="progress progress-primary w-full m-0 p-0 bg-white"></progress> */}
 
-      </div>
-    </ModelContext.Provider>
-  </Auth>
+          <Header />
+          <Component {...pageProps} />
+          <Footer />
+
+        </div>
+      </ModelContext.Provider>
+    </Auth>
+
+    {/* toast show  */}
+    <ToastContainer
+      position="bottom-right"
+      autoClose={5000}
+      hideProgressBar={false}
+      newestOnTop={false}
+      closeOnClick
+      rtl={false}
+      pauseOnFocusLoss
+      draggable
+      pauseOnHover
+      theme="light"
+    />
+  </>
 }
 
