@@ -49,7 +49,7 @@ const SingleNews = ({ n }) => {
                 setLikeCount(data.likeCount)
                 setDisLikeCount(data.disLikeCount)
             })
-    }, [changeReact])
+    }, [])
 
 
 
@@ -60,15 +60,36 @@ const SingleNews = ({ n }) => {
                 method: "DELETE"
             })
                 .then(res => res.json())
-                .then(data => setChangeReact(!changeReact))
+                .then(data => {
+                    if (currentReact === 'liked')
+                        setLikeCount(x => x - 1)
+                    if (currentReact === 'disliked')
+                        setDisLikeCount(x => x - 1)
+                })
         }
         else {
-            setReact(currentReact)
             fetch(`/api/reaction-check?newsid=${n._id}&email=${userEmail}&react=${currentReact}`, {
                 method: "PUT"
             })
                 .then(res => res.json())
-                .then(data => setChangeReact(!changeReact))
+                .then(data => {
+                    if (react === 'none') {
+                        if (currentReact === 'liked')
+                            setLikeCount(x => x + 1)
+                        if (currentReact === 'disliked')
+                            setDisLikeCount(x => x + 1)
+                    } else {
+                        if (currentReact === 'liked') {
+                            setLikeCount(x => x + 1)
+                            setDisLikeCount(x => x - 1)
+                        }
+                        if (currentReact === 'disliked') {
+                            setLikeCount(x => x - 1)
+                            setDisLikeCount(x => x + 1)
+                        }
+                    }
+                    setReact(currentReact)
+                })
         }
     }
 

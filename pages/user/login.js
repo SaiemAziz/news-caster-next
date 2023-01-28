@@ -9,7 +9,7 @@ import { useRouter } from 'next/router';
 const login = () => {
     let router = useRouter()
     let userInfo = useContext(AuthContext)
-    console.log(userInfo);
+
     let { user, setUser, setLoadUser, loginUserGoogle } = userInfo
     let [show, setShow] = useState(false)
     let [err, setErr] = useState('')
