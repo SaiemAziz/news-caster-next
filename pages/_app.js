@@ -10,7 +10,7 @@ import { SessionProvider } from 'next-auth/react'
 import Auth from '../components/Auth'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
+import 'react-day-picker/dist/style.css';
 
 export default function App({ Component, pageProps }) {
   loadModelBrowser()

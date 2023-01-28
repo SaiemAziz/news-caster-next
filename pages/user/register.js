@@ -6,6 +6,10 @@ import { toast } from 'react-toastify';
 import * as loginImage from '../../assets/images/GLOBE-ANIME.json'
 import * as loadingImage from '../../assets/images/liquid-4-dot-loader.json'
 import { AuthContext } from '../../components/Auth';
+import { format } from 'date-fns';
+import { DayPicker } from 'react-day-picker';
+import { RiArrowDropDownLine } from 'react-icons/ri'
+
 
 const register = () => {
     let { registerUser, loadUser, setLoadUser, setUser } = useContext(AuthContext)
@@ -16,7 +20,7 @@ const register = () => {
     let [err, setErr] = useState('')
     let [userNames, setUserNames] = useState()
     let [available, setAvailable] = useState(null)
-
+    let [birthDate, setBirthDate] = useState(null);
     useLayoutEffect(() => {
         (async function () {
             let res = await fetch('/api/all-users')
@@ -75,13 +79,14 @@ const register = () => {
                 setLoadUser(false)
                 toast.success('Registration successful')
                 e.target.reset()
+                setBirthDate(null)
                 addUserToMongoDb({
                     userName,
                     fullName: displayName,
                     email,
                     role: "reporter",
                     password,
-                    birthdate: '01-01-1995',
+                    birthdate: format(birthDate, 'PP'),
                     verified: false,
                     displayURL
                 })
@@ -124,7 +129,7 @@ const register = () => {
                         <label htmlFor="floating_user_name" className="absolute  text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-[#097ef6]  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">User Name</label>
                     </div>
                     {available === 'false' && <p className='text-center font-bold text-sm text-error'>User name not available</p>}
-                    {available === 'true' && <p className='text-center font-bold text-sm text-info'>User name available</p>}
+                    {available === 'true' && <p className='text-center font-bold text-sm text-success'>User name available</p>}
                     <div className="relative w-full max-w-xs font-semibold">
                         <input required type="email" id="floating_email" className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border-l-4 border-[#097ef6] outline-0 focus:ring-0 focus:border-[#097ef6] peer" placeholder=" " name='email' />
                         <label htmlFor="floating_email" className="absolute  text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-[#097ef6]  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Email</label>
@@ -143,7 +148,25 @@ const register = () => {
           " />
                         <label htmlFor="floating_image" className="absolute  text-[#097ef6] duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-[#097ef6]  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Image</label>
                     </div>
-
+                    <div className="collapse border-l-4 border-[#097ef6] w-full">
+                        <input type="checkbox" />
+                        <div className="collapse-title font-medium -ml-2 flex justify-between items-center">
+                            {
+                                birthDate ?
+                                    <p>{format(birthDate, 'PP')}</p> :
+                                    <p className='text-[#A5A3AF]'>Your Birthdate</p>
+                            }
+                            <RiArrowDropDownLine size={50} />
+                        </div>
+                        <div className="collapse-content p-0 bg-slate-100 flex justify-center items-center">
+                            <DayPicker
+                                mode="single"
+                                selected={birthDate}
+                                onSelect={setBirthDate}
+                                className='text-sm'
+                            />
+                        </div>
+                    </div>
                     <div className="relative w-full max-w-xs font-semibold">
                         <input required type={show ? 'text' : 'password'} id="floating_password" className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border-l-4 border-[#097ef6] outline-0 focus:ring-0 focus:border-[#097ef6] peer" placeholder=" " name='password' />
                         <label htmlFor="floating_password" className="absolute  text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-[#097ef6]  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Password</label>

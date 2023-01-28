@@ -17,7 +17,7 @@ const Auth = ({ children }) => {
     const googleProvider = new GoogleAuthProvider();
 
     let auth = getAuth(app)
-    let [user, setUser] = useState({})
+    let [user, setUser] = useState(null)
     let [loadUser, setLoadUser] = useState(false)
 
     // check currently signed in user

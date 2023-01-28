@@ -1,14 +1,18 @@
 import { useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { AiTwotoneLike } from 'react-icons/ai'
-import { BiComment, BiDislike } from 'react-icons/bi'
+import { BiComment, BiDislike, BiLike } from 'react-icons/bi'
 import LoadingCircle from './LoadingCircle'
 import Link from "next/link";
 import * as tf from '@tensorflow/tfjs';
 import { ModelContext } from '../pages/_app';
 import handleTokenizeClick from './functions/handleTokenizeClick';
+import { AuthContext } from './Auth';
 
 const SingleNews = ({ n }) => {
     let { model, wordIndex } = useContext(ModelContext)
+    let { user, setUser } = useContext(AuthContext)
+
+
     let userEmail = "sahimsalem@gmail.com"
     // let {real} = n?.prediction
     // let {fake} = n?.prediction
@@ -134,15 +138,19 @@ const SingleNews = ({ n }) => {
                     {changeReact &&
                         <progress className="progress progress-primary w-full -ml-5 p-0 bg-white absolute top-0"></progress>
                     }
-                    <div className='flex gap-5'>
+                    <div className='flex gap-5 tooltip tooltip-top tooltip-accent tooltip-right' data-tip="!!! Please Login to react">
                         <div className="flex items-center gap-2">
-                            <button className="btn btn-ghost hover:bg-transparent btn-xs p-0 md:hover:scale-125 duration-150">
-                                <AiTwotoneLike className={`text-2xl ${react === 'liked' ? 'text-blue-500' : 'text-gray-400'}`} onClick={() => handlerReact('liked')} />
+                            <button className="btn btn-ghost hover:bg-transparent btn-xs p-0 md:hover:scale-125 duration-150 disabled:bg-transparent"
+                                disabled={user?.uid ? false : true}
+                            >
+                                <BiLike className={`text-2xl ${react === 'liked' ? 'text-blue-500' : 'text-gray-400'}`} onClick={() => handlerReact('liked')} />
                             </button>
                             <p className={`text-xs font-semibold ${react === 'liked' ? 'text-black' : 'text-gray-400'}`}>{likeCount}</p>
                         </div>
                         <div className="flex items-center gap-2">
-                            <button className="btn btn-ghost hover:bg-transparent btn-xs p-0 md:hover:scale-125 duration-150">
+                            <button className="btn btn-ghost hover:bg-transparent btn-xs p-0 md:hover:scale-125 duration-150 disabled:bg-transparent"
+                                disabled={user?.uid ? false : true}
+                            >
                                 <BiDislike className={`text-2xl ${react === 'disliked' ? 'text-red-500' : 'text-gray-400'}`} onClick={() => handlerReact('disliked')} />
                             </button>
                             <p className={`text-xs font-semibold ${react === 'disliked' ? 'text-black' : 'text-gray-400'}`}>{disLikeCount}</p>
