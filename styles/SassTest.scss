@@ -1,0 +1,65 @@
+$bg_col: rgba(182, 213, 244, 0.548);
+$bg_col1: rgb(228, 40, 40);
+$shadow: 0 0 4px grey;
+
+.whyChooseUse {
+  background-image: url("../assets/images/bg.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.level1 {
+  backdrop-filter: blur(5px);
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr;
+  gap: 2rem;
+}
+@mixin cardSize($width, $border_round) {
+  width: $width;
+  border-radius: $border_round;
+}
+.c1 {
+  @include cardSize(auto, 5%);
+  position: relative;
+  box-sizing: border-box;
+  background-size: cover;
+  text-align: center;
+
+  box-shadow: $shadow;
+  margin: 5rem 2rem 3rem 2rem;
+  padding: 2rem 0.5rem 1rem 0.5rem;
+  background-color: $bg_col;
+  transition: 0.5s;
+
+  h3 {
+    margin-bottom: 0;
+  }
+  p {
+    margin: 0.5rem;
+    font-size: small;
+    color: rgb(57, 56, 56);
+  }
+
+  a {
+    font-size: small;
+    text-decoration: underline;
+    color: $bg_col1;
+    &:hover {
+      color: purple;
+    }
+    &:active {
+      color: $bg_col1;
+    }
+  }
+  .icon {
+    background-color: rgb(100, 207, 243);
+    border-radius: 100%;
+    color: white;
+    width: fit-content;
+    padding: 1.5rem;
+    position: absolute;
+    top: -2.5rem;
+    left: 33%;
+  }
+}

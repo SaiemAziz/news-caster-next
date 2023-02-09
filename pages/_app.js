@@ -11,6 +11,9 @@ import Auth from '../components/Auth'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import 'react-day-picker/dist/style.css';
+// sass style sheet
+import '../styles/SassTest.scss'
+
 
 export default function App({ Component, pageProps }) {
   loadModelBrowser()

@@ -13,6 +13,7 @@ import Link from 'next/link'
 import BelowBannerSlider from '../components/BelowBannerSlider'
 import YoutubeSection from '../components/YoutubeSection'
 import handleTokenizeClick from '../components/functions/handleTokenizeClick'
+import WhyChooseUs from '../components/WhyChooseUs'
 
 
 
@@ -71,6 +72,7 @@ export default  function Home() {
             <YoutubeSection />
           </div>
         </div>
+        <WhyChooseUs />
       </main>
     </>
   )
