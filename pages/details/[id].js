@@ -1,13 +1,23 @@
 import Loading from "../../components/Loading";
 import Head from 'next/head'
 import { useRouter } from "next/router";
+import { useEffect, useState } from "react";
 
 
 
 const Details = () => {
+    let [news, setNews] = useState(null)
     let router = useRouter()
-    let {id} = router.query
+    let { id } = router.query
     // console.log(news)
+
+    useEffect(() => {
+        if (id) {
+            fetch(`/api/single-news?id=${id}`)
+                .then(result => result.json())
+                .then(data => console.log(data))
+        }
+    }, [id])
     return (
         <div className="max-w-xl mx-auto my-20">
             <Head>
