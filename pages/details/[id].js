@@ -4,6 +4,8 @@ import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import { ModelContext } from "../_app";
 import handleTokenizeClick from "../../components/functions/handleTokenizeClick";
+import { AiFillClockCircle } from 'react-icons/ai'
+import { CgCalendarDates } from 'react-icons/cg'
 
 
 
@@ -30,7 +32,6 @@ const Details = () => {
                 })
         }
     }, [id])
-    console.log(real, fake);
 
     useEffect(() => {
         setAiLoad(true)
@@ -52,7 +53,7 @@ const Details = () => {
                 detailsLoad ?
                     <Loading /> :
                     <div className="w-full">
-                        <h1 className="text-5xl text-blue-900 font-bold text-center mb-10 mt-5">{news?.title}</h1>
+                        <h1 className="sm:text-5xl text-3xl text-blue-900 font-bold text-center mb-10 mt-5">{news?.title}</h1>
                         <img className="w-full" src={news?.image} alt="" />
                         {
                             fake && !aiLoad && <>
@@ -68,11 +69,23 @@ const Details = () => {
                         }
 
                         <div className="flex flex-col gap-5 text-lg font-semibold text-gray-700 italic">
-                            <h1>{details.slice(0, 5).join('.')}.</h1>
-                            <h1>{details.slice(5, 10).join('.')}.</h1>
-                            <h1>{details.slice(10, 15).join('.')}.</h1>
-                            <h1>{details.slice(15, 20).join('.')}.</h1>
-                            <h1>{details.slice(20, 25).join('.')}.</h1>
+                            <h1>{details.slice(0, 5).join('.')}</h1>
+                            <h1>{details.slice(5, 10).join('.')}</h1>
+                            <h1>{details.slice(10, 15).join('.')}</h1>
+                            <h1>{details.slice(15, 20).join('.')}</h1>
+                            <h1>{details.slice(20, 25).join('.')}</h1>
+                        </div>
+
+                        {/* author  */}
+                        <div className="flex gap-5 mt-5 items-center justify-between">
+                            <div className="flex gap-5 items-center">
+                                <img className="h-16 w-16 border-2 border-blue-800 p-0.5 rounded-full" src="https://i.ibb.co/N1Sy1q6/Picsart-22-12-07-23-35-28-971.jpg" alt="" />
+                                <h1 className="font-bold text-xl text-orange-500">Sayem Aziz Chowdhury</h1>
+                            </div>
+                            <div>
+                                <h1 className="flex gap-2 mb-2 items-center"><AiFillClockCircle size={20} /> {news?.time.split(' ')[0]}</h1>
+                                <h1 className="flex gap-2 items-center"><CgCalendarDates size={20} /> {news?.time.split(' ')[1]}</h1>
+                            </div>
                         </div>
                     </div>
             }

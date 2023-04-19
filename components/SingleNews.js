@@ -28,7 +28,7 @@ const SingleNews = ({ n }) => {
     let [real, setReal] = useState(null)
     let [fake, setFake] = useState(null)
     const [displaySize, setDisplaySize] = useState({ width: 0, height: 0 });
-    console.log(displaySize);
+
     useLayoutEffect(() => {
         function updateDisplaySize() {
             setDisplaySize({
@@ -184,7 +184,7 @@ const SingleNews = ({ n }) => {
                                         onClick={() => setSlide(false)}
                                     /> : <BsEyeFill
                                         className={`text-2xl text-blue-700`}
-                                        onClick={() => setSlide(false)}
+                                        onClick={() => setSlide(true)}
                                     />
                                 }
                             </div>
