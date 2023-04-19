@@ -105,7 +105,7 @@ const SingleNews = ({ n }) => {
     if (loading)
         return (
             <div className='opacity-40'>
-                <p className='text-center text-3xl font-bold text-accent'>Predicting</p>
+                {/* <p className='text-center text-3xl font-bold text-accent'>Predicting</p> */}
                 <LoadingCircle />
             </div>
         )
