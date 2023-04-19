@@ -1,6 +1,7 @@
 import { useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { AiTwotoneLike } from 'react-icons/ai'
 import { BiComment, BiDislike, BiLike } from 'react-icons/bi'
+import { BsEyeFill, BsEyeSlashFill } from 'react-icons/bs'
 import LoadingCircle from './LoadingCircle'
 import Link from "next/link";
 import * as tf from '@tensorflow/tfjs';
@@ -26,6 +27,22 @@ const SingleNews = ({ n }) => {
     let [slide, setSlide] = useState(false)
     let [real, setReal] = useState(null)
     let [fake, setFake] = useState(null)
+    const [displaySize, setDisplaySize] = useState({ width: 0, height: 0 });
+    console.log(displaySize);
+    useLayoutEffect(() => {
+        function updateDisplaySize() {
+            setDisplaySize({
+                width: window.innerWidth,
+                height: window.innerHeight,
+            });
+        }
+        window.addEventListener('resize', updateDisplaySize);
+        updateDisplaySize();
+
+        return () => {
+            window.removeEventListener('resize', updateDisplaySize);
+        };
+    }, []);
     // let MAX_SEQUENCE_LENGTH = 500
     // let { details } = n
 
@@ -112,7 +129,7 @@ const SingleNews = ({ n }) => {
 
     return (
         <div className="bg-white flex flex-col justify-between shadow-lg"
-            onMouseEnter={() => setSlide(true)} onMouseLeave={() => setSlide(false)}
+            onMouseEnter={() => displaySize.width > 425 && setSlide(true)} onMouseLeave={() => displaySize.width > 425 && setSlide(false)}
         >
             <div>
                 <div className='relative overflow-hidden'>
@@ -134,7 +151,7 @@ const SingleNews = ({ n }) => {
                     <p className="">2 hours ago</p>
                     <p className="text-gray-400">By Lucy Hiddleston</p>
                 </div>
-                <div className="flex justify-between gap-5 p-5 relative">
+                <div className="flex justify-between items-center gap-5 p-5 relative">
                     {changeReact &&
                         <progress className="progress progress-primary w-full -ml-5 p-0 bg-white absolute top-0"></progress>
                     }
@@ -156,10 +173,28 @@ const SingleNews = ({ n }) => {
                             <p className={`text-xs font-semibold ${react === 'disliked' ? 'text-black' : 'text-gray-400'}`}>{disLikeCount}</p>
                         </div>
                     </div>
-                    <Link href={`/details/${n?._id}`} className="flex items-center gap-2">
-                        <BiComment className='text-2xl text-black hover:text-info' />
-                        {/* <p className={`text-xs font-semibold`}>comments</p> */}
-                    </Link>
+                    <div className='flex gap-5 items-center'>
+                        {
+                            displaySize.width <= 425 &&
+                            <div>
+
+                                {
+                                    slide ? <BsEyeSlashFill
+                                        className={`text-2xl text-gray-400`}
+                                        onClick={() => setSlide(false)}
+                                    /> : <BsEyeFill
+                                        className={`text-2xl text-blue-700`}
+                                        onClick={() => setSlide(false)}
+                                    />
+                                }
+                            </div>
+                        }
+
+                        <Link href={`/details/${n?._id}`} className="flex items-center gap-2">
+                            <BiComment className='text-2xl text-black hover:text-info' />
+                            {/* <p className={`text-xs font-semibold`}>comments</p> */}
+                        </Link>
+                    </div>
                 </div>
             </div>
         </div>
