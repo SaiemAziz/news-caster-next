@@ -1,16 +1,19 @@
 
 import SingleNews from '../components/SingleNews'
-import { useEffect, useState } from 'react'
+import { useContext, useEffect, useState } from 'react'
 import Loading from '../components/Loading'
 import CategoryButtons from '../components/CategoryButtons'
 import Head from 'next/head'
 import AllNews from '../components/AllNews'
+import { AuthContext } from '../components/Auth'
 
 const categories = () => {
+  let { cat, setCat } = useContext(AuthContext)
   let [news, setNews] = useState([])
   let [load, setLoad] = useState(true)
-  let [button, setButton] = useState('All')
+  let [button, setButton] = useState(cat || 'All')
   useEffect(() => {
+    setLoad(true)
     setNews([])
     fetch(`/api/categories?category=${button.toLowerCase()}`)
       .then(res => res.json())
@@ -19,6 +22,10 @@ const categories = () => {
         setLoad(false)
       })
   }, [button])
+
+  useEffect(() => {
+    setButton(cat)
+  }, [cat])
   return (
     <div className=' mb-14'>
       <Head>
@@ -31,7 +38,7 @@ const categories = () => {
         <h1 className='text-4xl font-bold text-center text-info'>{button} News: {news.length}</h1>
       </div>
       <div className='max-w-7xl mx-auto -mt-10'>
-        <CategoryButtons setButton={setButton} button={button} setLoad={setLoad}/>
+        <CategoryButtons setCat={setCat} setButton={setButton} button={button} setLoad={setLoad} />
       </div>
       {/* <h1 className='text-xl font-bold p-5 bg-white mx-10 -mt-7 mb-5'><span className='border-b-2 border-[#C31815] pb-1'>All</span> News</h1> */}
 
@@ -39,16 +46,18 @@ const categories = () => {
         load ? <div className={`max-w-5xl mx-auto my-11`}>
           <Loading />
         </div> :
-          button === "All" ?
-            <AllNews news={news} /> :
-            <div className='max-w-7xl mx-auto grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-5'>
-              {
-                news?.map(n => <SingleNews
-                  key={n?._id}
-                  n={n}
-                ></SingleNews>)
-              }
-            </div>
+          <div className=' md:px-20 px-10'>
+            {button === "All" ?
+              <AllNews news={news} /> :
+              <div className='max-w-7xl mx-auto grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-5'>
+                {
+                  news?.map(n => <SingleNews
+                    key={n?._id}
+                    n={n}
+                  ></SingleNews>)
+                }
+              </div>}
+          </div>
       }
     </div>
   )
