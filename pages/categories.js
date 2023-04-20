@@ -46,7 +46,7 @@ const categories = () => {
         load ? <div className={`max-w-5xl mx-auto my-11`}>
           <Loading />
         </div> :
-          <div className=' md:px-20 px-10'>
+          <div className=' md:px-20 px-5'>
             {button === "All" ?
               <AllNews news={news} /> :
               <div className='max-w-7xl mx-auto grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-5'>

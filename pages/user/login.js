@@ -29,8 +29,10 @@ const login = () => {
         let password = e.target.password.value
         let email = e.target.email.value
         loginUser(email, password)
-            .then(res => {
-                setUser(res.user)
+            .then(async res => {
+                let res2 = await fetch(`/api/user-info?email=${res.user.email}`)
+                let myUser = await res2.json()
+                setUser(myUser.data)
                 setLoadUser(false)
                 toast?.success('Login successful')
                 e.target.reset()

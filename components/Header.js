@@ -12,8 +12,7 @@ import { categoriesList } from "./CategoryButtons";
 
 const Header = () => {
     let router = useRouter()
-    let { setCat } = useContext(AuthContext)
-    let { user, setUser, logOutUser } = useContext(AuthContext)
+    let { setCat, user, setUser, logOutUser } = useContext(AuthContext)
     let [drop1, setDrop1] = useState(false)
     let [drop2, setDrop2] = useState(false)
     let [drop3, setDrop3] = useState(false)
@@ -58,7 +57,7 @@ const Header = () => {
         setCat(text);
         Router.push('/categories')
     }
-
+    console.log(user);
     return (<>
         <div className="sticky z-50 top-0 bg-base-100 shadow-lg">
 
@@ -77,11 +76,11 @@ const Header = () => {
                     </label>
                     <div className={`absolute   ${drop3 ? 'translate-y-4 -translate-x-4' : 'scale-0 -translate-y-4 -translate-x-16'} duration-300 ease-in-out flex flex-col shadow-xl bg-base-100`}>
                         <Link className="px-5 py-2 flex gap-1 items-center" href={'/'}><GoPrimitiveDot className="text-red-500" />Home</Link>
-                        <button className="my-auto cursor-pointer pb-3" onClick={() => setDrop2(!drop2)}>Categories
+                        <button className="my-auto cursor-pointer" onClick={() => setDrop2(!drop2)}>Categories
                             {/* <div className={`absolute left-16 ${drop1 ? 'top-16' : 'scale-0 -top-14'} ease-out bg-base-100 shadow-2xl duration-300`}>
                             <ul className="flex flex-col"> */}
                             {
-                                drop3 && <div className={`absolute duration-200 ease-out flex flex-col -z-30 bg-white ${!drop2 ? '-translate-y-28 translate-x-7 scale-0 ' : 'translate-x-20'}`}>
+                                drop3 && <div className={`absolute duration-200 ease-out flex flex-col -z-30 bg-white ${!drop2 ? '-translate-y-40 translate-x-10 scale-0 ' : 'translate-x-28 -translate-y-7'}`}>
                                     <Link className="px-5 py-2" href={'/categories'}>All News</Link>
                                     {/* <button className="px-5 py-2" onClick={() => handleCategory('Sports')} >Sports</button> */}
                                     {
@@ -92,6 +91,10 @@ const Header = () => {
                                 </div>
                             }
                         </button>
+                        {
+                            user &&
+                            <Link className="px-5 py-2" href={'/dashboard'}>Dashboard</Link>
+                        }
                         {/* <div className={`absolute left-28 translate-y-14 ${drop2 ? '' : '-translate-x-14 -translate-y-14 scale-0'} ease-in-out duration-300 shadow-xl`}>
                             <ul className="flex flex-col bg-base-100">
                                 <Link className="px-5 py-2" href={'/'}>All News</Link>
@@ -128,6 +131,10 @@ const Header = () => {
                                 <Link className="px-5 py-2" href={'/'}>Entertainment</Link> */}
                             </div>
                         </button>
+                        {
+                            user &&
+                            <Link className="my-auto" href={'/dashboard'}>Dashboard</Link>
+                        }
                         {/* </ul> */}
                     </div>
                 </div>
@@ -136,9 +143,9 @@ const Header = () => {
                         <label for="floating_outlined" class="absolute text-sm text-gray-500  duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0] bg-white px-2 peer-focus:px-2 peer-focus:text-blue-600 peer-focus:dark:text-blue-500 peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Floating outlined</label>
                     </div> */}
                 <div className="ml-auto">
-                    {user?.uid ? <div className="flex gap-3 items-center">
-                        <div className="tooltip tooltip-bottom tooltip-accent" data-tip={user?.displayName}>
-                            <img className="h-10 rounded-full border-2 p-[2px] border-primary" src={user?.photoURL} alt="" />
+                    {user ? <div className="flex gap-3 items-center">
+                        <div className="tooltip tooltip-bottom tooltip-accent" data-tip={user?.fullName}>
+                            <img className="h-10 rounded-full border-2 p-[2px] border-primary" src={user?.displayURL} alt="" />
                         </div>
                         <HiLogout size={30} className="text-error cursor-pointer" onClick={handlerLogout} />
                     </div>

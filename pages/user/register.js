@@ -81,7 +81,6 @@ const register = () => {
 
         registerUser(email, password)
             .then(res => {
-                setUser(res.user)
                 setLoadUser(false)
                 setLoad(false)
                 toast?.success('Registration successful')
@@ -116,6 +115,7 @@ const register = () => {
             body: JSON.stringify(userInfo)
         })
         let data = await res.json()
+        setUser(userInfo)
     }
 
     return (

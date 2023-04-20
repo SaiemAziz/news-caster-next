@@ -23,10 +23,14 @@ const Auth = ({ children }) => {
     // check currently signed in user
     useLayoutEffect(() => {
         setLoadUser(true)
-        onAuthStateChanged(auth, (currentUser) => {
+        onAuthStateChanged(auth, async (currentUser) => {
             if (currentUser) {
-                setUser(currentUser)
+                let res = await fetch(`/api/user-info?email=${currentUser.email}`)
+                let myUser = await res.json();
+                setUser(myUser.data)
+                setLoadUser(false)
             } else {
+                setUser(null)
             }
             setLoadUser(false)
         })
