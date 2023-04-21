@@ -1,9 +1,9 @@
-import Lottie from 'lottie-react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import React, { useContext, useLayoutEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import * as loginImage from '../../assets/images/GLOBE-ANIME.json'
+import Lottie from 'lottie-react';
 import * as loadingImage from '../../assets/images/liquid-4-dot-loader.json'
 import { AuthContext } from '../../components/Auth';
 import { format } from 'date-fns';

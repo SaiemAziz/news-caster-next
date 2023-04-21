@@ -6,7 +6,6 @@ export const ModelContext = createContext('')
 import * as tf from '@tensorflow/tfjs';
 import Loading from '../components/Loading'
 import { loadModelBrowser } from '../components/functions/handleTokenizeClick'
-import { SessionProvider } from 'next-auth/react'
 import Auth from '../components/Auth'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';

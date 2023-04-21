@@ -30,6 +30,12 @@ export default async function handler(req, res) {
             //     res.json({ status: 200, data: result });
         }
             break;
+        case "POST": {
+            let news = req.body;
+            let result = await newsCollection.insertOne(news)
+            res.json({ status: 200, data: result });
+        }
+            break;
         default:
             res.json({ status: 401, message: "Forbidden Access" });
     }

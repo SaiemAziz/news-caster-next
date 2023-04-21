@@ -1,5 +1,5 @@
 export let categoriesList = [
-    'All', 'Sports', 'Travel', 'Politics', 'Food', 'Weather', 'Local'
+    'All', 'Sports', 'Science', 'Politics', 'Health', 'Entertainment', 'Business', 'Others'
 ]
 const CategoryButtons = ({ setButton, button, setLoad, setCat }) => {
     let styleClickedButton = 'text-black '

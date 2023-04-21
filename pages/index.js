@@ -72,7 +72,7 @@ export default  function Home() {
             <YoutubeSection />
           </div>
         </div>
-        {/* <WhyChooseUs /> */}
+        <WhyChooseUs />
       </main>
     </>
   )

@@ -143,8 +143,10 @@ const SingleNews = ({ n }) => {
                         }
                     </div>
                 </div>
-                <h1 className="font-bold text-xl px-5 my-3">{n?.title}</h1>
-                <h1 className="px-5 text-justify">{n?.details.slice(0, 100)}... <Link href={`/details/${n?._id}`} className='text-blue-500 cursor-pointer font-bold text-sm'>See More</Link></h1>
+                <Link href={`/details/${n?._id}`} className='cursor-pointer'>
+                    <h1 className="font-bold text-xl px-5 my-3">{n?.title}</h1>
+                    <div className="px-5 text-justify" dangerouslySetInnerHTML={{ __html: n?.details.slice(0, 100) + `... <b style="--tw-text-opacity: 1; color: rgb(59 130 246 / var(--tw-text-opacity))">See More<b>` }} />
+                </Link>
             </div>
             <div className='mt-10'>
                 <div className="px-5 pb-5 flex justify-between border-b-2">

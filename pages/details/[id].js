@@ -67,14 +67,7 @@ const Details = () => {
                                 </div>
                             </>
                         }
-
-                        <div className="flex flex-col gap-5 text-lg font-semibold text-gray-700 italic">
-                            <h1>{details.slice(0, 5).join('.')}</h1>
-                            <h1>{details.slice(5, 10).join('.')}</h1>
-                            <h1>{details.slice(10, 15).join('.')}</h1>
-                            <h1>{details.slice(15, 20).join('.')}</h1>
-                            <h1>{details.slice(20, 25).join('.')}</h1>
-                        </div>
+                        <div className="text-lg font-semibold text-gray-700 italic" dangerouslySetInnerHTML={{ __html: news?.details }} />
 
                         {/* author  */}
                         <div className="flex gap-5 mt-5 items-center justify-between">

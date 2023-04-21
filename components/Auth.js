@@ -18,7 +18,7 @@ const Auth = ({ children }) => {
 
     let auth = getAuth(app)
     let [user, setUser] = useState(null)
-    let [loadUser, setLoadUser] = useState(false)
+    let [loadUser, setLoadUser] = useState(true)
     let [cat, setCat] = useState('All')
     // check currently signed in user
     useLayoutEffect(() => {
