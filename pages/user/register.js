@@ -12,7 +12,7 @@ import { RiArrowDropDownLine } from 'react-icons/ri'
 
 
 const register = () => {
-    let { registerUser, loadUser, setLoadUser, setUser, user } = useContext(AuthContext)
+    let { registerUser, loadUser, logOutUser, sendVerification, setLoadUser, setUser, user } = useContext(AuthContext)
     let router = useRouter()
     let imgbbUrl = process.env.NEXT_PUBLIC_IMGBB_URL
     let [show, setShow] = useState(false)
@@ -80,10 +80,11 @@ const register = () => {
         let displayURL = data.data.display_url
 
         registerUser(email, password)
-            .then(res => {
+            .then(async res => {
                 setLoadUser(false)
-                setLoad(false)
-                toast?.success('Registration successful')
+                // console.log(res.user);
+                sendVerification()
+                toast?.success('Registration successful. Please login.')
                 e.target.reset()
                 setBirthDate(null)
                 addUserToMongoDb({
@@ -96,7 +97,10 @@ const register = () => {
                     verified: false,
                     displayURL
                 })
-                router.push('/categories')
+                logOutUser()
+                    .then(() => { setUser(null) }).catch(err => { setUser(null) })
+                setLoad(false)
+                router.push('/user/login')
             })
             .catch(err => {
                 setLoadUser(false)
@@ -115,7 +119,7 @@ const register = () => {
             body: JSON.stringify(userInfo)
         })
         let data = await res.json()
-        setUser(userInfo)
+        // setUser(userInfo)
     }
 
     return (

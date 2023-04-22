@@ -11,16 +11,16 @@ const Dashboard = () => {
     let { user, loadUser } = useContext(AuthContext)
     useEffect(() => {
         if (!user && !loadUser)
-            router.push('/login')
+            router.push('/user/login')
     }, [loadUser])
 
     if (loadUser) return <div className='max-h-screen flex justify-center items-center p-20 opacity-50'><Loading /></div>
-    else if (user?.role == 'admin')
+    else if (user?.role == 'reporter')
         return (<>
             <div className="drawer drawer-mobile">
                 <input id="dashboard-drawer" type="checkbox" className="drawer-toggle" onChange={(e) => setBarOpen(e.target.checked)} />
                 <label htmlFor="dashboard-drawer" className={`top-1/2 -left-5 fixed z-20 font-bold text-xl p-1 rounded-r-full  lg:hidden ${barOpen ? '-translate-x-80 rotate-180' : ''} duration-200 ease-out text-blue-500`}><BsFillArrowRightCircleFill size={40} /></label>
-                <div className="drawer-content w-full flex justify-center my-5 overflow-y-auto pb-40">
+                <div className="drawer-content flex justify-center m-5 overflow-y-auto  pb-40">
 
                     {/* <label htmlFor="dashboard-drawer" className="btn btn-primary drawer-button">Open drawer</label> */}
                     {
@@ -43,7 +43,7 @@ const Dashboard = () => {
             </div>
         </>
         );
-    else if (user?.role == 'reporter')
+    else if (user?.role == 'admin')
         return (
             <div className="drawer drawer-mobile">
                 <input id="dashboard-drawer" type="checkbox" className="drawer-toggle" />

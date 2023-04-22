@@ -5,11 +5,13 @@ import {
     createUserWithEmailAndPassword,
     getAuth,
     onAuthStateChanged,
+    sendEmailVerification,
     signInWithEmailAndPassword,
     signInWithPopup,
     signOut
 } from "firebase/auth";
 import app from '../firebase.config';
+import { toast } from 'react-toastify';
 
 export let AuthContext = createContext('')
 
@@ -25,9 +27,13 @@ const Auth = ({ children }) => {
         setLoadUser(true)
         onAuthStateChanged(auth, async (currentUser) => {
             if (currentUser) {
-                let res = await fetch(`/api/user-info?email=${currentUser.email}`)
-                let myUser = await res.json();
-                setUser(myUser.data)
+                if (currentUser.emailVerified) {
+                    let res = await fetch(`/api/user-info?email=${currentUser.email}`)
+                    let myUser = await res.json();
+                    setUser(myUser.data)
+                } else {
+                    setUser(null)
+                }
                 setLoadUser(false)
             } else {
                 setUser(null)
@@ -41,6 +47,19 @@ const Auth = ({ children }) => {
     let registerUser = (email, password) => {
         setLoadUser(true)
         return createUserWithEmailAndPassword(auth, email, password)
+    }
+    // register user with email and password
+    let sendVerification = () => {
+        setLoadUser(true)
+        sendEmailVerification(auth.currentUser)
+            .then(() => {
+                toast.success("Verification sent to your email. Check spam folder too.")
+                setLoadUser(true)
+            })
+            .catch(err => {
+                toast.error(err.code)
+                setLoadUser(true)
+            })
     }
     // log in user with email and password
     let loginUser = (email, password) => {
@@ -67,6 +86,7 @@ const Auth = ({ children }) => {
         loginUser,
         logOutUser,
         loginUserGoogle,
+        sendVerification,
         cat, setCat
     }
     return (

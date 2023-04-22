@@ -12,7 +12,7 @@ const login = () => {
     let router = useRouter()
     let userInfo = useContext(AuthContext)
     let [load, setLoad] = useState(false)
-    let { user, setUser, setLoadUser, loginUserGoogle, loginUser } = userInfo
+    let { user, setUser, setLoadUser, loginUserGoogle, loginUser, logOutUser, sendVerification } = userInfo
     let [show, setShow] = useState(false)
     let [err, setErr] = useState('')
 
@@ -30,31 +30,40 @@ const login = () => {
         let email = e.target.email.value
         loginUser(email, password)
             .then(async res => {
-                let res2 = await fetch(`/api/user-info?email=${res.user.email}`)
-                let myUser = await res2.json()
-                setUser(myUser.data)
-                setLoadUser(false)
-                toast?.success('Login successful')
-                e.target.reset()
-                router.push('/categories')
+                if (res.user.emailVerified) {
+                    let res2 = await fetch(`/api/user-info?email=${res.user.email}`)
+                    let myUser = await res2.json()
+                    setUser(myUser.data)
+                    setLoadUser(false)
+                    toast?.success('Login successful')
+                    e.target.reset()
+                    router.push('/dashboard')
+                } else {
+                    toast.error("Email not verified yet.")
+                    setLoadUser(false)
+                    // sendVerification()
+                    logOutUser()
+                        .then(() => { setUser(null) }).catch(err => { setUser(null) })
+                }
                 setLoad(false)
             })
             .catch(err => {
+                setLoad(false)
                 setLoadUser(false)
                 toast?.error(err.code.replace('auth/', '').replaceAll('-', ' ').toUpperCase())
             })
     }
-    let handlerGoogle = () => {
-        loginUserGoogle()
-            .then(res => {
-                let currentUser = res.user
-                router.push('/categories')
-                setUser(currentUser)
-                setLoadUser(false)
-            }).catch(err => {
-                console.log(err.code.replace('auth/', '').replaceAll('-', ' ').toUpperCase());
-            })
-    }
+    // let handlerGoogle = () => {
+    //     loginUserGoogle()
+    //         .then(res => {
+    //             let currentUser = res.user
+    //             router.push('/categories')
+    //             setUser(currentUser)
+    //             setLoadUser(false)
+    //         }).catch(err => {
+    //             console.log(err.code.replace('auth/', '').replaceAll('-', ' ').toUpperCase());
+    //         })
+    // }
 
     return (
         <div className='md:max-w-7xl w-full mx-auto grid gap-10 md:grid-cols-2 '>

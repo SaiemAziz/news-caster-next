@@ -7,16 +7,19 @@ import { useRouter } from 'next/router';
 const RichText = ({ setValue, value }) => {
   let [text, setText] = useState(value)
   const handleChange = (content, delta, source, editor) => {
-    setText(content);
+    setValue(content);
   };
   return (
     <>
       <ReactQuill
         className='border bg-white border-info rounded-lg'
-        value={text}
+        value={value}
         onChange={handleChange}
         placeholder="Write the description in depth."
-        onBlur={() => setValue(text)}
+      // onBlur={() => {
+      //   setValue(text)
+      //   console.log(text)
+      // }}
       />
     </>
   );

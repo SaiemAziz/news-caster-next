@@ -6,28 +6,40 @@ import { categoriesList } from './CategoryButtons';
 // import RichText from '../components/RichText';
 import Lottie from 'lottie-react';
 import * as loadingImage from '../assets/images/liquid-4-dot-loader.json'
+import Loading from './LoadingCircle';
+// import RichText from './RichText';
+import { toast } from 'react-toastify';
 
+let RichText = React.memo(dynamic(() => import('./RichText'), {
+    ssr: false,
+}))
 const AddPost = () => {
     let router = useRouter()
     let { user, loadUser } = useContext(AuthContext)
     const [details, setDetails] = useState('');
     const [loadAdd, setLoadAdd] = useState(false);
+    const [loadRich, setLoadRich] = useState(true);
     const [category, setCategory] = useState('');
     const [image, setImage] = useState(null);
     const [title, setTitle] = useState('');
     const [err, setErr] = useState('');
     let imgbbUrl = process.env.NEXT_PUBLIC_IMGBB_URL
-    const RichText = dynamic(() => import('/components/RichText'), {
-        ssr: false,
-    })
-    useEffect(() => {
-        if (user?.role != 'admin' && !loadUser)
-            router.push('/')
-    }, [loadUser])
+    // useEffect(() => {
+    //     if (user?.role != 'admin' && !loadUser)
+    //         router.push('/')
+    // }, [loadUser])
+    // console.log(details, details.length);
+    // useEffect(() => {
+    //     RichText = dynamic(() => import('/components/RichText'), {
+    //         ssr: false,
+    //     })
+    //     setLoadRich(false)
+    // }, [])
 
     let handleForm = async e => {
         e.preventDefault()
         setLoadAdd(true)
+        console.log(details.length);
         if (details.length < 100) {
             setLoadAdd(false)
             return setErr("Please enter at least 100 characters of details")
@@ -54,8 +66,8 @@ const AddPost = () => {
             authorInfo: user?.email,
             image: displayURL
         }
-
-        let res2 = await fetch('/single-news', {
+        console.log(news);
+        let res2 = await fetch('/api/single-news', {
             method: 'POST',
             headers: {
                 "content-type": "application/json"
@@ -63,14 +75,19 @@ const AddPost = () => {
             body: JSON.stringify(news)
         })
         let data2 = await res2.json()
-        console.log(data2);
-
+        if (data2.data.success) {
+            toast.success('News added successfully')
+            e.target.reset()
+            setDetails('')
+        }
         setLoadAdd(false)
     }
-
+    // if (loadRich) return <div>
+    //     <Loading />
+    // </div>
 
     return (
-        <form onSubmit={handleForm} className='p-5 mx-auto lg:w-[1000px] w-full'>
+        <form onSubmit={handleForm} className='p-5 mx-auto lg:w-[900px] w-full'>
             <h1 className='text-center text-3xl border-b-2 border-info text-info mb-3 pb-3 w-full font-bold'>Add News</h1>
             <p className='text-xl my-4 text-primary'>News Title</p>
             <input required type="text" placeholder="Title" className="input input-bordered input-info w-full" onChange={(e) => setTitle(e.target.value)} />
@@ -97,6 +114,7 @@ const AddPost = () => {
                     }
                 </select>
             </div>
+
             <p className='text-xl my-4 text-primary'>Details</p>
             <RichText value={details} setValue={setDetails} />
             {
