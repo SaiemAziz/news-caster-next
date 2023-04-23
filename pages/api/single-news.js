@@ -20,7 +20,7 @@ export default async function handler(req, res) {
             let id = req.query.id;
             let updateDoc = {
                 $set: {
-                    status: status
+                    status: status === true ? true : false,
                 }
             }
 
