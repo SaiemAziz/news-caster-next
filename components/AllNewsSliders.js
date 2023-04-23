@@ -27,8 +27,10 @@ const AllNewsSliders = ({ cat, news }) => {
             {
                 catNews.map((n, i) => (
                     <Link href={`/details/${n._id}`} key={i}>
-                        <div className="w-[350px] hover:scale-95 duration-150 cursor-pointer">
-                            <img className='w-full rounded-xl shadow-xl' src={n.image} alt="" />
+                        <div className="w-[350px] flex flex-col gap-2 items-center justify-between hover:scale-95 duration-150 cursor-pointer">
+                            <div className='h-52 overflow-hidden flex justify-center items-center'>
+                                <img className='w-full shadow-xl' src={n.image} alt="" />
+                            </div>
                             <p className='font-semibold p-5 text-center italic'>{n.title}</p>
                         </div>
                     </Link>

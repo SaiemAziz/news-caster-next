@@ -132,7 +132,7 @@ const SingleNews = ({ n }) => {
             onMouseEnter={() => displaySize.width > 425 && setSlide(true)} onMouseLeave={() => displaySize.width > 425 && setSlide(false)}
         >
             <div>
-                <div className='relative overflow-hidden'>
+                <div className='relative flex justify-center items-center overflow-hidden h-60'>
                     <img className="w-full" src={n?.image} alt="" />
                     <div className={`absolute top-0 z-30 w-full h-full flex flex-col justify-center items-center bg-black bg-opacity-50 duration-500 ease-out ${slide ? '' : "translate-y-full"}`}>
                         {

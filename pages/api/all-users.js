@@ -12,18 +12,24 @@ export default async function handler(req, res) {
         }
             break;
         case "PUT": {
-            let { userName, fullName, password, email, birthdate, verified, displayURL, role } = req.body
+            // let { userName, fullName, password, email, birthdate, verified, displayURL, role } = req.body
+            let { email } = req.body
+            // delete req.body.email
+            if (req.body._id)
+                delete req.body._id
             let updateDoc = {
                 $set: {
-                    fullName, password, email, birthdate, verified, displayURL, role, userName
+                    ...req.body
                 }
             }
+            console.log(req.body);
             let result = await usersCollection.updateOne(
                 { email: email },
                 updateDoc,
                 { upsert: true }
             )
-            res.json({ status: 200, data: result });
+            let myUser = await usersCollection.findOne({ email: email })
+            res.json({ status: 200, data: myUser });
         }
             break;
         default:

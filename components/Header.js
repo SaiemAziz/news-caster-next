@@ -57,7 +57,7 @@ const Header = () => {
         setCat(text);
         Router.push('/categories')
     }
-    console.log(user);
+    // console.log(user);
     return (<>
         <div className="sticky z-50 top-0 bg-base-100 shadow-lg">
 
@@ -145,7 +145,9 @@ const Header = () => {
                 <div className="ml-auto">
                     {user ? <div className="flex gap-3 items-center">
                         <div className="tooltip tooltip-bottom tooltip-accent" data-tip={user?.fullName}>
-                            <img className="h-10 rounded-full border-2 p-[2px] border-primary" src={user?.displayURL} alt="" />
+                            <Link href='/profile'>
+                                <img className="h-10 w-10 rounded-full border-2 p-[2px] border-primary" src={user?.displayURL} alt="" />
+                            </Link>
                         </div>
                         <HiLogout size={30} className="text-error cursor-pointer" onClick={handlerLogout} />
                     </div>
