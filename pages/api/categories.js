@@ -7,10 +7,10 @@ export default async function handler(req, res) {
         case "GET":
             const cat = req.query.category
             let query;
-            if(cat === "all")
-                query = {}
+            if (cat === "all")
+                query = { status: "active" }
             else
-                query = {category: cat}
+                query = { category: cat, status: "active" }
             const allNews = await db.collection("news").find(query).toArray();
 
             res.json({ status: 200, data: allNews });

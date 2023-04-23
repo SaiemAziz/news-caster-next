@@ -6,15 +6,19 @@ import { ModelContext } from "../_app";
 import handleTokenizeClick from "../../components/functions/handleTokenizeClick";
 import { AiFillClockCircle } from 'react-icons/ai'
 import { CgCalendarDates } from 'react-icons/cg'
+import Reaction from "../../components/Reaction";
+import { MdVerified } from "react-icons/md";
 
 
 
 const Details = () => {
     let [detailsLoad, setDetailsLoad] = useState(true)
+    let [changeReact, setChangeReact] = useState(false)
     let { model, wordIndex } = useContext(ModelContext)
     let [news, setNews] = useState(null)
     let [real, setReal] = useState(null)
     let [fake, setFake] = useState(null)
+    let [author, setAuthor] = useState(null)
     let [aiLoad, setAiLoad] = useState(true)
     let details = news?.details?.split('.')
     let router = useRouter()
@@ -43,7 +47,15 @@ const Details = () => {
                 setAiLoad(false)
             })();
     }, [news, id]);
-
+    useEffect(() => {
+        (
+            async () => {
+                let res = await fetch(`/api/user-info?email=${news?.authorInfo}`)
+                let data = await res.json()
+                setAuthor(data.data)
+            }
+        )()
+    }, [news])
     return (
         <div className="max-w-4xl mx-auto p-5">
             <Head>
@@ -68,12 +80,15 @@ const Details = () => {
                             </>
                         }
                         <div className="text-lg font-semibold text-gray-700 italic" dangerouslySetInnerHTML={{ __html: news?.details }} />
-
+                        <div className="m-10 ml-auto w-fit scale-150">
+                            <Reaction n={news} setChangeReact={setChangeReact} />
+                        </div>
                         {/* author  */}
                         <div className="flex gap-5 mt-5 items-center justify-between">
                             <div className="flex gap-5 items-center">
-                                <img className="h-16 w-16 border-2 border-blue-800 p-0.5 rounded-full" src="https://i.ibb.co/N1Sy1q6/Picsart-22-12-07-23-35-28-971.jpg" alt="" />
-                                <h1 className="font-bold text-xl text-orange-500">Sayem Aziz Chowdhury</h1>
+                                <img className="h-16 w-16 border-2 border-blue-800 p-0.5 rounded-full" src={author?.displayURL} alt="" />
+                                {/* <h1 className="font-bold text-xl text-orange-500">{author?.fullName}</h1> */}
+                                <p className="font-bold text-xl text-orange-500 flex gap-2 items-center">{author?.fullName} {author?.verified && <MdVerified color="blue" />}</p>
                             </div>
                             <div>
                                 <h1 className="flex gap-2 mb-2 items-center"><AiFillClockCircle size={20} /> {news?.time.split(' ')[0]}</h1>

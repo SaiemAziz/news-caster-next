@@ -93,7 +93,7 @@ const register = () => {
                     email,
                     role: "reporter",
                     password,
-                    birthdate: format(birthDate, 'PP'),
+                    birthDate: format(birthDate, 'PP'),
                     verified: false,
                     displayURL
                 })

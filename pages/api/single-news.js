@@ -16,18 +16,16 @@ export default async function handler(req, res) {
         }
             break;
         case "PUT": {
-            //     let { userName, fullName, password, email, birthdate, verified, displayURL, role } = req.body
-            //     let updateDoc = {
-            //         $set: {
-            //             fullName, password, email, birthdate, verified, displayURL, role, userName
-            //         }
-            //     }
-            //     let result = await usersCollection.updateOne(
-            //         { email: email },
-            //         updateDoc,
-            //         { upsert: true }
-            //     )
-            //     res.json({ status: 200, data: result });
+            let status = req.query.status;
+            let id = req.query.id;
+            let updateDoc = {
+                $set: {
+                    status: status
+                }
+            }
+
+            let result = await newsCollection.updateOne({ _id: ObjectId(id) }, updateDoc, { upsert: true })
+            res.json({ status: 200, data: result });
         }
         // break;
         case "POST": {

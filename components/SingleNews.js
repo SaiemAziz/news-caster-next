@@ -1,5 +1,5 @@
 import { useContext, useEffect, useLayoutEffect, useState } from 'react';
-import { AiTwotoneLike } from 'react-icons/ai'
+import { AiFillClockCircle, AiTwotoneLike } from 'react-icons/ai'
 import { BiComment, BiDislike, BiLike } from 'react-icons/bi'
 import { BsEyeFill, BsEyeSlashFill } from 'react-icons/bs'
 import LoadingCircle from './LoadingCircle'
@@ -8,21 +8,24 @@ import * as tf from '@tensorflow/tfjs';
 import { ModelContext } from '../pages/_app';
 import handleTokenizeClick from './functions/handleTokenizeClick';
 import { AuthContext } from './Auth';
+import { CgCalendarDates } from 'react-icons/cg';
+import { MdVerified } from 'react-icons/md';
+import Reaction from './Reaction';
 
 const SingleNews = ({ n }) => {
     let { model, wordIndex } = useContext(ModelContext)
     let { user, setUser } = useContext(AuthContext)
 
+    let [author, setAuthor] = useState(null)
 
-    let userEmail = "sahimsalem@gmail.com"
     // let {real} = n?.prediction
     // let {fake} = n?.prediction
-    let [react, setReact] = useState("none")
+    // let [react, setReact] = useState("none")
     let [changeReact, setChangeReact] = useState(false)
 
     let [loading, setLoading] = useState(true)
-    let [likeCount, setLikeCount] = useState(0)
-    let [disLikeCount, setDisLikeCount] = useState(0)
+    // let [likeCount, setLikeCount] = useState(0)
+    // let [disLikeCount, setDisLikeCount] = useState(0)
     // // let [wordIndex, setWordIndex] = useState({});
     let [slide, setSlide] = useState(false)
     let [real, setReal] = useState(null)
@@ -56,66 +59,76 @@ const SingleNews = ({ n }) => {
         })();
     }, []);
 
-    useLayoutEffect(() => {
-        fetch(`/api/reaction-check?newsid=${n._id}&email=${userEmail}`)
-            .then(res => res.json())
-            .then(data => {
-                if (data.data === 'liked') {
-                    setReact('liked')
-                }
-                else if (data.data === 'disliked') {
-                    setReact('disliked')
-                }
-                console.log(data.likeCount, " ", data.disLikeCount);
-                setLikeCount(data.likeCount)
-                setDisLikeCount(data.disLikeCount)
-            })
+    // useLayoutEffect(() => {
+    //     fetch(`/api/reaction-check?newsid=${n._id}&email=${user?.email}`)
+    //         .then(res => res.json())
+    //         .then(data => {
+    //             if (data.data === 'liked') {
+    //                 setReact('liked')
+    //             }
+    //             else if (data.data === 'disliked') {
+    //                 setReact('disliked')
+    //             }
+    //             console.log(data.likeCount, " ", data.disLikeCount);
+    //             setLikeCount(data.likeCount)
+    //             setDisLikeCount(data.disLikeCount)
+    //         })
+    // }, [])
+
+    useEffect(() => {
+        (
+            async () => {
+                let res = await fetch(`/api/user-info?email=${n.authorInfo}`)
+                let data = await res.json()
+                setAuthor(data.data)
+            }
+        )()
     }, [])
 
 
 
-    let handlerReact = (currentReact) => {
-        setChangeReact(true)
-        if (react === currentReact) {
-            fetch(`/api/reaction-check?newsid=${n._id}&email=${userEmail}`, {
-                method: "DELETE"
-            })
-                .then(res => res.json())
-                .then(data => {
-                    if (currentReact === 'liked')
-                        setLikeCount(x => x - 1)
-                    if (currentReact === 'disliked')
-                        setDisLikeCount(x => x - 1)
-                    setChangeReact(false)
-                    setReact("none")
-                })
-        }
-        else {
-            fetch(`/api/reaction-check?newsid=${n._id}&email=${userEmail}&react=${currentReact}`, {
-                method: "PUT"
-            })
-                .then(res => res.json())
-                .then(data => {
-                    if (react === 'none') {
-                        if (currentReact === 'liked')
-                            setLikeCount(x => x + 1)
-                        if (currentReact === 'disliked')
-                            setDisLikeCount(x => x + 1)
-                    } else {
-                        if (currentReact === 'liked') {
-                            setLikeCount(x => x + 1)
-                            setDisLikeCount(x => x - 1)
-                        }
-                        if (currentReact === 'disliked') {
-                            setLikeCount(x => x - 1)
-                            setDisLikeCount(x => x + 1)
-                        }
-                    }
-                    setReact(currentReact)
-                    setChangeReact(false)
-                })
-        }
-    }
+    // let handlerReact = (currentReact) => {
+    //     setChangeReact(true)
+    //     if (react === currentReact) {
+    //         fetch(`/api/reaction-check?newsid=${n._id}&email=${user?.email}`, {
+    //             method: "DELETE"
+    //         })
+    //             .then(res => res.json())
+    //             .then(data => {
+    //                 if (currentReact === 'liked')
+    //                     setLikeCount(x => x - 1)
+    //                 if (currentReact === 'disliked')
+    //                     setDisLikeCount(x => x - 1)
+    //                 setChangeReact(false)
+    //                 setReact("none")
+    //             })
+    //     }
+    //     else {
+    //         fetch(`/api/reaction-check?newsid=${n._id}&email=${user?.email}&react=${currentReact}`, {
+    //             method: "PUT"
+    //         })
+    //             .then(res => res.json())
+    //             .then(data => {
+    //                 if (react === 'none') {
+    //                     if (currentReact === 'liked')
+    //                         setLikeCount(x => x + 1)
+    //                     if (currentReact === 'disliked')
+    //                         setDisLikeCount(x => x + 1)
+    //                 } else {
+    //                     if (currentReact === 'liked') {
+    //                         setLikeCount(x => x + 1)
+    //                         setDisLikeCount(x => x - 1)
+    //                     }
+    //                     if (currentReact === 'disliked') {
+    //                         setLikeCount(x => x - 1)
+    //                         setDisLikeCount(x => x + 1)
+    //                     }
+    //                 }
+    //                 setReact(currentReact)
+    //                 setChangeReact(false)
+    //             })
+    //     }
+    // }
 
 
     // JSX Syntax
@@ -149,18 +162,22 @@ const SingleNews = ({ n }) => {
                 </Link>
             </div>
             <div className='mt-10'>
-                <div className="px-5 pb-5 flex justify-between border-b-2">
-                    <p className="">2 hours ago</p>
-                    <p className="text-gray-400">By Lucy Hiddleston</p>
+                <div className="px-5 pb-5 flex justify-between border-b-2 text-gray-400">
+                    <div>
+                        <h1 className="flex gap-2 mb-2 items-center"><AiFillClockCircle size={20} /> {n?.time.split(' ')[0]}</h1>
+                        <h1 className="flex gap-2 items-center"><CgCalendarDates size={20} /> {n?.time.split(' ')[1]}</h1>
+                    </div>
+                    <p className="flex items-center gap-1">{author?.fullName.split(' ').slice(0, 2).join(' ')} {author?.verified && <MdVerified color="blue" />}</p>
                 </div>
                 <div className="flex justify-between items-center gap-5 p-5 relative">
                     {changeReact &&
                         <progress className="progress progress-primary w-full -ml-5 p-0 bg-white absolute top-0"></progress>
                     }
-                    <div className={`flex gap-5 ${user?.uid ? '' : 'tooltip'} tooltip-top tooltip-accent tooltip-right`} data-tip="!!! Please Login to react">
+                    <Reaction n={n} setChangeReact={setChangeReact} />
+                    {/* <div className={`flex gap-5 ${user ? '' : 'tooltip'} tooltip-top tooltip-accent tooltip-right`} data-tip="!!! Please Login to react">
                         <div className="flex items-center gap-2">
                             <button className="btn btn-ghost hover:bg-transparent btn-xs p-0 md:hover:scale-125 duration-150 disabled:bg-transparent"
-                                disabled={user?.uid ? false : true}
+                                disabled={user ? false : true}
                             >
                                 <BiLike className={`text-2xl ${react === 'liked' ? 'text-blue-500' : 'text-gray-400'}`} onClick={() => handlerReact('liked')} />
                             </button>
@@ -168,13 +185,13 @@ const SingleNews = ({ n }) => {
                         </div>
                         <div className="flex items-center gap-2">
                             <button className="btn btn-ghost hover:bg-transparent btn-xs p-0 md:hover:scale-125 duration-150 disabled:bg-transparent"
-                                disabled={user?.uid ? false : true}
+                                disabled={user ? false : true}
                             >
                                 <BiDislike className={`text-2xl ${react === 'disliked' ? 'text-red-500' : 'text-gray-400'}`} onClick={() => handlerReact('disliked')} />
                             </button>
                             <p className={`text-xs font-semibold ${react === 'disliked' ? 'text-black' : 'text-gray-400'}`}>{disLikeCount}</p>
                         </div>
-                    </div>
+                    </div> */}
                     <div className='flex gap-5 items-center'>
                         {
                             displaySize.width <= 425 &&

@@ -61,7 +61,7 @@ const Profile = () => {
                         return { ...prev, fullName: target.value }
                     })} />
                     <h1>Birth date</h1>
-                    <p>{myInfo?.birthdate}</p>
+                    <p>{myInfo?.birthDate}</p>
                     <h1 className='text-right text-xl text-blue-200 border-blue-200 border-b-2 pb-3 mb-3 col-span-2'>Address</h1>
 
                     <h1>Country</h1>

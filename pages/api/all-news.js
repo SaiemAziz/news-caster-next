@@ -7,7 +7,13 @@ export default async function handler(req, res) {
     let newsCollection = await db.collection("news");
     switch (req.method) {
         case "GET":
-            let allNews = await newsCollection.find({}).toArray()
+            let email = req?.query?.email
+
+            let allNews;
+            if (email)
+                allNews = await newsCollection.find({ authorInfo: email }).toArray()
+            else
+                allNews = await newsCollection.find({}).toArray()
             res.json({ status: 200, data: await allNews });
             break;
         case "POST":

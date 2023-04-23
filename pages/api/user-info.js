@@ -1,4 +1,5 @@
 
+import { ObjectId } from "mongodb";
 import clientPromise from "../../lib/mongodb";
 
 export default async function handler(req, res) {
@@ -12,21 +13,18 @@ export default async function handler(req, res) {
             res.json({ status: 200, data: user });
         }
             break;
-        // case "PUT": {
-        //     let { userName, fullName, password, email, birthdate, verified, displayURL, role } = req.body
-        //     let updateDoc = {
-        //         $set: {
-        //             fullName, password, email, birthdate, verified, displayURL, role, userName
-        //         }
-        //     }
-        //     let result = await usersCollection.updateOne(
-        //         { email: email },
-        //         updateDoc,
-        //         { upsert: true }
-        //     )
-        //     res.json({ status: 200, data: result });
-        // }
-        //     break;
+        case "PUT": {
+            let status = req.query.status
+            let id = req.query.id
+            let updateDoc = {
+                $set: {
+                    verified: status
+                }
+            }
+            let result = await usersCollection.updateOne({ _id: ObjectId(id) }, updateDoc, { upsert: true })
+            res.json({ status: 200, data: result });
+        }
+            break;
         default:
             res.json({ status: 401, message: "Forbidden Access" });
     }
