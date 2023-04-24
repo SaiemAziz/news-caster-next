@@ -91,6 +91,7 @@ const Header = () => {
                                 </div>
                             }
                         </button>
+                        <Link className="px-5 py-2" href={'/about'}>About Us</Link>
                         {
                             user &&
                             <Link className="px-5 py-2" href={'/dashboard'}>Dashboard</Link>
@@ -131,6 +132,7 @@ const Header = () => {
                                 <Link className="px-5 py-2" href={'/'}>Entertainment</Link> */}
                             </div>
                         </button>
+                        <Link className="my-auto" href={'/about'}>About Us</Link>
                         {
                             user &&
                             <Link className="my-auto" href={'/dashboard'}>Dashboard</Link>

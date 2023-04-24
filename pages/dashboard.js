@@ -21,8 +21,8 @@ const Dashboard = () => {
     else if (user?.role == 'reporter')
         return (<>
             <div className="drawer drawer-mobile">
-                <input id="dashboard-drawer" type="checkbox" className="drawer-toggle" onChange={(e) => setBarOpen(e.target.checked)} />
-                <label htmlFor="dashboard-drawer" className={`top-1/2 -left-5 fixed z-20 font-bold text-xl p-1 rounded-r-full  lg:hidden ${barOpen ? 'translate-x-80 rotate-180' : ''} duration-200 ease-out text-blue-500`}><BsFillArrowRightCircleFill size={40} /></label>
+                <input id="reporter-dashboard-drawer" type="checkbox" className="drawer-toggle" onChange={(e) => setBarOpen(e.target.checked)} />
+                <label htmlFor="reporter-dashboard-drawer" className={`top-1/2 -left-5 fixed z-20 font-bold text-xl p-1 rounded-r-full  lg:hidden ${barOpen ? 'translate-x-80 rotate-180' : ''} duration-200 ease-out text-blue-500`}><BsFillArrowRightCircleFill size={40} /></label>
                 <div className="drawer-content flex justify-center m-5 overflow-y-auto  pb-40">
 
                     {/* <label htmlFor="dashboard-drawer" className="btn btn-primary drawer-button">Open drawer</label> */}
@@ -41,7 +41,7 @@ const Dashboard = () => {
                     }
                 </div>
                 <div className="drawer-side">
-                    <label htmlFor="dashboard-drawer" className="drawer-overlay"></label>
+                    <label htmlFor="reporter-dashboard-drawer" className="drawer-overlay"></label>
                     <ul className="menu p-4 w-80 bg-blue-200 text-base-content ">
                         <li className='text-center my-1 btn btn-info' onClick={() => setTab("addPost")}>Add Post</li>
                         <li className='text-center my-1 btn btn-info' onClick={() => setTab("myAllNews")}>My All News</li>
@@ -53,7 +53,8 @@ const Dashboard = () => {
     else if (user?.role == 'admin')
         return (
             <div className="drawer drawer-mobile">
-                <input id="dashboard-drawer" type="checkbox" className="drawer-toggle" />
+                <input id="admin-dashboard-drawer" type="checkbox" className="drawer-toggle" onChange={(e) => setBarOpen(e.target.checked)} />
+                <label htmlFor="admin-dashboard-drawer" className={`top-1/2 -left-5 fixed z-20 font-bold text-xl p-1 rounded-r-full  lg:hidden ${barOpen ? 'translate-x-80 rotate-180' : ''} duration-200 ease-out text-blue-500`}><BsFillArrowRightCircleFill size={40} /></label>
                 <div className="drawer-content flex justify-center m-5 overflow-y-auto  pb-40">
 
                     {/* <label htmlFor="dashboard-drawer" className="btn btn-primary drawer-button">Open drawer</label> */}
@@ -72,15 +73,11 @@ const Dashboard = () => {
                     }
                 </div>
                 <div className="drawer-side">
-                    <label htmlFor="dashboard-drawer" className="drawer-overlay"></label>
-                    <div className="drawer-side">
-
-                        {/* <label htmlFor="dashboard-drawer" className="drawer-overlay"></label> */}
-                        <ul className="menu p-4 w-80 bg-blue-200 text-base-content min-h-screen">
-                            <li className='text-center my-1 btn btn-info' onClick={() => setTab("allUsers")}>All Users</li>
-                            <li className='text-center my-1 btn btn-info' onClick={() => setTab("adminAllNews")}>All News</li>
-                        </ul>
-                    </div>
+                    <label htmlFor="admin-dashboard-drawer" className="drawer-overlay"></label>
+                    <ul className="menu p-4 w-80 bg-blue-200 text-base-content ">
+                        <li className='text-center my-1 btn btn-info' onClick={() => setTab("allUsers")}>All Users</li>
+                        <li className='text-center my-1 btn btn-info' onClick={() => setTab("adminAllNews")}>All News</li>
+                    </ul>
                 </div>
             </div>
         );
