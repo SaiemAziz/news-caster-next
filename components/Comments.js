@@ -3,25 +3,35 @@ import { AuthContext } from './Auth';
 import * as loadingImage from '../assets/images/liquid-4-dot-loader.json'
 import Loading from './LoadingCircle';
 import Lottie from 'lottie-react';
+import { useQuery } from '@tanstack/react-query';
 
 const Comments = ({ news }) => {
-    let [comments, setComments] = useState([])
+    // let [comments, setComments] = useState([])
     let [loadComment, setLoadComment] = useState(false)
     let [loadReply, setLoadReply] = useState(false)
     let { user } = useContext(AuthContext)
     // console.log(user);
-    useEffect(() => {
-        (async () => {
+    let { data: comments, isLoading, isError, refetch } = useQuery({
+        queryKey: ["comments", news?._id],
+        queryFn: async () => {
             let res = await fetch(`/api/single-news-comments?newsId=${news?._id}`)
             let data = await res.json()
-            setComments(data.data)
-        })()
-    }, [news])
+            return data?.data
+        }
+    })
+    // useEffect(() => {
+    //     (async () => {
+    //         let res = await fetch(`/api/single-news-comments?newsId=${news?._id}`)
+    //         let data = await res.json()
+    //         setComments(data.data)
+    //     })()
+    // }, [news])
+
 
 
     let handleComment = async e => {
         e.preventDefault()
-        setLoadComment(true)
+        // setLoadComment(true)
         let commenter = user
         let comment = {
             comment: e.target.comment.value,
@@ -38,13 +48,15 @@ const Comments = ({ news }) => {
             body: JSON.stringify(comment)
         })
         let data = await res.json()
+        refetch()
+        e.target.reset()
         setLoadComment(false)
     }
 
 
     let handleReply = async (e, id) => {
         e.preventDefault()
-        setLoadReply(true)
+        // setLoadReply(true)
         // let commenter = author
         let reply = {
             comment: e.target.reply.value,
@@ -60,9 +72,12 @@ const Comments = ({ news }) => {
             body: JSON.stringify(reply)
         })
         let data = await res.json()
+        refetch()
+        e.target.reset()
         setLoadReply(false)
     }
 
+    if (isLoading) return <Loading />
     return (
         <div>
             <h1 className='text-2xl font-bold text-right text-info my-3 border-b-2 mb-3 pb-3 border-info'>All Comments</h1>
