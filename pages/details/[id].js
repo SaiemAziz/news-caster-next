@@ -8,6 +8,7 @@ import { AiFillClockCircle } from 'react-icons/ai'
 import { CgCalendarDates } from 'react-icons/cg'
 import Reaction from "../../components/Reaction";
 import { MdVerified } from "react-icons/md";
+import Comments from "../../components/Comments";
 
 
 
@@ -30,7 +31,7 @@ const Details = () => {
             fetch(`/api/single-news?id=${id}`)
                 .then(result => result.json())
                 .then(data => {
-                    console.log(data)
+                    // console.log(data)
                     setNews(data?.data)
                     setDetailsLoad(false)
                 })
@@ -97,6 +98,8 @@ const Details = () => {
                         </div>
                     </div>
             }
+
+            <Comments news={news} />
         </div>
     );
 };

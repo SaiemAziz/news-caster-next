@@ -18,7 +18,7 @@ export default async function handler(req, res) {
             let id = req.query.id
             let updateDoc = {
                 $set: {
-                    verified: status
+                    verified: status === "true" ? true : false
                 }
             }
             let result = await usersCollection.updateOne({ _id: ObjectId(id) }, updateDoc, { upsert: true })

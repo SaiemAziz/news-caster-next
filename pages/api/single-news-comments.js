@@ -5,33 +5,31 @@ import clientPromise from "../../lib/mongodb";
 export default async function handler(req, res) {
     const client = await clientPromise;
     const db = client.db("newsCasterNext");
-    let newsCollection = await db.collection("news");
+    let commentsCollection = await db.collection("comments");
     switch (req.method) {
         case "GET": {
-            let id = req.query.id;
+            let newsId = req.query.newsId;
             // console.log(id);
-            let news = await newsCollection.findOne({ _id: ObjectId(id) })
+            let allComments = await commentsCollection.find({ newsId: newsId }).sort({ time: -1 }).toArray()
             // console.log(news);
-            res.json({ status: 200, data: news });
+            res.json({ status: 200, data: allComments });
         }
             break;
         case "PUT": {
-            let status = req.query.status;
-            let id = req.query.id;
+            let id = req.query.id
             let updateDoc = {
                 $set: {
-                    status: status
+                    reply: req.body
                 }
             }
-
-            let result = await newsCollection.updateOne({ _id: ObjectId(id) }, updateDoc, { upsert: true })
+            // console.log(req.body);
+            let result = await commentsCollection.updateOne({ _id: ObjectId(id) }, updateDoc, { upsert: true })
             res.json({ status: 200, data: result });
         }
-        // break;
+            break;
         case "POST": {
-            let news = req.body;
-
-            let result = await newsCollection.insertOne(news)
+            let comment = req.body;
+            let result = await commentsCollection.insertOne(comment)
             res.json({ status: 200, data: result });
         }
             break;

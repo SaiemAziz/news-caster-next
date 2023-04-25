@@ -5,7 +5,7 @@ import logo from '../assets/images/logo.png'
 import { GoPrimitiveDot } from 'react-icons/go'
 import { RxPerson } from 'react-icons/rx'
 import { AuthContext } from "./Auth";
-import { HiLogout } from 'react-icons/hi'
+import { FiLogOut } from 'react-icons/fi'
 import Router, { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import { categoriesList } from "./CategoryButtons";
@@ -151,7 +151,7 @@ const Header = () => {
                                 <img className="h-10 w-10 rounded-full border-2 p-[2px] border-primary" src={user?.displayURL} alt="" />
                             </Link>
                         </div>
-                        <HiLogout size={30} className="text-error cursor-pointer" onClick={handlerLogout} />
+                        <FiLogOut size={30} className="text-error cursor-pointer" onClick={handlerLogout} />
                     </div>
                         :
                         <Link href='/user/login'>
