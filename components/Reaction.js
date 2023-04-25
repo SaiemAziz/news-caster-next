@@ -10,9 +10,9 @@ const Reaction = ({ n, setChangeReact }) => {
     let { user } = useContext(AuthContext)
 
     let { data, isLoading, isError, refetch } = useQuery({
-        queryKey: ["reaction", n._id, user?.email],
+        queryKey: ["reaction", n._id, user?._id],
         queryFn: async () => {
-            let res = await fetch(`/api/reaction-check?newsid=${n._id}&email=${user?.email}`)
+            let res = await fetch(`/api/reaction-check?newsid=${n._id}&reporterID=${user?._id}`)
             let data = await res.json()
             return data
         }
@@ -39,7 +39,7 @@ const Reaction = ({ n, setChangeReact }) => {
     let handlerReact = (currentReact) => {
         setChangeReact(true)
         if (react === currentReact) {
-            fetch(`/api/reaction-check?newsid=${n._id}&email=${user?.email}`, {
+            fetch(`/api/reaction-check?newsid=${n._id}&reporterID=${user?._id}`, {
                 method: "DELETE"
             })
                 .then(res => res.json())
@@ -54,7 +54,7 @@ const Reaction = ({ n, setChangeReact }) => {
                 })
         }
         else {
-            fetch(`/api/reaction-check?newsid=${n._id}&email=${user?.email}&react=${currentReact}`, {
+            fetch(`/api/reaction-check?newsid=${n._id}&reporterID=${user?._id}&react=${currentReact}`, {
                 method: "PUT"
             })
                 .then(res => res.json())

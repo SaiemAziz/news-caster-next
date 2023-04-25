@@ -33,6 +33,17 @@ export default async function handler(req, res) {
             res.json({ status: 200, data: result });
         }
             break;
+        case "DELETE": {
+            let type = req.query.type
+            let result;
+            if (type === "comment") {
+                await commentsCollection.deleteOne({ _id: ObjectId(req.query.id) })
+            } else
+                await commentsCollection.updateOne({ _id: ObjectId(req.query.id) }, { $set: { reply: null } }, { upsert: true })
+
+            res.json({ status: 200, data: result });
+        }
+            break;
         default:
             res.json({ status: 401, message: "Forbidden Access" });
     }

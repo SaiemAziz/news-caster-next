@@ -4,6 +4,7 @@ import * as loadingImage from '../assets/images/liquid-4-dot-loader.json'
 import Loading from './LoadingCircle';
 import Lottie from 'lottie-react';
 import { useQuery } from '@tanstack/react-query';
+import { BsTrashFill } from 'react-icons/bs'
 
 const Comments = ({ news }) => {
     // let [comments, setComments] = useState([])
@@ -77,6 +78,16 @@ const Comments = ({ news }) => {
         setLoadReply(false)
     }
 
+
+    let handleDelete = async (type, id) => {
+        let surity = confirm(`Are you sure you want to delete this ${type}?`)
+        if (!surity) return
+        let res = await fetch(`/api/single-news-comments?id=${id}&type=${type}`, {
+            method: 'DELETE'
+        })
+        let data = await res.json()
+        refetch()
+    }
     if (isLoading) return <Loading />
     return (
         <div>
@@ -99,7 +110,7 @@ const Comments = ({ news }) => {
                 {
                     comments?.map(item => (
                         <div key={item?._id}>
-                            <div className='flex my-2 gap-2 border-2 border-blue-500 p-5 rounded-xl'>
+                            <div className='relative flex my-2 gap-2 border-2 border-blue-500 p-5 rounded-xl'>
                                 <img className='h-16 w-16 rounded-full' src={item?.commenter?.displayURL} alt="" />
                                 <div className='flex-1'>
                                     <div className='flex justify-between'>
@@ -107,6 +118,10 @@ const Comments = ({ news }) => {
                                         <h1 className='font-semibold'>{item?.time?.toString().split("T")[0]}</h1>
                                     </div>
                                     <p className='italic font-semibold text-gray-600'>{item?.comment}</p>
+                                </div>
+
+                                <div className={`text-red-500 absolute -top-2 -right-2 border-2 border-red-500 rounded-full p-1 bg-white ${user?.email !== item?.commenter?.email && user?.role !== "admin" && 'hidden'}`} onClick={() => handleDelete("comment", item?._id)}>
+                                    <BsTrashFill size={20} />
                                 </div>
                             </div>
 
@@ -125,7 +140,7 @@ const Comments = ({ news }) => {
                                                     <input className='btn btn-secondary' type="submit" value="REPLY" />
                                             }
                                         </form> :
-                                        <div className='flex-1 flex mb-3 gap-2 border-2 border-purple-400 p-5 rounded-xl'>
+                                        <div className='flex-1 flex mb-3 gap-2 border-2 border-purple-400 p-5 rounded-xl relative'>
                                             <img className='h-16 w-16 rounded-full' src={item?.reply?.author?.displayURL} alt="" />
                                             <div className='flex-1'>
                                                 <div className='flex justify-between'>
@@ -133,6 +148,10 @@ const Comments = ({ news }) => {
                                                     <h1 className='font-semibold'>{item?.reply?.time?.toString().split("T")[0]}</h1>
                                                 </div>
                                                 <p className='italic font-semibold text-gray-600'>{item?.reply?.comment}</p>
+                                            </div>
+
+                                            <div className={`text-red-500 absolute -top-2 -right-2 border-2 border-red-500 rounded-full p-1 bg-white ${user?.email !== news?.authorInfo && user?.role !== "admin" && 'hidden'}`} onClick={() => handleDelete("reply", item?._id)}>
+                                                <BsTrashFill size={20} />
                                             </div>
                                         </div>
                                 }

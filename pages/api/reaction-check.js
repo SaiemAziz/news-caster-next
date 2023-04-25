@@ -9,11 +9,11 @@ export default async function handler(req, res) {
     switch (req.method) {
         case "GET":
             {
-                let userEmail = req.query.email
+                let reporterID = req.query.reporterID
                 let newsID = req.query.newsid
-                let reporter = await usersCollection.findOne({ email: userEmail })
+                // let reporter = await usersCollection.findOne({ email: userEmail })
 
-                let reaction = await reactionsCollection.findOne({ reporterID: reporter._id.toString(), newsID: newsID })
+                let reaction = await reactionsCollection.findOne({ reporterID: reporterID, newsID: newsID })
 
                 let likeCount = await reactionsCollection.find({ newsID: newsID, reaction: "liked" }).toArray()
                 let disLikeCount = await reactionsCollection.find({ newsID: newsID, reaction: "disliked" }).toArray()
@@ -23,10 +23,10 @@ export default async function handler(req, res) {
             break;
         case "DELETE":
             {
-                let userEmail = req.query.email
+                let reporterID = req.query.reporterID
                 let newsID = req.query.newsid
-                let reporter = await usersCollection.findOne({ email: userEmail })
-                let reaction = await reactionsCollection.deleteOne({ reporterID: reporter._id.toString(), newsID: newsID })
+                // let reporter = await usersCollection.findOne({ email: userEmail })
+                let reaction = await reactionsCollection.deleteOne({ reporterID: reporterID, newsID: newsID })
                 // let likeCount = await reactionsCollection.find({ newsID: newsID, reaction: "liked" }).toArray()
                 // if (reaction)
                 //     return res.json({ status: 200, data: reaction.reaction, likeCount: likeCount.length });
@@ -35,15 +35,15 @@ export default async function handler(req, res) {
             break;
         case "PUT":
             {
-                let userEmail = req.query.email
+                let reporterID = req.query.reporterID
                 let newsID = req.query.newsid
                 let react = req.query.react
                 let updateDoc = {
                     $set: { reaction: react }
                 }
-                let reporter = await usersCollection.findOne({ email: userEmail })
+                // let reporter = await usersCollection.findOne({ email: userEmail })
                 let reaction = await reactionsCollection.updateOne(
-                    { reporterID: reporter._id.toString(), newsID: newsID },
+                    { reporterID: reporterID, newsID: newsID },
                     updateDoc,
                     { upsert: true }
                 )
