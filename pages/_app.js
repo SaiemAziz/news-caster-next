@@ -12,7 +12,12 @@ import 'react-toastify/dist/ReactToastify.css';
 import 'react-day-picker/dist/style.css';
 // sass style sheet
 import '../styles/SassTest.scss'
+import {
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query'
 
+export const queryClient = new QueryClient()
 
 export default function App({ Component, pageProps }) {
   loadModelBrowser()
@@ -43,33 +48,33 @@ export default function App({ Component, pageProps }) {
     </div>
 
   return <>
+    <QueryClientProvider client={queryClient}>
+      <Auth>
+        <ModelContext.Provider value={{ model, wordIndex }}>
+          <div className='min-h-screen flex flex-col justify-between bg-[#E5E5E5]' data-theme='light'>
+            {/* <progress className="progress progress-primary w-full m-0 p-0 bg-white"></progress> */}
 
-    <Auth>
-      <ModelContext.Provider value={{ model, wordIndex }}>
-        <div className='min-h-screen flex flex-col justify-between bg-[#E5E5E5]' data-theme='light'>
-          {/* <progress className="progress progress-primary w-full m-0 p-0 bg-white"></progress> */}
+            <Header />
+            <Component {...pageProps} />
+            <Footer />
+            {/* toast show  */}
+            <ToastContainer
+              position="bottom-right"
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="light"
+            />
 
-          <Header />
-          <Component {...pageProps} />
-          <Footer />
-          {/* toast show  */}
-          <ToastContainer
-            position="bottom-right"
-            autoClose={5000}
-            hideProgressBar={false}
-            newestOnTop={false}
-            closeOnClick
-            rtl={false}
-            pauseOnFocusLoss
-            draggable
-            pauseOnHover
-            theme="light"
-          />
-
-        </div>
-      </ModelContext.Provider>
-    </Auth>
-
+          </div>
+        </ModelContext.Provider>
+      </Auth>
+    </QueryClientProvider>
   </>
 }
 

@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@next/font": "13.1.0",
+    "@tanstack/react-query": "^4.29.5",
     "@tensorflow/tfjs": "^4.1.0",
     "daisyui": "^2.46.0",
     "date-fns": "^2.29.3",
