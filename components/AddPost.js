@@ -106,7 +106,7 @@ const AddPost = () => {
             <div className='flex gap-2 items-center'>
 
                 <p className='text-xl text-primary mt-5 mr-5'>Category</p>
-                <select className="select select-info flex-grow my-5" onChange={(e) => setCategory(e.target.value)} required>
+                <select className="select select-info flex-grow my-5" onChange={(e) => setCategory(e.target.value.toLowerCase())} required>
                     <option disabled selected>Pick Category</option>
                     {
                         categoriesList.map(item => (
