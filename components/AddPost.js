@@ -64,7 +64,8 @@ const AddPost = () => {
             title,
             details,
             authorInfo: user?.email,
-            image: displayURL
+            image: displayURL,
+            category
         }
         console.log(news);
         let res2 = await fetch('/api/single-news', {
