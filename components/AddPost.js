@@ -68,20 +68,20 @@ const AddPost = () => {
             category
         }
         console.log(news);
-        let res2 = await fetch('/api/single-news', {
-            method: 'POST',
-            headers: {
-                "content-type": "application/json"
-            },
-            body: JSON.stringify(news)
-        })
-        let data2 = await res2.json()
-        if (data2.data.success) {
-            toast.success('News added successfully')
-            e.target.reset()
-            setDetails('')
-        }
-        setLoadAdd(false)
+        // let res2 = await fetch('/api/single-news', {
+        //     method: 'POST',
+        //     headers: {
+        //         "content-type": "application/json"
+        //     },
+        //     body: JSON.stringify(news)
+        // })
+        // let data2 = await res2.json()
+        // if (data2.data.success) {
+        //     toast.success('News added successfully')
+        //     e.target.reset()
+        //     setDetails('')
+        // }
+        // setLoadAdd(false)
     }
     // if (loadRich) return <div>
     //     <Loading />
