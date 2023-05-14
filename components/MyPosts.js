@@ -29,7 +29,7 @@ const MyPosts = () => {
             {
                 allNews ?
                     <div className=" flex pb-20">
-                        <table className="table table-compact flex-1 px-5">
+                        <table className="table table-compact flex-1 px-5 table-zebra">
                             <thead>
                                 <tr>
                                     <th>SN.</th>
@@ -55,7 +55,8 @@ const MyPosts = () => {
                                             <td>{item?.time.split(' ')[0]}<br />{item?.time.split(' ')[1]}</td>
 
                                             <td className='max-w-sm whitespace-pre-wrap'>{item?.title.slice(0, 200)}</td>
-                                            <td className='max-w-sm whitespace-pre-wrap'>{item?.details.slice(0, 200)}...</td>
+                                            <td className='max-w-sm whitespace-pre-wrap'>
+                                                <div className="" dangerouslySetInnerHTML={{ __html: item?.details.slice(0, 200) + "..." }} /></td>
                                             <td><input type="checkbox" className="toggle toggle-success" defaultChecked={item?.status === "active" ? true : false} onChange={({ target }) => handleStatus(target?.checked ? "active" : "pending", item._id)} /></td>
                                         </tr>
                                     ))

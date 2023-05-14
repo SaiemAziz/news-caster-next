@@ -15,9 +15,9 @@ import Reaction from './Reaction';
 const SingleNews = ({ n }) => {
     let { model, wordIndex } = useContext(ModelContext)
     let { user, setUser } = useContext(AuthContext)
-
+    let time = new Date(n?.time)
     let [author, setAuthor] = useState(null)
-
+    console.log(time);
     // let {real} = n?.prediction
     // let {fake} = n?.prediction
     // let [react, setReact] = useState("none")
@@ -164,8 +164,8 @@ const SingleNews = ({ n }) => {
             <div className='mt-10'>
                 <div className="px-5 pb-5 flex justify-between border-b-2 text-gray-400">
                     <div>
-                        <h1 className="flex gap-2 mb-2 items-center"><AiFillClockCircle size={20} /> {n?.time.split(' ')[0]}</h1>
-                        <h1 className="flex gap-2 items-center"><CgCalendarDates size={20} /> {n?.time.split(' ')[1]}</h1>
+                        <h1 className="flex gap-2 mb-2 items-center"><AiFillClockCircle size={20} /> {time.toLocaleTimeString()}</h1>
+                        <h1 className="flex gap-2 items-center"><CgCalendarDates size={20} /> {time.toLocaleDateString()}</h1>
                     </div>
                     <p className="flex items-center gap-1">{author?.fullName.split(' ').slice(0, 2).join(' ')} {author?.verified && <MdVerified color="blue" />}</p>
                 </div>

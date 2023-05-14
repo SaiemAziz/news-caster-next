@@ -96,13 +96,16 @@ const Comments = ({ news }) => {
                 user &&
                 <form className='flex flex-col md:flex-row gap-5 justify-center items-center w-full mb-10'
                     onSubmit={handleComment}>
-                    <img className='h-16 w-16 rounded-full' src={user?.displayURL} alt="" />
-                    <textarea className='flex-1 max-w-lg textarea textarea-info' name="comment" />
+                    <div className='h-16 w-16 overflow-hidden rounded-full flex justify-center items-center bg-black'>
+
+                        <img className='min-w-full' src={user?.displayURL} alt="" />
+                    </div>
+                    <textarea className='flex-1 max-w-lg textarea textarea-info' name="comment" required placeholder='Please give your valuable comment.' />
                     {
                         loadComment ? <div className='mx-auto max-w-[100px]'>
                             <Lottie animationData={loadingImage} />
                         </div> :
-                            <input className='btn btn-info' type="submit" value="SUBMIT" />
+                            <input className='btn btn-info' type="submit" value="COMMENT" />
                     }
                 </form>
             }
@@ -111,7 +114,10 @@ const Comments = ({ news }) => {
                     comments?.map(item => (
                         <div key={item?._id}>
                             <div className='relative flex my-2 gap-2 border-2 border-blue-500 p-5 rounded-xl'>
-                                <img className='h-16 w-16 rounded-full' src={item?.commenter?.displayURL} alt="" />
+                                <div className='h-16 w-16 overflow-hidden rounded-full flex justify-center items-center bg-black'>
+
+                                    <img className='min-w-full' src={item?.commenter?.displayURL} alt="" />
+                                </div>
                                 <div className='flex-1'>
                                     <div className='flex justify-between'>
                                         <h1 className='text-orange-600 font-bold'>{item?.commenter?.fullName}</h1>
@@ -131,8 +137,11 @@ const Comments = ({ news }) => {
                                     !item?.reply ?
                                         <form className={`flex-1 flex flex-col md:flex-row gap-5 justify-center items-center w-full border-2 border-purple-400 p-5 rounded-xl ${user?.email !== news?.authorInfo && 'hidden'}`}
                                             onSubmit={(e) => handleReply(e, item._id)}>
-                                            <img className='h-16 w-16 rounded-full' src={user?.displayURL} alt="" />
-                                            <textarea className='flex-1 max-w-lg textarea textarea-secondary' name="reply" />
+                                            <div className='h-16 w-16 overflow-hidden rounded-full flex justify-center items-center bg-black'>
+
+                                                <img className='min-w-full' src={user?.displayURL} alt="" />
+                                            </div>
+                                            <textarea className='flex-1 max-w-lg textarea textarea-secondary' name="reply" required placeholder='Please reply to this above comment.' />
                                             {
                                                 loadReply ? <div className='mx-auto max-w-[100px]'>
                                                     <Lottie animationData={loadingImage} />

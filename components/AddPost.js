@@ -3,16 +3,16 @@ import { useRouter } from 'next/router';
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '/components/Auth';
 import { categoriesList } from './CategoryButtons';
-// import RichText from '../components/RichText';
+import RichText from './RichText';
 import Lottie from 'lottie-react';
 import * as loadingImage from '../assets/images/liquid-4-dot-loader.json'
 import Loading from './LoadingCircle';
 // import RichText from './RichText';
 import { toast } from 'react-toastify';
 
-let RichText = React.memo(dynamic(() => import('./RichText'), {
-    ssr: false,
-}))
+// let RichText = React.memo(dynamic(() => import('./RichText'), {
+//     ssr: false,
+// }))
 const AddPost = () => {
     let router = useRouter()
     let { user, loadUser } = useContext(AuthContext)
@@ -40,7 +40,11 @@ const AddPost = () => {
         e.preventDefault()
         setLoadAdd(true)
         console.log(details.length);
-        if (details.length < 100) {
+        if (!category) {
+            setLoadAdd(false)
+            return setErr("Please select a category")
+        }
+        else if (details.length < 100) {
             setLoadAdd(false)
             return setErr("Please enter at least 100 characters of details")
         }
@@ -65,23 +69,27 @@ const AddPost = () => {
             details,
             authorInfo: user?.email,
             image: displayURL,
-            category
+            category: category.toLowerCase()
         }
         console.log(news);
-        // let res2 = await fetch('/api/single-news', {
-        //     method: 'POST',
-        //     headers: {
-        //         "content-type": "application/json"
-        //     },
-        //     body: JSON.stringify(news)
-        // })
-        // let data2 = await res2.json()
-        // if (data2.data.success) {
-        //     toast.success('News added successfully')
-        //     e.target.reset()
-        //     setDetails('')
-        // }
-        // setLoadAdd(false)
+        try {
+            let res2 = await fetch('/api/single-news', {
+                method: 'POST',
+                headers: {
+                    "content-type": "application/json"
+                },
+                body: JSON.stringify(news)
+            })
+            let data2 = await res2.json()
+            if (data2.data.success) {
+                toast.success('News added successfully')
+                e.target.reset()
+                setDetails('')
+            }
+        } catch (e) {
+            toast.error("Something went wrong")
+        }
+        setLoadAdd(false)
     }
     // if (loadRich) return <div>
     //     <Loading />
@@ -105,7 +113,7 @@ const AddPost = () => {
             </div>
             <div className='flex gap-2 items-center'>
 
-                <p className='text-xl text-primary mt-5 mr-5'>Category</p>
+                <p className='text-xl text-primary mr-5'>Category</p>
                 <select className="select select-info flex-grow my-5" onChange={(e) => setCategory(e.target.value.toLowerCase())} required>
                     <option disabled selected>Pick Category</option>
                     {
@@ -116,7 +124,7 @@ const AddPost = () => {
                 </select>
             </div>
 
-            <p className='text-xl my-4 text-primary'>Details</p>
+            <p className='text-xl mb-4 text-primary'>Details</p>
             <RichText value={details} setValue={setDetails} />
             {
                 err && <p className='text-center font-bold text-sm text-error'>{err}</p>

@@ -1,3 +1,4 @@
+"use client"
 import Image from "next/image";
 import Link from "next/link";
 import { useContext, useEffect, useState } from "react";
@@ -12,7 +13,7 @@ import { categoriesList } from "./CategoryButtons";
 
 const Header = () => {
     let router = useRouter()
-    let { setCat, user, setUser, logOutUser } = useContext(AuthContext)
+    let { setCat, user, setUser, logOutUser, loadUser } = useContext(AuthContext)
     let [drop1, setDrop1] = useState(false)
     let [drop2, setDrop2] = useState(false)
     let [drop3, setDrop3] = useState(false)
@@ -66,7 +67,7 @@ const Header = () => {
                 {/* mobile or tablet */}
                 <div className="lg:hidden" >
                     <label className="cursor-pointer swap swap-rotate mr-3" >
-                        <input type="checkbox" onChange={(e) => {
+                        <input type="checkbox" checked={drop3} onChange={(e) => {
                             setDrop3(e.target.checked)
                             if (!e.target.checked)
                                 setDrop2(e.target.checked)
@@ -148,7 +149,11 @@ const Header = () => {
                     {user ? <div className="flex gap-3 items-center">
                         <div className="tooltip tooltip-bottom tooltip-accent" data-tip={user?.fullName}>
                             <Link href='/profile'>
-                                <img className="h-10 w-10 rounded-full border-2 p-[2px] border-primary" src={user?.displayURL} alt="" />
+                                <div className={`h-10 w-10 rounded-full border-2 border-primary overflow-hidden flex justify-center items-center bg-black`}>
+
+                                    <img className='' src={user?.displayURL} alt="" />
+                                </div>
+                                {/* <img className="h-10 w-10 rounded-full border-2 p-[2px] border-primary" src={user?.displayURL} alt="" /> */}
                             </Link>
                         </div>
                         <FiLogOut size={30} className="text-error cursor-pointer" onClick={handlerLogout} />

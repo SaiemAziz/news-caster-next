@@ -22,6 +22,8 @@ const Auth = ({ children }) => {
     let [user, setUser] = useState(null)
     let [loadUser, setLoadUser] = useState(true)
     let [cat, setCat] = useState('All')
+    const [news, setNews] = useState(null)
+    const [editNews, setEditNews] = useState(true)
     // check currently signed in user
     useLayoutEffect(() => {
         setLoadUser(true)
@@ -87,7 +89,9 @@ const Auth = ({ children }) => {
         logOutUser,
         loginUserGoogle,
         sendVerification,
-        cat, setCat
+        cat, setCat,
+        news, setNews,
+        editNews, setEditNews
     }
     return (
         <AuthContext.Provider value={userInfo}>

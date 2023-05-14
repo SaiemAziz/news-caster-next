@@ -81,7 +81,7 @@ const Reaction = ({ n, setChangeReact }) => {
         }
     }
     return (
-        <div className={`flex gap-5 ${user ? '' : 'tooltip'} tooltip-top tooltip-accent tooltip-right`} data-tip="!!! Please Login to react">
+        <div className={`flex gap-5 ${user ? '' : 'tooltip'} tooltip-top tooltip-accent`} data-tip="!!! Please Login to react">
             <div className="flex items-center gap-2">
                 <button className="btn btn-ghost hover:bg-transparent btn-xs p-0 md:hover:scale-125 duration-150 disabled:bg-transparent"
                     disabled={user ? false : true}

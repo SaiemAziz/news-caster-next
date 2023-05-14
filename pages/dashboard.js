@@ -44,7 +44,7 @@ const Dashboard = () => {
                     <label htmlFor="reporter-dashboard-drawer" className="drawer-overlay"></label>
                     <ul className="menu p-4 w-80 bg-blue-200 text-base-content ">
                         <h1 className='font-bold text-3xl italic text-blue-950 text-center mb-3 border-b-2 border-blue-950 pb-2'>REPORTER</h1>
-                        <li className='text-center my-1 btn btn-info' onClick={() => setTab("addPost")}>Add Post</li>
+                        <li className='text-center my-1 btn btn-info rounded-none' onClick={() => setTab("addPost")}>Add Post</li>
                         <li className='text-center my-1 btn btn-info' onClick={() => setTab("myAllNews")}>My All News</li>
                     </ul>
                 </div>

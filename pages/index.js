@@ -4,7 +4,7 @@ import { Inter } from '@next/font/google'
 import styles from '../styles/Home.module.css'
 import SingleNews from '../components/SingleNews'
 import Banner from '../components/Banner'
-import { useEffect, useLayoutEffect, useState } from 'react'
+import { useContext, useEffect, useLayoutEffect, useState } from 'react'
 import Footer from '../components/Footer'
 import BannerTravel from '../components/BannerTravel'
 import Test from '../components/Test'
@@ -14,10 +14,13 @@ import BelowBannerSlider from '../components/BelowBannerSlider'
 import YoutubeSection from '../components/YoutubeSection'
 import handleTokenizeClick from '../components/functions/handleTokenizeClick'
 import WhyChooseUs from '../components/WhyChooseUs'
+import EditNews from '../components/EditNews'
+import { AuthContext } from '../components/Auth'
 
 
 
 export default  function Home() {
+  let {editNews} = useContext(AuthContext)
   let [load, setLoad] = useState(false)
   let [news, setNews] = useState(null)
   useLayoutEffect(() => {
@@ -40,6 +43,8 @@ export default  function Home() {
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
+      <EditNews />
+      {/* {editNews && <EditNews />} */}
       <main className=''>
 
         <div className='bg-[#0E1E32] pt-10'>

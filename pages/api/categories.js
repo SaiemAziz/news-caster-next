@@ -11,7 +11,7 @@ export default async function handler(req, res) {
                 query = { status: "active" }
             else
                 query = { category: cat, status: "active" }
-            const allNews = await db.collection("news").find(query).toArray();
+            const allNews = await db.collection("news").find(query).sort({ time: -1 }).toArray();
 
             res.json({ status: 200, data: allNews });
             break;

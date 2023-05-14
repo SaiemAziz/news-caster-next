@@ -9,11 +9,13 @@ import { CgCalendarDates } from 'react-icons/cg'
 import Reaction from "../../components/Reaction";
 import { MdVerified } from "react-icons/md";
 import Comments from "../../components/Comments";
+import EditNews from "../../components/EditNews";
 
 
 
 const Details = () => {
     let [detailsLoad, setDetailsLoad] = useState(true)
+    const [time, setTime] = useState(null)
     let [changeReact, setChangeReact] = useState(false)
     let { model, wordIndex } = useContext(ModelContext)
     let [news, setNews] = useState(null)
@@ -34,6 +36,7 @@ const Details = () => {
                     // console.log(data)
                     setNews(data?.data)
                     setDetailsLoad(false)
+                    setTime(new Date(data?.data?.time))
                 })
         }
     }, [id])
@@ -87,14 +90,18 @@ const Details = () => {
                         {/* author  */}
                         <div className="flex gap-5 mt-5 items-center justify-between">
                             <div className="flex gap-5 items-center">
-                                <img className="h-16 w-16 border-2 border-blue-800 p-0.5 rounded-full" src={author?.displayURL} alt="" />
+                                <div className="h-16 w-16 border-2 border-blue-800 rounded-full flex justify-center items-center bg-black overflow-hidden">
+                                    <img className="" src={author?.displayURL} alt="" />
+                                </div>
                                 {/* <h1 className="font-bold text-xl text-orange-500">{author?.fullName}</h1> */}
                                 <p className="font-bold text-xl text-orange-500 flex gap-2 items-center">{author?.fullName} {author?.verified && <MdVerified color="blue" />}</p>
                             </div>
-                            <div>
-                                <h1 className="flex gap-2 mb-2 items-center"><AiFillClockCircle size={20} /> {news?.time.split(' ')[0]}</h1>
-                                <h1 className="flex gap-2 items-center"><CgCalendarDates size={20} /> {news?.time.split(' ')[1]}</h1>
-                            </div>
+                            {
+                                time && <div>
+                                    <h1 className="flex gap-2 mb-2 items-center"><AiFillClockCircle size={20} /> {time.toLocaleTimeString()}</h1>
+                                    <h1 className="flex gap-2 items-center"><CgCalendarDates size={20} /> {time.toLocaleDateString()}</h1>
+                                </div>
+                            }
                         </div>
                     </div>
             }

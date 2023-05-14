@@ -13,7 +13,7 @@ export default async function handler(req, res) {
             if (email)
                 allNews = await newsCollection.find({ authorInfo: email }).toArray()
             else
-                allNews = await newsCollection.find({}).toArray()
+                allNews = await newsCollection.find({}).sort({ time: -1 }).toArray()
             res.json({ status: 200, data: await allNews });
             break;
         case "POST":
