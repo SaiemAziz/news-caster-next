@@ -3,16 +3,16 @@ import { useRouter } from 'next/router';
 import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from '/components/Auth';
 import { categoriesList } from './CategoryButtons';
-import RichText from './RichText';
+// import RichText from './RichText';
 import Lottie from 'lottie-react';
 import * as loadingImage from '../assets/images/liquid-4-dot-loader.json'
 import Loading from './LoadingCircle';
 // import RichText from './RichText';
 import { toast } from 'react-toastify';
 
-// let RichText = React.memo(dynamic(() => import('./RichText'), {
-//     ssr: false,
-// }))
+let RichText = React.memo(dynamic(() => import('./RichText'), {
+    ssr: false,
+}))
 const AddPost = () => {
     let router = useRouter()
     let { user, loadUser } = useContext(AuthContext)
