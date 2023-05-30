@@ -22,7 +22,7 @@ export default async function handler(req, res) {
                     ...req.body
                 }
             }
-            console.log(req.body);
+            // console.log(req.body);
             let result = await usersCollection.updateOne(
                 { email: email },
                 updateDoc,

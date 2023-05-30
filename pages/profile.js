@@ -35,7 +35,7 @@ const Profile = () => {
         //     ...myInfo,
         //     address: address
         // }
-        if (!/^(\+88)?[0-0]{1}[1-1]{1}[0-9]{3}[-]?[0-9]{6}$/.test(myInfo.phone)) {
+        if (myInfo.phone && !/^(\+88)?[0-0]{1}[1-1]{1}[0-9]{3}[-]?[0-9]{6}$/.test(myInfo.phone)) {
             setErr("Invalid phone number")
             return setLoadForm(false)
         }
