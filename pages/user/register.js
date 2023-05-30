@@ -32,7 +32,7 @@ const register = () => {
             let res = await fetch('/api/all-users')
             let data = await res.json()
             let allUsers = data.data;
-            let fetchedUserNames = allUsers.map(user => user.userName.toLowerCase())
+            let fetchedUserNames = allUsers.map(user => user?.userName?.toLowerCase())
             setUserNames(fetchedUserNames)
         })()
     }, [])
@@ -45,7 +45,7 @@ const register = () => {
         else if (e.target.value.includes(' ')) {
             e.target.value = e.target.value.replace(' ', '')
             setErr('Username cannot have spaces')
-        } else if (userNames.indexOf(userName.toLowerCase()) >= 0)
+        } else if (userNames.indexOf(userName?.toLowerCase()) >= 0)
             return setAvailable('false')
         else
             return setAvailable('true')
@@ -59,14 +59,17 @@ const register = () => {
         let password = e.target.password.value
         let confirm = e.target.confirm.value
         let displayName = e.target.displayName.value
-        let userName = e.target.userName.value
+        let userName = e.target.name.value
         let email = e.target.email.value
         let image = e.target.image.files[0]
+        if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+            setErr('Enter a valid email address')
+            return setLoad(false)
+        }
         if (password !== confirm) {
             setErr('Password and Confirm does not match')
             return setLoad(false)
         }
-
         let formData = new FormData()
         formData.append('image', image)
 
@@ -133,7 +136,11 @@ const register = () => {
 
                 <form onSubmit={handlerForm} className='flex flex-col gap-3 w-full max-w-xs'>
                     <div className="relative w-full max-w-xs font-semibold">
-                        <input required type="text" id="floating_user_name" className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border-l-4 border-[#097ef6] outline-0 focus:ring-0 focus:border-[#097ef6] peer" placeholder=" " name='userName'
+                        <input required type="email" id="floating_email" className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border-l-4 border-[#097ef6] outline-0 focus:ring-0 focus:border-[#097ef6] peer" placeholder=" " name='email' />
+                        <label htmlFor="floating_email" className="absolute  text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-[#097ef6]  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Email</label>
+                    </div>
+                    <div className="relative w-full max-w-xs font-semibold">
+                        <input required type="text" id="floating_user_name" className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border-l-4 border-[#097ef6] outline-0 focus:ring-0 focus:border-[#097ef6] peer" placeholder=" " name='name'
                             onChange={handleCheckUserName}
                             onBlur={() => available === 'true' && setAvailable(null)}
                         />
@@ -141,10 +148,6 @@ const register = () => {
                     </div>
                     {available === 'false' && <p className='text-center font-bold text-sm text-error'>User name not available</p>}
                     {available === 'true' && <p className='text-center font-bold text-sm text-success'>User name available</p>}
-                    <div className="relative w-full max-w-xs font-semibold">
-                        <input required type="email" id="floating_email" className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border-l-4 border-[#097ef6] outline-0 focus:ring-0 focus:border-[#097ef6] peer" placeholder=" " name='email' />
-                        <label htmlFor="floating_email" className="absolute  text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-[#097ef6]  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Email</label>
-                    </div>
                     <div className="relative w-full max-w-xs font-semibold">
                         <input required type="text" id="floating_full_name" className="block px-2.5 pb-2.5 pt-4 w-full text-sm text-gray-900 bg-transparent border-l-4 border-[#097ef6] outline-0 focus:ring-0 focus:border-[#097ef6] peer" placeholder=" " name='displayName' />
                         <label htmlFor="floating_full_name" className="absolute  text-gray-400 duration-300 transform -translate-y-4 scale-75 top-2 z-10 origin-[0]  px-2 peer-focus:px-2 peer-focus:text-[#097ef6]  peer-placeholder-shown:scale-100 peer-placeholder-shown:-translate-y-1/2 peer-placeholder-shown:top-1/2 peer-focus:top-2 peer-focus:scale-75 peer-focus:-translate-y-4 left-1">Full Name</label>
