@@ -35,7 +35,7 @@ const Reaction = ({ n, setChangeReact }) => {
     }, [data])
 
 
-    console.log(data);
+    // console.log(data);
     let handlerReact = (currentReact) => {
         setChangeReact(true)
         if (react === currentReact) {

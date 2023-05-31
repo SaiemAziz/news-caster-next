@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import React, { useContext, useLayoutEffect, useState } from 'react';
+import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import * as loginImage from '../../assets/images/GLOBE-ANIME.json'
 import Lottie from 'lottie-react';
@@ -21,13 +21,13 @@ const register = () => {
     let [userNames, setUserNames] = useState()
     let [available, setAvailable] = useState(null)
     let [birthDate, setBirthDate] = useState(null);
-    useLayoutEffect(() => {
-        if (user?.uid) {
+    useEffect(() => {
+        if (user?.email) {
             toast.error('You already have logged in')
-            router.push('/')
+            router.push('/profile')
         }
-    }, [])
-    useLayoutEffect(() => {
+    }, [user])
+    useEffect(() => {
         (async function () {
             let res = await fetch('/api/all-users')
             let data = await res.json()

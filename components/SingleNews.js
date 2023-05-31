@@ -17,22 +17,22 @@ const SingleNews = ({ n }) => {
     let { user, setUser } = useContext(AuthContext)
     let time = new Date(n?.time)
     let [author, setAuthor] = useState(null)
-    console.log(time);
+    // console.log(time);
     // let {real} = n?.prediction
     // let {fake} = n?.prediction
     // let [react, setReact] = useState("none")
     let [changeReact, setChangeReact] = useState(false)
 
-    let [loading, setLoading] = useState(true)
+    let [loading, setLoading] = useState(false)
     // let [likeCount, setLikeCount] = useState(0)
     // let [disLikeCount, setDisLikeCount] = useState(0)
     // // let [wordIndex, setWordIndex] = useState({});
     let [slide, setSlide] = useState(false)
-    let [real, setReal] = useState(null)
-    let [fake, setFake] = useState(null)
+    let [real, setReal] = useState(n?.prediction?.real)
+    let [fake, setFake] = useState(100 - n?.prediction?.real)
     const [displaySize, setDisplaySize] = useState({ width: 0, height: 0 });
 
-    useLayoutEffect(() => {
+    useEffect(() => {
         function updateDisplaySize() {
             setDisplaySize({
                 width: window.innerWidth,
@@ -49,15 +49,17 @@ const SingleNews = ({ n }) => {
     // let MAX_SEQUENCE_LENGTH = 500
     // let { details } = n
 
-    // // Load the word index
-    useLayoutEffect(() => {
-        (async () => {
-            let prediction = await handleTokenizeClick(n?.details, model, wordIndex)
-            setReal(prediction.real)
-            setFake(prediction.fake)
-            setLoading(false)
-        })();
-    }, []);
+    // Load the word index
+    // useEffect(() => {
+    //     (async () => {
+    //         setLoading(true)
+    //         let prediction = await handleTokenizeClick(n?.details, model, wordIndex)
+    //         setReal(prediction.real)
+    //         setFake(100 - prediction.real)
+    //         console.log(n?.title, prediction);
+    //         setLoading(false)
+    //     })();
+    // }, []);
 
     // useLayoutEffect(() => {
     //     fetch(`/api/reaction-check?newsid=${n._id}&email=${user?.email}`)
@@ -141,17 +143,20 @@ const SingleNews = ({ n }) => {
         )
 
     return (
-        <div className="bg-white flex flex-col justify-between shadow-lg"
+        <div className=" bg-white flex flex-col justify-between shadow-lg"
             onMouseEnter={() => displaySize.width > 425 && setSlide(true)} onMouseLeave={() => displaySize.width > 425 && setSlide(false)}
         >
+
             <div>
                 <div className='relative flex justify-center items-center overflow-hidden h-60'>
                     <img className="w-full" src={n?.image} alt="" />
                     <div className={`absolute top-0 z-30 w-full h-full flex flex-col justify-center items-center bg-black bg-opacity-50 duration-500 ease-out ${slide ? '' : "translate-y-full"}`}>
                         {
-                            <div className='backdrop-blur-sm'>
-                                <p className='text-3xl p-5 rounded-full font-bold text-success'>Real: {real?.toFixed(2)}%</p>
-                                <p className='text-3xl p-5 rounded-full font-bold text-error'>Fake: {fake?.toFixed(2)}%</p>
+                            <div className='backdrop-blur-sm w-full h-full flex justify-center items-center relative'>
+                                <div className="radial-progress z-20 absolute text-success font-bold text-2xl" style={{ "--value": `${real?.toFixed(2)}`, "--size": "12rem", "--thickness": "1rem" }}>{real?.toFixed(2)}%</div>
+                                <div className="radial-progress z-10 absolute text-error" style={{ "--value": `100`, "--size": "12rem", "--thickness": "1rem" }}></div>
+                                {/* <p className='text-3xl p-5 rounded-full font-bold text-success'>Real: {real?.toFixed(2)}%</p>
+                                <p className='text-3xl p-5 rounded-full font-bold text-error'>Fake: {fake?.toFixed(2)}%</p> */}
                             </div>
                         }
                     </div>

@@ -3,6 +3,7 @@ import AllNewsSliders from './AllNewsSliders';
 import { categoriesList } from './CategoryButtons';
 
 const AllNews = ({ news }) => {
+
     return (
         <div className='max-w-7xl mx-auto p-5 xl:p-0'>
             {

@@ -37,20 +37,23 @@ const Details = () => {
                     setNews(data?.data)
                     setDetailsLoad(false)
                     setTime(new Date(data?.data?.time))
+                    setReal(data?.data?.prediction?.real)
+                    setFake(100 - data?.data?.prediction?.real)
+
                 })
         }
     }, [id])
 
-    useEffect(() => {
-        setAiLoad(true)
-        if (news?.details)
-            (async () => {
-                let prediction = await handleTokenizeClick(news?.details, model, wordIndex)
-                setReal(prediction.real)
-                setFake(prediction.fake)
-                setAiLoad(false)
-            })();
-    }, [news, id]);
+    // useEffect(() => {
+    //     setAiLoad(true)
+    //     if (news?.details)
+    //         (async () => {
+    //             let prediction = await handleTokenizeClick(news?.details, model, wordIndex)
+    //             setReal(prediction.real)
+    //             setFake(prediction.fake)
+    //             setAiLoad(false)
+    //         })();
+    // }, [news, id]);
     useEffect(() => {
         (
             async () => {
@@ -71,18 +74,14 @@ const Details = () => {
                     <div className="w-full">
                         <h1 className="sm:text-5xl text-3xl text-blue-900 font-bold text-center mb-10 mt-5">{news?.title}</h1>
                         <img className="w-full" src={news?.image} alt="" />
-                        {
-                            fake && !aiLoad && <>
-                                <div className="flex justify-between mt-5 mb-2">
-                                    <h1 className="text-green-500 text-xl font-bold">Real ({parseFloat(real).toFixed(2)} %)</h1>
-                                    <h1 className="text-red-500 text-xl font-bold">({parseFloat(fake).toFixed(2)} %) Fake</h1>
-                                </div>
-                                <div className=" overflow-hidden  bg-green-500 mb-5">
-                                    <div className={`p-5 bg-red-500 ml-auto`} style={{ width: `${parseInt(fake)}%` }}>
-                                    </div>
-                                </div>
-                            </>
-                        }
+                        <div className="flex justify-between mt-5 mb-2">
+                            <h1 className="text-green-500 text-xl font-bold">Real ({parseFloat(real).toFixed(2)} %)</h1>
+                            <h1 className="text-red-500 text-xl font-bold">({parseFloat(fake).toFixed(2)} %) Fake</h1>
+                        </div>
+                        <div className=" overflow-hidden  bg-green-500 mb-5">
+                            <div className={`p-5 bg-red-500 ml-auto`} style={{ width: `${parseInt(fake)}%` }}>
+                            </div>
+                        </div>
                         <div className="text-lg font-semibold text-gray-700 italic" dangerouslySetInnerHTML={{ __html: news?.details }} />
                         <div className="m-10 ml-auto w-fit scale-150">
                             <Reaction n={news} setChangeReact={setChangeReact} />

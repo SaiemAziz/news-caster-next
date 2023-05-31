@@ -16,24 +16,47 @@ import handleTokenizeClick from '../components/functions/handleTokenizeClick'
 import WhyChooseUs from '../components/WhyChooseUs'
 import EditNews from '../components/EditNews'
 import { AuthContext } from '../components/Auth'
+import { useQuery } from '@tanstack/react-query'
 
 
 
 export default  function Home() {
-  let {editNews} = useContext(AuthContext)
+  let {editNews, user} = useContext(AuthContext)
   let [load, setLoad] = useState(false)
   let [news, setNews] = useState(null)
-  useLayoutEffect(() => {
-    setLoad(true)
-    setNews([])
-    fetch(`/api/all-news`)
-      .then(res => res.json())
-      .then(data => {
-        let activeNews = data.data.filter( item => item.status === 'active')
-        setNews(activeNews.slice(0, 4))
-        setLoad(false)
-      })
-  }, [])
+  let newsQuery = useQuery({
+    "queryKey" : [`/api/all-news`],
+    "queryFn" : async () => {
+      let res = await fetch(`/api/all-news`)
+      let data = await res.json()
+      return data?.data
+    }
+  })
+  useEffect(() => {
+    // setLoad(true)
+    // setNews([])
+    // fetch(`/api/all-news`)
+    //   .then(res => res.json())
+    //   .then(data => {
+    //     let activeNews = data.data.filter( item => item.status === 'active')
+    //     setNews(activeNews.slice(0, 4))
+    //     setLoad(false)
+    //   })
+    if(newsQuery?.data){
+          let activeNews = newsQuery?.data.filter( item => item.status === 'active')
+          setNews(activeNews.slice(0, 4))
+    }
+  }, [newsQuery?.data])
+
+
+  let handleDelete = async (id) => {
+    let surity = confirm('Are you sure you want to delete?')
+    if (!surity) return
+    // console.log(id);
+    let res = await fetch(`/api/single-news?id=${id}`, { method: 'DELETE' })
+    let data = await res.json()
+    newsQuery.refetch()
+}
 
   return (
     <>
@@ -60,12 +83,19 @@ export default  function Home() {
             <h1 className='text-xl font-bold p-5 bg-white mb-5'><span className='border-b-2 border-[#C31815] pb-1'>Late</span>st Stories</h1>
             
                 {
-                  load ? <Loading /> : <div className='grid lg:grid-cols-2 gap-5'>
+                  newsQuery?.isLoading ? <Loading /> : <div className='grid lg:grid-cols-2 gap-5'>
                   {
-                    news?.map(n => <SingleNews
-                      key={n?._id}
+                    news?.map(n => <div key={n?._id} className='relative'>
+                    {
+                user?.email === n?.authorInfo && <div className='absolute right-2 top-2 z-40'>
+                    <button className="btn btn-error btn-circle btn-xs text-white" onClick={() => handleDelete(n?._id)}>x</button>
+                </div>
+            }
+                    <SingleNews
                       n={n}
-                    ></SingleNews>)
+                    ></SingleNews>
+                    </div> 
+                    )
                   }
                 </div>
                 }

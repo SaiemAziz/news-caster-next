@@ -29,7 +29,7 @@ const StarRating = () => {
     }
   })
 
-  console.log(average);
+  // console.log(average);
 
   useEffect(() => {
     setRating(user?.rating || 0);

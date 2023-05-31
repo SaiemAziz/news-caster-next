@@ -1,6 +1,6 @@
 import Lottie from 'lottie-react';
 import Link from 'next/link';
-import React, { useContext, useLayoutEffect, useState } from 'react';
+import React, { useContext, useEffect, useLayoutEffect, useState } from 'react';
 import * as loginImage from '../../assets/images/GLOBE-ANIME.json'
 import { FcGoogle } from 'react-icons/fc'
 import { AuthContext } from '../../components/Auth';
@@ -16,12 +16,12 @@ const login = () => {
     let [show, setShow] = useState(false)
     let [err, setErr] = useState('')
 
-    useLayoutEffect(() => {
-        if (user?.uid) {
+    useEffect(() => {
+        if (user?.email) {
             toast.error('You already have logged in')
-            router.push('/')
+            router.push('/profile')
         }
-    }, [])
+    }, [user])
 
     let handlerForm = e => {
         e.preventDefault();

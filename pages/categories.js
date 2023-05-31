@@ -6,26 +6,50 @@ import CategoryButtons from '../components/CategoryButtons'
 import Head from 'next/head'
 import AllNews from '../components/AllNews'
 import { AuthContext } from '../components/Auth'
+import { useQuery } from '@tanstack/react-query'
 
 const categories = () => {
-  let { cat, setCat } = useContext(AuthContext)
+  let { cat, setCat, user } = useContext(AuthContext)
   let [news, setNews] = useState([])
   let [load, setLoad] = useState(true)
   let [button, setButton] = useState(cat || 'All')
+  let newsQuery = useQuery({
+    "queryKey": [`/api/categories?category=${button.toLowerCase()}`],
+    "queryFn": async () => {
+      let res = await fetch(`/api/categories?category=${button.toLowerCase()}`)
+      let data = await res.json()
+      return data?.data
+    }
+  })
+  // useEffect(() => {
+  // setLoad(true)
+  // setNews([])
+  // fetch(`/api/categories?category=${button.toLowerCase()}`)
+  //   .then(res => res.json())
+  //   .then(data => {
+  //     setNews(data.data)
+  //     setLoad(false)
+  //   })
+  //   newsQuery.refetch()
+  // }, [button])
+
   useEffect(() => {
-    setLoad(true)
-    setNews([])
-    fetch(`/api/categories?category=${button.toLowerCase()}`)
-      .then(res => res.json())
-      .then(data => {
-        setNews(data.data)
-        setLoad(false)
-      })
-  }, [button])
+    if (newsQuery?.data)
+      setNews(newsQuery?.data)
+  }, [newsQuery?.data])
 
   useEffect(() => {
     setButton(cat)
   }, [cat])
+
+  let handleDelete = async (id) => {
+    let surity = confirm('Are you sure you want to delete?')
+    if (!surity) return
+    // console.log(id);
+    let res = await fetch(`/api/single-news?id=${id}`, { method: 'DELETE' })
+    let data = await res.json()
+    newsQuery.refetch()
+  }
   return (
     <div className=' mb-14'>
       <Head>
@@ -43,20 +67,30 @@ const categories = () => {
       {/* <h1 className='text-xl font-bold p-5 bg-white mx-10 -mt-7 mb-5'><span className='border-b-2 border-[#C31815] pb-1'>All</span> News</h1> */}
 
       {
-        load ? <div className={`max-w-5xl mx-auto my-11`}>
+        newsQuery?.isLoading ? <div className={`max-w-5xl mx-auto my-11`}>
           <Loading />
         </div> :
           <div className=' md:px-20 px-5'>
             {button === "All" ?
-              <AllNews news={news} /> :
-              <div className='max-w-7xl mx-auto grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-5'>
+              <AllNews news={news} /> : <div>
                 {
-                  news?.map(n => <SingleNews
-                    key={n?._id}
-                    n={n}
-                  ></SingleNews>)
+                  news.length ?
+                    <div className='max-w-7xl mx-auto grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 gap-5'>
+                      {news?.map(n => <div key={n?._id} className='relative'>
+                        {
+                          user?.email === n?.authorInfo && <div className='absolute right-2 top-2 z-40'>
+                            <button className="btn btn-error btn-circle btn-xs text-white" onClick={() => handleDelete(n?._id)}>x</button>
+                          </div>
+                        }
+                        <SingleNews
+                          n={n}
+                        ></SingleNews>
+                      </div>)}
+                    </div>
+                    : <p className='text-center my-10 font-semibold text-xl w-full'>No news under {button.toUpperCase()} category</p>
                 }
-              </div>}
+              </div>
+            }
           </div>
       }
     </div>

@@ -26,7 +26,7 @@ export default function App({ Component, pageProps }) {
   let [wordIndex, setWordIndex] = useState(null);
 
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     (async () => {
       let res = await fetch("/models/model/word_index.json")
       let data = await res.json()

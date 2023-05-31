@@ -42,7 +42,7 @@ export async function getStaticProps() {
     let res = await fetch("models/model/word_index.json")
     let data = await res.json()
     let myModel = await tf.loadLayersModel("models/model/model.json")
-    console.log(data);
+    // console.log(data);
     return {
         props: {
             model: myModel,

@@ -27,11 +27,17 @@ export default async function handler(req, res) {
             let result = await newsCollection.updateOne({ _id: ObjectId(id) }, updateDoc, { upsert: true })
             res.json({ status: 200, data: result });
         }
-        // break;
+            break;
         case "POST": {
             let news = req.body;
 
             let result = await newsCollection.insertOne(news)
+            res.json({ status: 200, data: result });
+        }
+            break;
+        case "DELETE": {
+            let id = req.query.id;
+            let result = await newsCollection.deleteOne({ _id: ObjectId(id) })
             res.json({ status: 200, data: result });
         }
             break;

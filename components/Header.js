@@ -77,7 +77,7 @@ const Header = () => {
                     </label>
                     <div className={`absolute   ${drop3 ? 'translate-y-4 -translate-x-4' : 'scale-0 -translate-y-4 -translate-x-16'} duration-300 ease-in-out flex flex-col shadow-xl bg-base-100`}>
                         <Link className="px-5 py-2 flex gap-1 items-center" href={'/'}><GoPrimitiveDot className="text-red-500" />Home</Link>
-                        <button className="my-auto cursor-pointer" onClick={() => setDrop2(!drop2)}>Categories
+                        <div className="my-auto cursor-pointer" onClick={() => setDrop2(!drop2)}>Categories
                             {/* <div className={`absolute left-16 ${drop1 ? 'top-16' : 'scale-0 -top-14'} ease-out bg-base-100 shadow-2xl duration-300`}>
                             <ul className="flex flex-col"> */}
                             {
@@ -86,12 +86,14 @@ const Header = () => {
                                     {/* <button className="px-5 py-2" onClick={() => handleCategory('Sports')} >Sports</button> */}
                                     {
                                         categoriesList.map(item => (
-                                            <button className="px-5 py-2" onClick={() => handleCategory(item)} >{item}</button>
+                                            <button className="px-5 py-2" onClick={() => handleCategory(item)}
+                                                key={item}
+                                            >{item}</button>
                                         ))
                                     }
                                 </div>
                             }
-                        </button>
+                        </div>
                         <Link className="px-5 py-2" href={'/about'}>About Us</Link>
                         {
                             user &&
@@ -117,13 +119,13 @@ const Header = () => {
                 <div className="flex justify-between flex-1 mx-5">
                     <div className="lg:flex hidden gap-10 relative">
                         <Link className="my-auto flex gap-1 items-center" href={'/'}><GoPrimitiveDot className="text-red-500" />Home</Link>
-                        <button className="my-auto cursor-pointer" onClick={() => setDrop2(!drop2)}>Categories
+                        <div className="my-auto cursor-pointer" onClick={() => setDrop2(!drop2)}>Categories
                             {/* <div className={`absolute left-16 ${drop1 ? 'top-16' : 'scale-0 -top-14'} ease-out bg-base-100 shadow-2xl duration-300`}>
                             <ul className="flex flex-col"> */}
                             <div className={`absolute duration-200 ease-out flex flex-col gap-2 -z-30 bg-white ${!drop2 ? '-translate-y-36 -translate-x-10 scale-0 ' : 'translate-y-4'}`}>
                                 {
                                     categoriesList.map(item => (
-                                        <button className="px-7 py-2" onClick={() => handleCategory(item)} >{item}</button>
+                                        <button className="px-7 py-2" onClick={() => handleCategory(item)} key={item} >{item}</button>
                                     ))
                                 }
                                 {/* <Link className="px-5 py-2" href={'/'}>All News</Link>
@@ -132,7 +134,7 @@ const Header = () => {
                                 <Link className="px-5 py-2" href={'/'}>Technologies</Link>
                                 <Link className="px-5 py-2" href={'/'}>Entertainment</Link> */}
                             </div>
-                        </button>
+                        </div>
                         <Link className="my-auto" href={'/about'}>About Us</Link>
                         {
                             user &&

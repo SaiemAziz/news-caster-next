@@ -9,6 +9,8 @@ import * as loadingImage from '../assets/images/liquid-4-dot-loader.json'
 import Loading from './LoadingCircle';
 // import RichText from './RichText';
 import { toast } from 'react-toastify';
+import handleTokenizeClick from './functions/handleTokenizeClick';
+import { ModelContext } from '../pages/_app';
 
 let RichText = React.memo(dynamic(() => import('./RichText'), {
     ssr: false,
@@ -16,6 +18,7 @@ let RichText = React.memo(dynamic(() => import('./RichText'), {
 const AddPost = () => {
     let router = useRouter()
     let { user, loadUser } = useContext(AuthContext)
+    let { model, wordIndex } = useContext(ModelContext)
     const [details, setDetails] = useState('');
     const [loadAdd, setLoadAdd] = useState(false);
     const [loadRich, setLoadRich] = useState(true);
@@ -39,7 +42,7 @@ const AddPost = () => {
     let handleForm = async e => {
         e.preventDefault()
         setLoadAdd(true)
-        console.log(details.length);
+        // console.log(details.length);
         if (!category) {
             setLoadAdd(false)
             return setErr("Please select a category")
@@ -61,7 +64,7 @@ const AddPost = () => {
         let res = await fetch(imgbbUrl, config)
         let data = await res.json()
         let displayURL = data.data.display_url
-
+        let prediction = await handleTokenizeClick(details, model, wordIndex)
         let news = {
             time: new Date(),
             status: 'active',
@@ -69,9 +72,12 @@ const AddPost = () => {
             details,
             authorInfo: user?.email,
             image: displayURL,
-            category: category.toLowerCase()
+            category: category.toLowerCase(),
+            prediction: {
+                real: prediction.real
+            }
         }
-        console.log(news);
+        // console.log(news);
         try {
             let res2 = await fetch('/api/single-news', {
                 method: 'POST',

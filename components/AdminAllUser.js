@@ -18,7 +18,7 @@ const AdminAllUser = () => {
             method: 'PUT'
         })
         let data = await res.json()
-        console.log(data);
+        // console.log(data);
         toast.success("Reporter's status has been updated to " + (verified ? "verified" : "not verified"))
     }
     return (

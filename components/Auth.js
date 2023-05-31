@@ -1,4 +1,4 @@
-import React, { createContext, useLayoutEffect, useState } from 'react';
+import React, { createContext, useEffect, useLayoutEffect, useState } from 'react';
 
 import {
     GoogleAuthProvider,
@@ -25,7 +25,7 @@ const Auth = ({ children }) => {
     const [news, setNews] = useState(null)
     const [editNews, setEditNews] = useState(true)
     // check currently signed in user
-    useLayoutEffect(() => {
+    useEffect(() => {
         setLoadUser(true)
         onAuthStateChanged(auth, async (currentUser) => {
             if (currentUser) {
