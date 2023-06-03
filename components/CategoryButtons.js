@@ -4,10 +4,11 @@ export let categoriesList = [
 const CategoryButtons = ({ setButton, button, setLoad, setCat }) => {
     let styleClickedButton = 'text-black '
     let styleNot = 'text-gray-400'
-    let styleButton = 'py-3 cursor-pointer font-bold duration-300 ease-out border-b-4 hover:border-info border-white bg-white'
+    let styleButton = 'py-3 px-5 cursor-pointer font-bold duration-300 ease-out border-b-4 hover:border-info border-white bg-white flex-1'
 
     return (
-        <div className='text-center mb-5 grid lg:grid-cols-7 w-full mx-auto md:grid-cols-5 sm:grid-cols-4 grid-cols-2 '>
+        // <div className='text-center mb-5 grid lg:grid-cols-7 w-full mx-auto md:grid-cols-5 sm:grid-cols-4 grid-cols-2 '>
+        <div className='text-center mb-5 flex flex-wrap justify-center w-full mx-auto  '>
             {
                 categoriesList.map(item => (
                     <div key={item} className={`${styleButton} ${button === item ? styleClickedButton : styleNot}`} onClick={() => {

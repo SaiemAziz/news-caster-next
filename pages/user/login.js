@@ -12,13 +12,14 @@ const login = () => {
     let router = useRouter()
     let userInfo = useContext(AuthContext)
     let [load, setLoad] = useState(false)
+    let [verifiedBtn, setVerifiedBtn] = useState(false)
     let { user, setUser, setLoadUser, loginUserGoogle, loginUser, logOutUser, sendVerification } = userInfo
     let [show, setShow] = useState(false)
     let [err, setErr] = useState('')
 
     useEffect(() => {
         if (user?.email) {
-            toast.error('You already have logged in')
+            // toast.error('You already have logged in')
             router.push('/profile')
         }
     }, [user])
@@ -37,13 +38,14 @@ const login = () => {
                     setLoadUser(false)
                     toast?.success('Login successful')
                     e.target.reset()
-                    router.push('/dashboard')
+                    router.push('/profile')
                 } else {
                     toast.error("Email not verified yet.")
                     setLoadUser(false)
+                    setVerifiedBtn(true)
                     // sendVerification()
-                    logOutUser()
-                        .then(() => { setUser(null) }).catch(err => { setUser(null) })
+                    // logOutUser()
+                    //     .then(() => { setUser(null) }).catch(err => { setUser(null) })
                 }
                 setLoad(false)
             })
@@ -65,6 +67,11 @@ const login = () => {
     //         })
     // }
 
+
+    let handleVerification = () => {
+        sendVerification()
+        setVerifiedBtn(false)
+    }
     return (
         <div className='md:max-w-7xl w-full mx-auto grid gap-10 md:grid-cols-2 '>
             <div className='flex flex-col items-center justify-center gap-5 p-10'>
@@ -96,6 +103,10 @@ const login = () => {
                                 <Lottie animationData={loadingImage} />
                             </div>
                             : <input type='submit' className='btn border-0 btn-info text-center text-white rounded-full w-full py-2 mt-10 bg-[#097ef6]' value='Login' />
+                    }
+                    {
+                        verifiedBtn &&
+                        <div className="btn btn-accent btn-outline mt-5" onClick={handleVerification}>Send Verification</div>
                     }
                     <Link href='/user/register' className='btn border-0 btn-link text-info text-center w-full mt-0'>New Member?</Link>
                 </form>

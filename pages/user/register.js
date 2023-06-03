@@ -23,7 +23,7 @@ const register = () => {
     let [birthDate, setBirthDate] = useState(null);
     useEffect(() => {
         if (user?.email) {
-            toast.error('You already have logged in')
+            // toast.error('You already have logged in')
             router.push('/profile')
         }
     }, [user])
@@ -89,7 +89,6 @@ const register = () => {
                 sendVerification()
                 toast?.success('Registration successful. Please login.')
                 e.target.reset()
-                setBirthDate(null)
                 addUserToMongoDb({
                     userName,
                     fullName: displayName,
@@ -100,6 +99,7 @@ const register = () => {
                     verified: false,
                     displayURL
                 })
+                setBirthDate(null)
                 logOutUser()
                     .then(() => { setUser(null) }).catch(err => { setUser(null) })
                 setLoad(false)
