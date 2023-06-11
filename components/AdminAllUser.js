@@ -1,17 +1,33 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
+import {FaGreaterThan, FaLessThan} from "react-icons/fa"
 
 const AdminAllUser = () => {
+    let [allData, setAllData] = useState(null)
     let [allUsers, setAllUsers] = useState(null)
+    let [page, setPage] = useState(0)
+    let [pageBtn, setPageBtn] = useState([])
 
     useEffect(() => {
         (async function () {
             let res = await fetch('/api/all-users')
             let data = await res.json()
             let users = data.data;
-            setAllUsers(users)
+            setAllData(users)
+            let dataPortion = users?.slice(0*5, 0*5 + 5)
+            setAllUsers(dataPortion)
+            let pageSize = Math.ceil(users.length / 5);
+            let myPageBtn = []
+            for(let i = 0; i < pageSize ; i++) myPageBtn.push(i)
+            setPageBtn(myPageBtn)
         })()
     }, [])
+    useEffect(() => {
+        if(allData){
+            let data = allData?.slice(page*5, page*5 + 5)
+            setAllUsers(data)
+        }
+    }, [page])
 
     let handleStatus = async (verified, id) => {
         let res = await fetch(`/api/user-info?id=${id}&status=${verified}`, {
@@ -21,9 +37,49 @@ const AdminAllUser = () => {
         // console.log(data);
         toast.success("Reporter's status has been updated to " + (verified ? "verified" : "not verified"))
     }
+
+
     return (
         <div className='p-5 pb-10 flex-1'>
             <h1 className='text-center text-3xl border-b-2 border-info text-info mb-3 pb-3 w-full font-bold'>All Users</h1>
+            
+            {
+                pageBtn.length > 1 && <div className='flex justify-center my-5'>
+                <div className={`flex`}>
+                    <div 
+                        onClick={()=>{
+                            if(page > 0)
+                            setPage(prev => prev-1)
+                        }}
+                        className={`btn btn-accent btn-outline rounded-none mx-5 rounded-l-full`}
+                        
+                        >
+                            <FaLessThan />
+                        </div>
+                    <div className={`overflow-x-auto flex`} style={{width: `${Math.min(120, pageBtn.length * 40)}px`}}>
+                    {
+                        pageBtn?.map((i) => <div 
+                        onClick={()=>setPage(i)}
+                        key={i}
+                        className={`btn w-10 btn-accent ${page === i ? "" : "btn-outline"} rounded-none`}
+                        >
+                            {i+1}
+                        </div> )
+                    }
+                    </div>
+                    <div 
+                        onClick={()=>{
+                            if(page < (pageBtn.length-1))
+                            setPage(prev => prev+1)
+                        }}
+                        className={`btn btn-accent btn-outline rounded-none mx-5 rounded-r-full`}
+                        
+                        >
+                            <FaGreaterThan />
+                        </div>
+                </div>
+            </div>
+            }
             {
                 allUsers ?
                     <div className="flex pb-20">
@@ -44,9 +100,9 @@ const AdminAllUser = () => {
                                 {
                                     allUsers.map((item, i) => (
                                         <tr key={item?._id}>
-                                            <th>{i + 1}</th>
+                                            <th>{(page * 5) + i + 1}</th>
                                             <td>
-                                                <img className='w-60' src={item?.displayURL} alt="" />
+                                                <img className='w-20' src={item?.displayURL} alt="" />
                                             </td>
 
                                             <td>{item?.fullName}</td>
