@@ -92,6 +92,7 @@ const AddPost = () => {
                 e.target.reset()
                 setDetails('')
             }
+            router.push('/categories')
         } catch (e) {
             toast.error("Something went wrong")
         }

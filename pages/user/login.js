@@ -55,22 +55,17 @@ const login = () => {
                 toast?.error(err.code.replace('auth/', '').replaceAll('-', ' ').toUpperCase())
             })
     }
-    // let handlerGoogle = () => {
-    //     loginUserGoogle()
-    //         .then(res => {
-    //             let currentUser = res.user
-    //             router.push('/categories')
-    //             setUser(currentUser)
-    //             setLoadUser(false)
-    //         }).catch(err => {
-    //             console.log(err.code.replace('auth/', '').replaceAll('-', ' ').toUpperCase());
-    //         })
-    // }
+
 
 
     let handleVerification = () => {
         sendVerification()
         setVerifiedBtn(false)
+    }
+
+    let handleRemember = (value) => {
+        if (value) localStorage.setItem('remember', value)
+        else localStorage.removeItem('remember')
     }
     return (
         <div className='md:max-w-7xl w-full mx-auto grid gap-10 md:grid-cols-2 '>
@@ -93,6 +88,10 @@ const login = () => {
                     <div className='flex gap-3 ml-auto'>
                         <p className='text-[#097ef6] font-semibold text-xs'>Show Password</p>
                         <input type="checkbox" onChange={() => setShow(!show)} className="checkbox checkbox-xs checkbox-info" />
+                    </div>
+                    <div className='flex gap-3 ml-auto'>
+                        <p className='text-[#097ef6] font-semibold text-xs'>Remember Me</p>
+                        <input type="checkbox" onChange={(e) => handleRemember(e.target.checked)} className="checkbox checkbox-xs checkbox-info" />
                     </div>
                     {
                         err && <p className='text-center font-bold text-sm text-error'>{err}</p>

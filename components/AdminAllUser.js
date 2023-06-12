@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
-import {FaGreaterThan, FaLessThan} from "react-icons/fa"
+import { FaGreaterThan, FaLessThan } from "react-icons/fa"
 
 const AdminAllUser = () => {
     let [allData, setAllData] = useState(null)
@@ -14,17 +14,17 @@ const AdminAllUser = () => {
             let data = await res.json()
             let users = data.data;
             setAllData(users)
-            let dataPortion = users?.slice(0*5, 0*5 + 5)
+            let dataPortion = users?.slice(0 * 5, 0 * 5 + 5)
             setAllUsers(dataPortion)
             let pageSize = Math.ceil(users.length / 5);
             let myPageBtn = []
-            for(let i = 0; i < pageSize ; i++) myPageBtn.push(i)
+            for (let i = 0; i < pageSize; i++) myPageBtn.push(i)
             setPageBtn(myPageBtn)
         })()
     }, [])
     useEffect(() => {
-        if(allData){
-            let data = allData?.slice(page*5, page*5 + 5)
+        if (allData) {
+            let data = allData?.slice(page * 5, page * 5 + 5)
             setAllUsers(data)
         }
     }, [page])
@@ -42,43 +42,37 @@ const AdminAllUser = () => {
     return (
         <div className='p-5 pb-10 flex-1'>
             <h1 className='text-center text-3xl border-b-2 border-info text-info mb-3 pb-3 w-full font-bold'>All Users</h1>
-            
+
             {
-                pageBtn.length > 1 && <div className='flex justify-center my-5'>
-                <div className={`flex`}>
-                    <div 
-                        onClick={()=>{
-                            if(page > 0)
-                            setPage(prev => prev-1)
-                        }}
-                        className={`btn btn-accent btn-outline rounded-none mx-5 rounded-l-full`}
-                        
+                pageBtn.length > 1 && <div className='flex justify-center my-5 scale-75'>
+                    <div className={`flex`}>
+                        <div
+                            onClick={() => setPage(prev => prev - 1)}
+                            className={`btn  rounded-none mx-5 rounded-l-full ${page > 0 ? "btn-accent btn-outline" : "btn-disabled"} `}
+
                         >
                             <FaLessThan />
                         </div>
-                    <div className={`overflow-x-auto flex`} style={{width: `${Math.min(120, pageBtn.length * 40)}px`}}>
-                    {
-                        pageBtn?.map((i) => <div 
-                        onClick={()=>setPage(i)}
-                        key={i}
-                        className={`btn w-10 btn-accent ${page === i ? "" : "btn-outline"} rounded-none`}
-                        >
-                            {i+1}
-                        </div> )
-                    }
-                    </div>
-                    <div 
-                        onClick={()=>{
-                            if(page < (pageBtn.length-1))
-                            setPage(prev => prev+1)
-                        }}
-                        className={`btn btn-accent btn-outline rounded-none mx-5 rounded-r-full`}
-                        
+                        <div className={`overflow-x-auto flex`} style={{ width: `${Math.min(120, pageBtn.length * 40)}px` }}>
+                            {
+                                pageBtn?.map((i) => <div
+                                    onClick={() => setPage(i)}
+                                    key={i}
+                                    className={`btn w-10 btn-accent ${page === i ? "" : "btn-outline"} rounded-none`}
+                                >
+                                    {i + 1}
+                                </div>)
+                            }
+                        </div>
+                        <div
+                            onClick={() => setPage(prev => prev + 1)}
+                            className={`btn  rounded-none mx-5 rounded-r-full ${page < (pageBtn.length - 1) ? "btn-accent btn-outline" : "btn-disabled"}`}
+
                         >
                             <FaGreaterThan />
                         </div>
+                    </div>
                 </div>
-            </div>
             }
             {
                 allUsers ?

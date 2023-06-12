@@ -27,21 +27,27 @@ const Auth = ({ children }) => {
     // check currently signed in user
     useEffect(() => {
         setLoadUser(true)
-        onAuthStateChanged(auth, async (currentUser) => {
-            if (currentUser) {
-                if (currentUser.emailVerified) {
-                    let res = await fetch(`/api/user-info?email=${currentUser.email}`)
-                    let myUser = await res.json();
-                    setUser(myUser.data)
+        let check = localStorage.getItem('remember')
+        if (check) {
+            onAuthStateChanged(auth, async (currentUser) => {
+                if (currentUser) {
+                    if (currentUser.emailVerified) {
+                        let res = await fetch(`/api/user-info?email=${currentUser.email}`)
+                        let myUser = await res.json();
+                        setUser(myUser.data)
+                    } else {
+                        setUser(null)
+                    }
+                    setLoadUser(false)
                 } else {
                     setUser(null)
                 }
                 setLoadUser(false)
-            } else {
-                setUser(null)
-            }
+            })
+        } else {
             setLoadUser(false)
-        })
+            setUser(null)
+        }
     }, [])
 
 
@@ -56,11 +62,11 @@ const Auth = ({ children }) => {
         sendEmailVerification(auth.currentUser)
             .then(() => {
                 toast.success("Verification sent to your email. Check spam folder too.")
-                setLoadUser(true)
+                setLoadUser(false)
             })
             .catch(err => {
                 toast.error(err.code)
-                setLoadUser(true)
+                setLoadUser(false)
             })
     }
     // log in user with email and password

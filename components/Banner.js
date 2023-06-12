@@ -1,9 +1,8 @@
 import * as bannerImage from '../assets/images/bannerImage.json'
 import Lottie from 'lottie-react'
+
+
 const Banner = () => {
-
-
-
     return (<div className='max-w-6xl mx-auto grid md:grid-cols-2 mb-20 gap-14 text-white'>
         <div className='flex justify-center items-center'>
             <div className='-p-5 -mt-20'>
