@@ -29,7 +29,7 @@ const YoutubeSection = () => {
 
             {/* 3rd vdo  */}
             <div className='bg-white'>
-                <iframe className='w-full' src="https://www.youtube.com/embed/DCjosyo1CWU" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"></iframe>
+                <iframe className='w-full' src="https://www.youtube.com/embed/yhRnxOLmHec" title="YouTube video player" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share; fullscreen"></iframe>
                 <h1 className='text-2xl p-5 pb-2'>SOMOY TV LIVE | সময় টিভি লাইভ | সরাসরি সময় টিভি | LIVE TV | SOMOY TV LIVE STREAMING |BANGLA TV LIVE</h1>
                 <a target='_blank' href="https://www.youtube.com/@somoynews360" className='p-5 pt-0 flex items-center gap-3 hover:text-info'>
                     <img className='rounded-full w-10' src="https://yt3.ggpht.com/T9GKAlpplboyhpfoDFiVeyQdA7l2mx4mp51UxNFpbtEO3XAJT5KY7IUQJ-KlXVXBkpMQc94U=s88-c-k-c0x00ffffff-no-rj" alt="" />
