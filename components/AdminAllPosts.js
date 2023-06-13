@@ -2,6 +2,8 @@ import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from './Auth';
 import Link from 'next/link';
 import { toast } from 'react-toastify';
+import { AiFillClockCircle } from 'react-icons/ai'
+import { CgCalendarDates } from 'react-icons/cg';
 
 const AdminAllPosts = () => {
     let { user } = useContext(AuthContext)
@@ -35,8 +37,8 @@ const AdminAllPosts = () => {
                                     <th>SN.</th>
                                     <th>Category</th>
                                     <th>Image</th>
-                                    <th>Author Email</th>
                                     <th>Time</th>
+                                    <th>Author Email</th>
                                     <th>Title</th>
                                     <th>Details</th>
                                     <th>Active</th>
@@ -44,24 +46,28 @@ const AdminAllPosts = () => {
                             </thead>
                             <tbody className='pl-10'>
                                 {
-                                    allNews.map((item, i) => (
-                                        <tr key={item?._id}>
+                                    allNews.map((item, i) => {
+                                        let time = new Date(item.time)
+                                        return <tr key={item?._id}>
                                             <th>{i + 1}</th>
                                             <td>{item?.category}</td>
-                                            <td>
+                                            <td className=''>
                                                 <Link className='w-full' href={`/details/${item._id}`}>
                                                     <img className='w-60' src={item?.image} alt="" />
                                                 </Link>
                                             </td>
 
-                                            <td>{item?.time.split(' ')[0]}<br />{item?.time.split(' ')[1]}</td>
+                                            <td><div>
+                                                <h1 className="flex gap-2 mb-2 items-center"><AiFillClockCircle size={20} /> {time.toLocaleTimeString()}</h1>
+                                                <h1 className="flex gap-2 items-center"><CgCalendarDates size={20} /> {time.toLocaleDateString()}</h1>
+                                            </div></td>
                                             <td>{item?.authorInfo}</td>
                                             <td className='max-w-sm whitespace-pre-wrap'>{item?.title.slice(0, 200)}</td>
-                                            <td className='max-w-sm whitespace-pre-wrap'>
+                                            <td className='whitespace-pre-wrap'>
                                                 <div className="" dangerouslySetInnerHTML={{ __html: item?.details.slice(0, 200) + "..." }} /></td>
                                             <td><input type="checkbox" className="toggle toggle-success" defaultChecked={item?.status === "active" ? true : false} onChange={({ target }) => handleStatus(target?.checked ? "active" : "pending", item._id)} /></td>
                                         </tr>
-                                    ))
+                                    })
                                 }
 
                             </tbody>

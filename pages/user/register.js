@@ -27,28 +27,34 @@ const register = () => {
             router.push('/profile')
         }
     }, [user])
-    useEffect(() => {
-        (async function () {
-            let res = await fetch('/api/all-users')
-            let data = await res.json()
-            let allUsers = data.data;
-            let fetchedUserNames = allUsers.map(user => user?.userName?.toLowerCase())
-            setUserNames(fetchedUserNames)
-        })()
-    }, [])
+    // useEffect(() => {
+    //     (async function () {
+    //         let res = await fetch('/api/all-users')
+    //         let data = await res.json()
+    //         let allUsers = data.data;
+    //         let fetchedUserNames = allUsers.map(user => user?.userName?.toLowerCase())
+    //         setUserNames(fetchedUserNames)
+    //     })()
+    // }, [])
 
-    let handleCheckUserName = (e) => {
+    let handleCheckUserName = async (e) => {
         let userName = e.target.value
-        setErr('')
         if (e.target.value === '')
             return setAvailable(null)
         else if (e.target.value.includes(' ')) {
             e.target.value = e.target.value.replace(' ', '')
-            setErr('Username cannot have spaces')
-        } else if (userNames.indexOf(userName?.toLowerCase()) >= 0)
+            userName = e.target.value
+        }
+        let res = await fetch('/api/all-users')
+        let data = await res.json()
+        let allUsers = data.data;
+        let fetchedUserNames = allUsers.map(user => user?.userName?.toLowerCase())
+        if (fetchedUserNames.indexOf(userName?.toLowerCase()) >= 0) {
             return setAvailable('false')
-        else
+        }
+        else {
             return setAvailable('true')
+        }
     }
 
 
