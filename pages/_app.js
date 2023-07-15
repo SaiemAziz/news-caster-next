@@ -37,20 +37,20 @@ export default function App({ Component, pageProps }) {
     })();
   }, []);
 
-  if (load)
-    return <div data-theme='light'>
-      <div className='max-w-5xl p-20 min-h-screen mx-auto flex flex-col items-center justify-center'>
-        <p className='text-center text-4xl font-bold pt-10 text-primary'>Fake News Detection</p>
-        <p className='text-center text-4xl font-bold pb-10 text-primary'>Model Loading</p>
-        <p className='text-center text-3xl italic font-bold text-gray-400'>Please Keep Patience</p>
-        <Loading />
-      </div>
-    </div>
+  // if (load)
+  //   return <div data-theme='light'>
+  //     <div className='max-w-5xl p-20 min-h-screen mx-auto flex flex-col items-center justify-center'>
+  //       <p className='text-center text-4xl font-bold pt-10 text-primary'>Fake News Detection</p>
+  //       <p className='text-center text-4xl font-bold pb-10 text-primary'>Model Loading</p>
+  //       <p className='text-center text-3xl italic font-bold text-gray-400'>Please Keep Patience</p>
+  //       <Loading />
+  //     </div>
+  //   </div>
 
   return <>
     <QueryClientProvider client={queryClient}>
       <Auth>
-        <ModelContext.Provider value={{ model, wordIndex }}>
+        <ModelContext.Provider value={{ model, wordIndex, load }}>
           <div className='min-h-screen flex flex-col justify-between bg-[#E5E5E5]' data-theme='light'>
             {/* <progress className="progress progress-primary w-full m-0 p-0 bg-white"></progress> */}
 

@@ -23,6 +23,11 @@ const Header = () => {
         setDrop3(false)
     }, [router])
 
+    useEffect(()=> {
+        if(!drop3)
+            setDrop2(false)
+    }, [drop3])
+
     let menu = <>
         <li><Link href={'/'}>Home</Link></li>
         <li tabIndex={0}>
@@ -69,20 +74,20 @@ const Header = () => {
                     <label className="cursor-pointer swap swap-rotate mr-3" >
                         <input type="checkbox" checked={drop3} onChange={(e) => {
                             setDrop3(e.target.checked)
-                            if (!e.target.checked)
-                                setDrop2(e.target.checked)
                         }} />
                         <svg className="swap-off fill-current" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 512 512"><path d="M64,384H448V341.33H64Zm0-106.67H448V234.67H64ZM64,128v42.67H448V128Z" /></svg>
                         <svg className="swap-on fill-current" xmlns="http://www.w3.org/2000/svg" width="25" height="25" viewBox="0 0 512 512"><polygon points="400 145.49 366.51 112 256 222.51 145.49 112 112 145.49 222.51 256 112 366.51 145.49 400 256 289.49 366.51 400 400 366.51 289.49 256 400 145.49" /></svg>
                     </label>
                     <div className={`absolute   ${drop3 ? 'translate-y-4 -translate-x-4' : 'scale-0 -translate-y-4 -translate-x-16'} duration-300 ease-in-out flex flex-col shadow-xl bg-base-100`}>
                         <Link className="px-5 py-2 flex gap-1 items-center" href={'/'}><GoPrimitiveDot className="text-red-500" />Home</Link>
-                        <div className="my-auto cursor-pointer" onClick={() => setDrop2(!drop2)}>Categories
+                        <div className="my-auto cursor-pointer mx-auto" onClick={() => setDrop2(!drop2)}>Categories
                             {/* <div className={`absolute left-16 ${drop1 ? 'top-16' : 'scale-0 -top-14'} ease-out bg-base-100 shadow-2xl duration-300`}>
                             <ul className="flex flex-col"> */}
                             {
-                                drop3 && <div className={`absolute duration-200 ease-out flex flex-col -z-30 bg-white ${!drop2 ? '-translate-y-40 translate-x-10 scale-0 ' : 'translate-x-28 -translate-y-7'}`}>
-                                    <Link className="px-5 py-2" href={'/categories'}>All News</Link>
+                                drop3 && <div className={`absolute duration-200 ease-out flex flex-col -z-30 bg-white ${!drop2 ? '-translate-y-40 translate-x-10 scale-0 ' : 'translate-x-20 -translate-y-7'}`}>
+                                <button className="px-5 py-2">
+                                    <Link  href={'/categories'}>All News</Link>
+                                </button>
                                     {/* <button className="px-5 py-2" onClick={() => handleCategory('Sports')} >Sports</button> */}
                                     {
                                         categoriesList.map(item => (
