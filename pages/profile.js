@@ -39,7 +39,7 @@ const Profile = () => {
             headers: {
                 "content-type": "application/json"
             },
-            body: JSON.stringify({...myInfo, address})
+            body: JSON.stringify({...myInfo, address: address?.country ? address : myInfo?.address})
         })
         let data = await res.json()
         setUser(data?.data)
