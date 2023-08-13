@@ -44,7 +44,8 @@ const Header = () => {
     </>
 
 
-    let handlerLogout = () => {
+    let handlerLogout = async () => {
+        localStorage.removeItem('remember')
         logOutUser()
             .then(() => {
                 setUser(null)
