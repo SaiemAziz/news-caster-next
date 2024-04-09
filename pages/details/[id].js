@@ -48,13 +48,7 @@ const Details = () => {
 
   useEffect(() => {
     if (news) {
-      fetch("/api/image-classification", {
-        method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
-        body: JSON.stringify({ url: news?.image }),
-      })
+      fetch(`/api/image-classification?url=${news?.image}`)
         .then((res) => res.json())
         .then((d) => {
           let temp = {};

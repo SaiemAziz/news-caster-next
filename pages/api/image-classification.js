@@ -6,9 +6,9 @@ const model = new SashiDoTeachableMachine({
 
 const handler = async (req, res) => {
   switch (req?.method) {
-    case "POST": {
+    case "GET": {
       const prediction = await model.classify({
-        imageUrl: req.body.url,
+        imageUrl: req.query.url,
       });
       res.json(prediction);
     }
