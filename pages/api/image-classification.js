@@ -4,7 +4,7 @@ const model = new SashiDoTeachableMachine({
   modelUrl: process.env.TM_MODEL_URL,
 });
 
-const handler = async (req, res) => {
+export default async function handler(req, res) {
   switch (req?.method) {
     case "GET": {
       const prediction = await model.classify({
@@ -12,6 +12,7 @@ const handler = async (req, res) => {
       });
       res.json(prediction);
     }
+    default:
+      res.json({});
   }
-};
-export default handler;
+}
