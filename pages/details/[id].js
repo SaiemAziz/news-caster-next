@@ -48,7 +48,9 @@ const Details = () => {
 
   useEffect(() => {
     if (news) {
-      fetch(`/api/image-classification?url=${news?.image}`)
+      fetch(
+        `https://toon-tab-server.vercel.app/violence-classifications?url=${news?.image}`
+      )
         .then((res) => res.json())
         .then((d) => {
           let temp = {};
