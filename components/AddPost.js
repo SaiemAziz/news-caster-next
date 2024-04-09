@@ -11,6 +11,7 @@ import Loading from "./LoadingCircle";
 import { toast } from "react-toastify";
 import handleTokenizeClick from "./functions/handleTokenizeClick";
 import { ModelContext } from "../pages/_app";
+import PageTitle from "./PageTitle";
 
 let RichText = React.memo(
   dynamic(() => import("./RichText"), {
@@ -19,8 +20,8 @@ let RichText = React.memo(
 );
 const AddPost = () => {
   let router = useRouter();
-  let { user  } = useContext(AuthContext);
-  let { model, wordIndex,load } = useContext(ModelContext);
+  let { user } = useContext(AuthContext);
+  let { model, wordIndex, load } = useContext(ModelContext);
   const [details, setDetails] = useState("");
   const [loadAdd, setLoadAdd] = useState(false);
   const [loadRich, setLoadRich] = useState(true);
@@ -105,6 +106,7 @@ const AddPost = () => {
 
   return (
     <form onSubmit={handleForm} className="p-5 mx-auto lg:w-[900px] w-full">
+      <PageTitle>Add News</PageTitle>
       <h1 className="text-center text-3xl border-b-2 border-info text-info mb-3 pb-3 w-full font-bold">
         Add News
       </h1>
@@ -120,7 +122,7 @@ const AddPost = () => {
             Please Keep Patience
           </p>
           <div className="-mt-10">
-          <Loading />
+            <Loading />
           </div>
         </div>
       ) : (

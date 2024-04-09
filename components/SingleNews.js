@@ -145,7 +145,11 @@ const SingleNews = ({ n }) => {
     >
       <div>
         <div className="relative flex justify-center items-center overflow-hidden h-60 bg-black">
-          <img className="w-full" src={n?.image} alt="" />
+          <img
+            className="w-full aspect-video object-cover object-center"
+            src={n?.image}
+            alt=""
+          />
           <div
             className={`absolute top-0 z-30 w-full h-full flex flex-col justify-center items-center bg-black bg-opacity-50 duration-500 ease-out ${
               slide ? "" : "translate-y-full"
