@@ -1,4 +1,4 @@
-import Lottie from "lottie-react";
+
 import Link from "next/link";
 import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
 import * as loginImage from "../../assets/images/GLOBE-ANIME.json";
@@ -8,6 +8,7 @@ import { useRouter } from "next/router";
 import { toast } from "react-toastify";
 import * as loadingImage from "../../assets/images/liquid-4-dot-loader.json";
 import PageTitle from "../../components/PageTitle";
+import LottieAnimation from "../../components/LottieAnimation";
 
 const login = () => {
   let router = useRouter();
@@ -80,7 +81,7 @@ const login = () => {
     <div className="md:max-w-7xl w-full mx-auto grid gap-10 md:grid-cols-2 ">
       <PageTitle>Login</PageTitle>
       <div className="flex flex-col items-center justify-center gap-5 p-10">
-        <Lottie animationData={loginImage} />
+        <LottieAnimation jsonData={loginImage} />
         <h1 className="lg:text-5xl text-3xl text-center italic -mt-10 text-blue-500">
           Welcome to NewsCaster
         </h1>
@@ -147,7 +148,7 @@ const login = () => {
           )}
           {load ? (
             <div className="mx-auto max-w-[100px] mt-2">
-              <Lottie animationData={loadingImage} />
+              <LottieAnimation jsonData={loadingImage} />
             </div>
           ) : (
             <input

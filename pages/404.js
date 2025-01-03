@@ -1,13 +1,14 @@
-import Lottie from "lottie-react";
+
 import * as errorImage from "../assets/images/error-glitch-2.json";
 import Link from "next/link";
 import PageTitle from "../components/PageTitle";
+import LottieAnimation from "../components/LottieAnimation";
 
 const Error = () => {
   return (
     <div className="max-w-xl my-20 mx-auto">
       <PageTitle>Error</PageTitle>
-      <Lottie animationData={errorImage} />
+      <LottieAnimation jsonData={errorImage} />
       <div className="mx-auto w-fit">
         <Link
           href="/"

@@ -3,13 +3,13 @@ import { useRouter } from "next/router";
 import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
 import { toast } from "react-toastify";
 import * as loginImage from "../../assets/images/GLOBE-ANIME.json";
-import Lottie from "lottie-react";
 import * as loadingImage from "../../assets/images/liquid-4-dot-loader.json";
 import { AuthContext } from "../../components/Auth";
 import { format } from "date-fns";
 import { DayPicker } from "react-day-picker";
 import { RiArrowDropDownLine } from "react-icons/ri";
 import PageTitle from "../../components/PageTitle";
+import LottieAnimation from "../../components/LottieAnimation";
 
 const register = () => {
   let {
@@ -148,7 +148,7 @@ const register = () => {
     <div className="md:max-w-7xl w-full mx-auto grid gap-10 md:grid-cols-2 ">
       <PageTitle>Register</PageTitle>
       <div className="flex flex-col items-center justify-center gap-5 pt-10">
-        <Lottie animationData={loginImage} />
+        <LottieAnimation jsonData={loginImage} />
         <h1 className="lg:text-5xl text-3xl text-center italic -mt-10 text-blue-500">
           Welcome to NewsCaster
         </h1>
@@ -310,7 +310,7 @@ const register = () => {
           )}
           {load ? (
             <div className="mx-auto max-w-[100px] mt-2">
-              <Lottie animationData={loadingImage} />
+              <LottieAnimation jsonData={loadingImage} />
             </div>
           ) : (
             <input

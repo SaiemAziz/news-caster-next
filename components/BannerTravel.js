@@ -1,5 +1,5 @@
 import animate from '../assets/images/nature-visite-travel.json'
-import Lottie from 'lottie-react'
+import LottieAnimation from './LottieAnimation';
 const BannerTravel = () => {
 
 
@@ -7,7 +7,7 @@ const BannerTravel = () => {
     return (<div className='max-w-6xl mx-auto grid md:grid-cols-2 my-20 gap-14'>
         <div className=''>
             <div className=''>
-                <Lottie animationData={animate} />
+                <LottieAnimation jsonData={animate} />
             </div>
         </div>
 

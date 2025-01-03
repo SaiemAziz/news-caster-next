@@ -2,9 +2,9 @@ import React, { useContext, useEffect, useState } from 'react';
 import { AuthContext } from './Auth';
 import * as loadingImage from '../assets/images/liquid-4-dot-loader.json'
 import Loading from './LoadingCircle';
-import Lottie from 'lottie-react';
 import { useQuery } from '@tanstack/react-query';
 import { BsTrashFill } from 'react-icons/bs'
+import LottieAnimation from './LottieAnimation';
 
 const Comments = ({ news }) => {
     // let [comments, setComments] = useState([])
@@ -103,7 +103,7 @@ const Comments = ({ news }) => {
                     <textarea className='flex-1 max-w-lg textarea textarea-info' name="comment" required placeholder='Please give your valuable comment.' />
                     {
                         loadComment ? <div className='mx-auto max-w-[100px]'>
-                            <Lottie animationData={loadingImage} />
+                            <LottieAnimation jsonData={loadingImage} />
                         </div> :
                             <input className='btn btn-info' type="submit" value="COMMENT" />
                     }
@@ -144,7 +144,7 @@ const Comments = ({ news }) => {
                                             <textarea className='flex-1 max-w-lg textarea textarea-secondary' name="reply" required placeholder='Please reply to this above comment.' />
                                             {
                                                 loadReply ? <div className='mx-auto max-w-[100px]'>
-                                                    <Lottie animationData={loadingImage} />
+                                                    <LottieAnimation jsonData={loadingImage} />
                                                 </div> :
                                                     <input className='btn btn-secondary' type="submit" value="REPLY" />
                                             }
