@@ -7,7 +7,7 @@ import LoadingCircle from "./LoadingCircle";
 import Link from "next/link";
 import * as tf from "@tensorflow/tfjs";
 import { ModelContext } from "../pages/_app";
-import handleTokenizeClick from "./functions/handleTokenizeClick";
+// import handleTokenizeClick from "./functions/handleTokenizeClick";
 import { AuthContext } from "./Auth";
 import { MdVerified } from "react-icons/md";
 import Reaction from "./Reaction";

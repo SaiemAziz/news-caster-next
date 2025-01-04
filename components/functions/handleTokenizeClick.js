@@ -1,8 +1,6 @@
 import * as tf from '@tensorflow/tfjs';
-import { useState } from 'react';
-let wordIndex , model,  loadingModel = true
+let loadingModel = true
 let loadModelBrowser = async () => {
-    
     loadingModel = false
 }
 const puncRemove = (t) => {
@@ -34,13 +32,11 @@ const removeZero = (arr) => {
 
 
 const handleTokenizeClick = async (details, model, wordIndex) => {
-    
     details = puncRemove(details)
     let mytokenizedText = details.toLowerCase().split(' ');
-    
+    // console.log(wordIndex === null, model === null)
     
     let mywordIndices = await mytokenizedText.map(word => wordIndex[word]);
-
     let mypaddedSequences = [...removeZero(mywordIndices)]
     let slicedPaddedSequence = mypaddedSequences.slice(0, 500)
     let mypaddedSequence = tf.tensor1d(slicedPaddedSequence, 'int32')

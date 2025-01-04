@@ -8,7 +8,7 @@ import * as loadingImage from "../assets/images/liquid-4-dot-loader.json";
 import Loading from "./LoadingCircle";
 // import RichText from './RichText';
 import { toast } from "react-toastify";
-import handleTokenizeClick from "./functions/handleTokenizeClick";
+// import handleTokenizeClick from "./functions/handleTokenizeClick";
 import { ModelContext } from "../pages/_app";
 import PageTitle from "./PageTitle";
 import LottieAnimation from "./LottieAnimation";
@@ -21,7 +21,8 @@ let RichText = React.memo(
 const AddPost = () => {
   let router = useRouter();
   let { user } = useContext(AuthContext);
-  let { model, wordIndex, load } = useContext(ModelContext);
+  // let { model, wordIndex, load } = useContext(ModelContext);
+  const [load, setLoad] = useState(false);
   const [details, setDetails] = useState("");
   const [loadAdd, setLoadAdd] = useState(false);
   const [loadRich, setLoadRich] = useState(true);
@@ -30,17 +31,6 @@ const AddPost = () => {
   const [title, setTitle] = useState("");
   const [err, setErr] = useState("");
   let imgbbUrl = process.env.NEXT_PUBLIC_IMGBB_URL;
-  // useEffect(() => {
-  //     if (user?.role != 'admin' && !loadUser)
-  //         router.push('/')
-  // }, [loadUser])
-  // console.log(details, details.length);
-  // useEffect(() => {
-  //     RichText = dynamic(() => import('/components/RichText'), {
-  //         ssr: false,
-  //     })
-  //     setLoadRich(false)
-  // }, [])
 
   let handleForm = async (e) => {
     e.preventDefault();
@@ -66,7 +56,7 @@ const AddPost = () => {
     let res = await fetch(imgbbUrl, config);
     let data = await res.json();
     let displayURL = data.data.display_url;
-    let prediction = await handleTokenizeClick(details, model, wordIndex);
+    // let prediction = await handleTokenizeClick(details, model, wordIndex);
     let news = {
       time: new Date(),
       status: "active",
@@ -75,11 +65,10 @@ const AddPost = () => {
       authorInfo: user?.email,
       image: displayURL,
       category: category.toLowerCase(),
-      prediction: {
-        real: prediction.real,
-      },
+      // prediction: {
+      //   real: prediction.real,
+      // },
     };
-    // console.log(news);
     try {
       let res2 = await fetch("/api/single-news", {
         method: "POST",
@@ -100,9 +89,7 @@ const AddPost = () => {
     }
     setLoadAdd(false);
   };
-  // if (loadRich) return <div>
-  //     <Loading />
-  // </div>
+
 
   return (
     <form onSubmit={handleForm} className="p-5 mx-auto lg:w-[900px] w-full">

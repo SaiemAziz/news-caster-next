@@ -1,4 +1,4 @@
-import handleTokenizeClick from "../../components/functions/handleTokenizeClick";
+// import handleTokenizeClick from "../../components/functions/handleTokenizeClick";
 import clientPromise from "../../lib/mongodb";
 
 export default async function handler(req, res) {

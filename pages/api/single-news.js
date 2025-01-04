@@ -1,6 +1,8 @@
-
+import * as tf from '@tensorflow/tfjs';
 import { ObjectId } from "mongodb";
 import clientPromise from "../../lib/mongodb";
+import handleTokenizeClick from "../../components/functions/handleTokenizeClick";
+
 
 export default async function handler(req, res) {
     const client = await clientPromise;
@@ -30,7 +32,13 @@ export default async function handler(req, res) {
             break;
         case "POST": {
             let news = req.body;
-
+            let response = await fetch("https://raw.githubusercontent.com/SaiemAziz/news-caster-next/refs/heads/main/public/models/model/word_index.json")
+            let wordIndex = await response.json()
+            let model = await tf.loadLayersModel("https://raw.githubusercontent.com/SaiemAziz/news-caster-next/refs/heads/main/public/models/model/model.json")
+            let prediction = await handleTokenizeClick(news?.details, model, wordIndex);
+            news.prediction = {
+                  real: prediction.real
+                }
             let result = await newsCollection.insertOne(news)
             res.json({ status: 200, data: result });
         }

@@ -11,7 +11,7 @@ import Loading from "../components/Loading";
 import Link from "next/link";
 import BelowBannerSlider from "../components/BelowBannerSlider";
 import YoutubeSection from "../components/YoutubeSection";
-import handleTokenizeClick from "../components/functions/handleTokenizeClick";
+// import handleTokenizeClick from "../components/functions/handleTokenizeClick";
 import WhyChooseUs from "../components/WhyChooseUs";
 import EditNews from "../components/EditNews";
 import { useContext, useEffect, useLayoutEffect, useState } from "react";

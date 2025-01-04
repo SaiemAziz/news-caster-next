@@ -3,7 +3,7 @@ import Head from "next/head";
 import { useRouter } from "next/router";
 import { useContext, useEffect, useState } from "react";
 import { ModelContext } from "../_app";
-import handleTokenizeClick from "../../components/functions/handleTokenizeClick";
+// import handleTokenizeClick from "../../components/functions/handleTokenizeClick";
 import { AiFillClockCircle } from "react-icons/ai";
 import { CgCalendarDates } from "react-icons/cg";
 import Reaction from "../../components/Reaction";
