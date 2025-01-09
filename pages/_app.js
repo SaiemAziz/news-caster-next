@@ -9,7 +9,7 @@ import Loading from '../components/Loading'
 import Auth from '../components/Auth'
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-import 'react-day-picker/dist/style.css';
+import 'react-day-picker/style.css';
 // sass style sheet
 import '../styles/SassTest.css'
 import {

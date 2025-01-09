@@ -148,7 +148,9 @@ const register = () => {
     <div className="md:max-w-7xl w-full mx-auto grid gap-10 md:grid-cols-2 ">
       <PageTitle>Register</PageTitle>
       <div className="flex flex-col items-center justify-center gap-5 pt-10">
+        <div className="max-w-[500px] mx-auto">
         <LottieAnimation jsonData={loginImage} />
+        </div>
         <h1 className="lg:text-5xl text-3xl text-center italic -mt-10 text-blue-500">
           Welcome to NewsCaster
         </h1>
@@ -256,6 +258,10 @@ const register = () => {
             </div>
             <div className="collapse-content p-0 bg-slate-100 flex justify-center items-center">
               <DayPicker
+                captionLayout="dropdown"
+                defaultMonth={new Date()}
+                startMonth={new Date(1900, 1)}
+                endMonth={new Date(2100, 12)}
                 mode="single"
                 selected={birthDate}
                 onSelect={setBirthDate}
