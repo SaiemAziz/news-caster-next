@@ -10,7 +10,9 @@ const LottieComp = ({jsonData}) => {
         }
       };
     return (
+      <div className='w-full'>
         <Lottie options={defaultOptions}/>
+      </div>
     );
 };
 export default LottieComp;

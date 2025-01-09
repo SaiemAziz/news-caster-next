@@ -148,14 +148,12 @@ const register = () => {
     <div className="md:max-w-7xl w-full mx-auto grid gap-10 md:grid-cols-2 ">
       <PageTitle>Register</PageTitle>
       <div className="flex flex-col items-center justify-center gap-5 pt-10">
-        <div className="max-w-[500px] mx-auto">
         <LottieAnimation jsonData={loginImage} />
-        </div>
         <h1 className="lg:text-5xl text-3xl text-center italic -mt-10 text-blue-500">
           Welcome to NewsCaster
         </h1>
       </div>
-      <div className="bg-white p-10 flex flex-col justify-center items-center gap-5">
+      <div className="bg-white md:p-10 p-5 flex flex-col justify-center items-center gap-5 w-full overflow-x-auto">
         <h1 className="text-2xl font-bold text-[#097ef6] mb-10">
           Register Account
         </h1>
@@ -256,7 +254,7 @@ const register = () => {
               )}
               <RiArrowDropDownLine size={50} />
             </div>
-            <div className="collapse-content p-0 bg-slate-100 flex justify-center items-center">
+            <div className="collapse-content px-5 bg-slate-100 flex justify-center items-center">
               <DayPicker
                 captionLayout="dropdown"
                 defaultMonth={new Date()}
@@ -265,7 +263,8 @@ const register = () => {
                 mode="single"
                 selected={birthDate}
                 onSelect={setBirthDate}
-                className="text-sm"
+                className="text-sm overflow-x-auto"
+                hideNavigation={true}
               />
             </div>
           </div>
