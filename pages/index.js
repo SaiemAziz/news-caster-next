@@ -1,27 +1,18 @@
-import Head from "next/head";
-import Image from "next/image";
-import { Inter } from "@next/font/google";
-import styles from "../styles/Home.module.css";
 import SingleNews from "../components/SingleNews";
 import Banner from "../components/Banner";
-import Footer from "../components/Footer";
-import BannerTravel from "../components/BannerTravel";
-import Test from "../components/Test";
 import Loading from "../components/Loading";
 import Link from "next/link";
 import BelowBannerSlider from "../components/BelowBannerSlider";
 import YoutubeSection from "../components/YoutubeSection";
-// import handleTokenizeClick from "../components/functions/handleTokenizeClick";
 import WhyChooseUs from "../components/WhyChooseUs";
-import EditNews from "../components/EditNews";
-import { useContext, useEffect, useLayoutEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../components/Auth";
 import { useQuery } from "@tanstack/react-query";
 import PageTitle from "../components/PageTitle";
 
 export default function Home() {
-  let { editNews, user } = useContext(AuthContext);
-  let [load, setLoad] = useState(false);
+  let {user } = useContext(AuthContext);
+
   let [news, setNews] = useState(null);
   let newsQuery = useQuery({
     queryKey: [`/api/all-news`],
@@ -44,7 +35,7 @@ export default function Home() {
     let surity = confirm("Are you sure you want to delete?");
     if (!surity) return;
     let res = await fetch(`/api/single-news?id=${id}`, { method: "DELETE" });
-    let data = await res.json();
+    await res.json();
     newsQuery.refetch();
   };
 
@@ -89,7 +80,7 @@ export default function Home() {
             <div className="w-fit mx-auto">
               <Link
                 href="/categories"
-                className="btn btn-error btn-outline btn-lg my-10"
+                className="btn btn-accent btn-outline btn-lg my-10"
               >
                 View More
               </Link>
@@ -104,16 +95,3 @@ export default function Home() {
     </>
   );
 }
-
-// export async function getStaticProps () {
-
-//   let res = await fetch('http://localhost:3000/api/all-news')
-//   let data = await res.json()
-
-//   return{
-//     props: {
-//       news : data.data
-//     },
-//     revalidate: 1,
-//   }
-// }

@@ -111,7 +111,7 @@ const Header = () => {
                
                 <div className="ml-auto">
                     {user ? <div className="flex gap-3 items-center">
-                        <div className="tooltip tooltip-bottom tooltip-accent" data-tip={user?.fullName}>
+                        <div className="tooltip tooltip-bottom tooltip-accent" data-tip={user?.fullName.split(' ').slice(0,3).join(' ')}>
                             <Link href='/profile'>
                                 <div className={`h-10 w-10 rounded-full border-2 border-primary overflow-hidden flex justify-center items-center bg-black`}>
 

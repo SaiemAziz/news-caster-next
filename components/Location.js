@@ -36,7 +36,8 @@ const Map = () => {
           height="400"
           frameborder="0"
           style={{ border: 9 }}
-          src={`https://www.google.com/maps/embed/v1/view?key=AIzaSyCsGAlSaVe_lKlRuee28N8BNQCkjOLSn7c&center=${location.latitude},${location.longitude}&zoom=16`}
+          // src={`https://www.google.com/maps/embed/v1/view?key=AIzaSyCsGAlSaVe_lKlRuee28N8BNQCkjOLSn7c&center=${location.latitude},${location.longitude}&zoom=16`}
+          src={`https://maps.google.com/maps?q=${location.latitude},${location.longitude}&z=16&output=embed`}
           allowfullscreen
         ></iframe>
       )}

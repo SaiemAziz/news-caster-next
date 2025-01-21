@@ -8,6 +8,7 @@ import MyPosts from "../components/MyPosts";
 import AdminAllPosts from "../components/AdminAllPosts";
 import AdminAllUser from "../components/AdminAllUser";
 import PageTitle from "../components/PageTitle";
+import AdminAllYoutubeLinks from "../components/AdminAllYoutubeLinks";
 const Dashboard = () => {
   let [tab, setTab] = useState("");
   let [barOpen, setBarOpen] = useState(false);
@@ -113,6 +114,11 @@ const Dashboard = () => {
               <AdminAllPosts />
             </div>
           )}
+          {tab == "adminAllYoutubeLinks" && (
+            <div className="p-5">
+              <AdminAllYoutubeLinks />
+            </div>
+          )}
         </div>
         <div className="drawer-side">
           <label
@@ -134,6 +140,12 @@ const Dashboard = () => {
               onClick={() => setTab("adminAllNews")}
             >
               All News
+            </li>
+            <li
+              className="text-center my-1 btn btn-info rounded-none"
+              onClick={() => setTab("adminAllYoutubeLinks")}
+            >
+              All Youtube Links
             </li>
           </ul>
         </div>

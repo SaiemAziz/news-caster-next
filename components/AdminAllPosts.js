@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import { AuthContext } from "./Auth";
 import Link from "next/link";
 import { toast } from "react-toastify";
 import { AiFillClockCircle } from "react-icons/ai";
@@ -7,7 +6,6 @@ import { CgCalendarDates } from "react-icons/cg";
 import PageTitle from "./PageTitle";
 
 const AdminAllPosts = () => {
-  let { user } = useContext(AuthContext);
   let [allNews, setAllNews] = useState(null);
   useEffect(() => {
     (async () => {

@@ -1,22 +1,17 @@
 import Loading from "../../components/Loading";
-import Head from "next/head";
 import { useRouter } from "next/router";
-import { useContext, useEffect, useState } from "react";
-import { ModelContext } from "../_app";
-// import handleTokenizeClick from "../../components/functions/handleTokenizeClick";
+import {  useEffect, useState } from "react";
 import { AiFillClockCircle } from "react-icons/ai";
 import { CgCalendarDates } from "react-icons/cg";
 import Reaction from "../../components/Reaction";
 import { MdVerified } from "react-icons/md";
 import Comments from "../../components/Comments";
-import EditNews from "../../components/EditNews";
 import PageTitle from "../../components/PageTitle";
 
 const Details = () => {
   let [detailsLoad, setDetailsLoad] = useState(true);
   const [time, setTime] = useState(null);
-  let [changeReact, setChangeReact] = useState(false);
-  let { model, wordIndex } = useContext(ModelContext);
+  const [changeReact, setChangeReact] = useState(false);
   let [news, setNews] = useState(null);
   let [real, setReal] = useState(null);
   let [fake, setFake] = useState(null);
@@ -25,8 +20,6 @@ const Details = () => {
     non_violence: null,
   });
   let [author, setAuthor] = useState(null);
-  let [aiLoad, setAiLoad] = useState(true);
-  let details = news?.details?.split(".");
   let router = useRouter();
   let { id } = router.query;
   console.log(vio);
@@ -36,7 +29,6 @@ const Details = () => {
       fetch(`/api/single-news?id=${id}`)
         .then((result) => result.json())
         .then((data) => {
-          // console.log(data)
           setNews(data?.data);
           setDetailsLoad(false);
           setTime(new Date(data?.data?.time));
@@ -64,16 +56,7 @@ const Details = () => {
         });
     }
   }, [news]);
-  // useEffect(() => {
-  //     setAiLoad(true)
-  //     if (news?.details)
-  //         (async () => {
-  //             let prediction = await handleTokenizeClick(news?.details, model, wordIndex)
-  //             setReal(prediction.real)
-  //             setFake(prediction.fake)
-  //             setAiLoad(false)
-  //         })();
-  // }, [news, id]);
+  
   useEffect(() => {
     (async () => {
       let res = await fetch(`/api/user-info?email=${news?.authorInfo}`);
@@ -83,9 +66,7 @@ const Details = () => {
   }, [news]);
   return (
     <div className="max-w-4xl mx-auto p-5">
-      {/* <Head>
-                <title>Details-News Caster</title>
-            </Head> */}
+
       {detailsLoad ? (
         <Loading />
       ) : (
@@ -94,7 +75,7 @@ const Details = () => {
           <h1 className="sm:text-5xl text-3xl text-blue-900 font-bold text-center mb-10 mt-5">
             {news?.title}
           </h1>
-          <img className="w-full" src={news?.image} alt="" />
+          <img className="w-full aspect-video object-contain object-center bg-black" src={news?.image} alt="" />
           <div className="flex justify-between mt-5 mb-2">
             <h1 className="text-green-500 text-xl font-bold">
               Real ({parseFloat(real).toFixed(2)} %)

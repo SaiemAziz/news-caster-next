@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { useRouter } from "next/router";
-import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import * as loginImage from "../../assets/images/GLOBE-ANIME.json";
 import * as loadingImage from "../../assets/images/liquid-4-dot-loader.json";
@@ -14,7 +14,6 @@ import LottieAnimation from "../../components/LottieAnimation";
 const register = () => {
   let {
     registerUser,
-    loadUser,
     logOutUser,
     sendVerification,
     setLoadUser,
@@ -26,24 +25,13 @@ const register = () => {
   let [show, setShow] = useState(false);
   let [load, setLoad] = useState(false);
   let [err, setErr] = useState("");
-  let [userNames, setUserNames] = useState();
   let [available, setAvailable] = useState(null);
   let [birthDate, setBirthDate] = useState(null);
   useEffect(() => {
     if (user?.email) {
-      // toast.error('You already have logged in')
       router.push("/profile");
     }
   }, [user]);
-  // useEffect(() => {
-  //     (async function () {
-  //         let res = await fetch('/api/all-users')
-  //         let data = await res.json()
-  //         let allUsers = data.data;
-  //         let fetchedUserNames = allUsers.map(user => user?.userName?.toLowerCase())
-  //         setUserNames(fetchedUserNames)
-  //     })()
-  // }, [])
 
   let handleCheckUserName = async (e) => {
     let userName = e.target.value;
@@ -96,9 +84,8 @@ const register = () => {
     let displayURL = data.data.display_url;
 
     registerUser(email, password)
-      .then(async (res) => {
+      .then(async () => {
         setLoadUser(false);
-        // console.log(res.user);
         sendVerification();
         toast?.success("Registration successful. Please login.");
         e.target.reset();
@@ -140,8 +127,7 @@ const register = () => {
       },
       body: JSON.stringify(userInfo),
     });
-    let data = await res.json();
-    // setUser(userInfo)
+    await res.json();
   };
 
   return (
@@ -337,16 +323,3 @@ const register = () => {
 };
 
 export default register;
-
-// export async function getStaticProps() {
-//     let res = await fetch('http://localhost:3000/api/all-users')
-//     let data = await res.json()
-//     let allUsers = data.data;
-//     let userNames = allUsers.map(user => user.userName.toLowerCase())
-
-//     return {
-//         props: {
-//             userNames
-//         }
-//     }
-// }
